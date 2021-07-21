@@ -1,0 +1,32 @@
+diff --git a/Makefile b/Makefile
+index 810e75d8..d7a0ddc2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -267,6 +267,27 @@ else ifeq ($(platform), classic_armv8_a35)
+ 	WITH_DYNAREC = arm
+ 	HAVE_GENERIC_JIT = 0
+ 	CORE_DEFINES += -DLOW_END -DLOW_RES
++
++else ifeq ($(platform), goadvance)
++	EXT ?= so
++	TARGET := $(TARGET_NAME)_libretro.$(EXT)
++	SHARED := -shared -Wl,--version-script=link.T -Wl,--no-undefined
++	fpic = -fPIC
++	LIBS += -lrt
++	CC_AS = $(CC)
++	FORCE_GLES = 1
++	SINGLE_PREC_FLAGS = 1
++	HAVE_LTCG = 0
++	HAVE_OPENMP = 1
++	CFLAGS += -march=armv8-a+crc+simd -mtune=cortex-a35 -mcpu=cortex-a35 -O3 -pipe -fno-plt -fdata-sections -ffunction-sections -Wl,--gc-sections -fno-stack-protector -fno-ident -fomit-frame-pointer -fmerge-all-constants -fno-math-errno -Wl,--gc-sections -falign-functions=1 -falign-jumps=1 -falign-loops=1 -fno-unwind-tables -fno-asynchronous-unwind-tables -frename-registers -funsafe-math-optimizations -ftree-vectorize -O3 -ggdb3 -fno-omit-frame-pointer
++	CFLAGS += -DHOST_CPU=0x20000006 -DTARGET_LINUX_ARMv8
++	CXXFLAGS += $(CFLAGS)
++	ASFLAGS += $(CFLAGS) -c
++	PLATFORM_EXT := unix
++	WITH_DYNAREC = arm64
++	HAVE_GENERIC_JIT = 0
++	CORE_DEFINES += -DLOW_END -DLOW_RES
++
+ 	
+ #########################################
+ 
