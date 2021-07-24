@@ -15,6 +15,9 @@ cd rk3326_core_builds
 ### To build just mgba:
 `./rk3326_core_builds mgba`
 
+### To build just pcsx_rearmed:
+`./rk3326_core_builds pcsx_rearmed`
+
 ### To clean the folder of all builds and gits
 `./rk3326_core_builds clean`
 
