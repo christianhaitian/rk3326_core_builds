@@ -129,7 +129,7 @@ if [[ "$var" == "flycast" || "$var" == "all" ]]; then
   if [[ "$(getconf LONG_BIT)" == "64" ]]; then
     make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
   else 
-    make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+    make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
   fi
 
   if [[ $? != "0" ]]; then
@@ -160,7 +160,7 @@ if [[ "$var" == "flycast" || "$var" == "all" ]]; then
       if [[ "$(getconf LONG_BIT)" == "64" ]]; then
         make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
       else 
-        make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+        make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
       fi
 
       if [[ $? != "0" ]]; then
