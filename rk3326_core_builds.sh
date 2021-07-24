@@ -290,9 +290,11 @@ if [ "$var" == "clean" ]; then
   echo "Directory has been cleaned!"
 fi
 
-if [ "$(ls -A $cur_wd/cores$(getconf LONG_BIT))" ]; then
-  echo " "
-  echo "The cores$(getconf LONG_BIT) folder currently contains the following:"
-  ls -l $cur_wd/cores$(getconf LONG_BIT)
+if [ -d "$cur_wd/cores$(getconf LONG_BIT)" ]; then
+  if [ "$(ls -A $cur_wd/cores$(getconf LONG_BIT))" ]; then
+    echo " "
+    echo "The cores$(getconf LONG_BIT) folder currently contains the following:"
+    ls -l $cur_wd/cores$(getconf LONG_BIT)
+  fi
 fi
 
