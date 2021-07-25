@@ -3,6 +3,41 @@
 var="$1"
 cur_wd="$PWD"
 
+# Libretro fbneo build
+if [[ "$var" == "fbneo" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ cd $cur_wd
+  if [ ! -d "fbneo/" ]; then
+    git clone https://github.com/libretro/fbneo.git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+     fi
+  fi
+
+ cd fbneo/
+ 
+  # make -j$(nproc) -C ./src/burner/libretro generate-files
+  make -j$(nproc) -C ./src/burner/libretro profile=performance
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest lr-fbneo core.  Stopping here."
+    exit 1
+  fi
+
+  strip src/burner/libretro/fbneo_libretro.so
+
+  if [ ! -d "../cores64/" ]; then
+    mkdir -v ../cores64
+  fi
+
+  cp src/burner/libretro/fbneo_libretro.so ../cores64/.
+
+  echo " "
+  echo "fbneo_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+fi
+
 # Libretro mgba build
 if [[ "$var" == "mgba" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
  gba_rumblepatch="no"
@@ -413,4 +448,3 @@ if [ -d "$cur_wd/cores$(getconf LONG_BIT)" ]; then
     ls -l $cur_wd/cores$(getconf LONG_BIT)
   fi
 fi
-
