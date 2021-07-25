@@ -1,0 +1,123 @@
+diff -ruNp temp/RetroArch/intl/msg_hash_us.h RetroArch/intl/msg_hash_us.h
+--- temp/RetroArch/intl/msg_hash_us.h	2021-06-13 08:30:59.624835020 +0000
++++ RetroArch/intl/msg_hash_us.h	2021-06-13 05:56:26.581170557 +0000
+@@ -10,7 +10,7 @@
+ 
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MAIN_MENU,
+-   "Main Menu"
++   "ArkOS"
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_SETTINGS_TAB,
+@@ -4306,7 +4306,7 @@ MSG_HASH(
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_MAIN_TAB,
+-   "Main Menu"
++   "ArkOS"
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_PLAYLISTS_TAB,
+diff -ruNp temp/RetroArch/menu/drivers/ozone/ozone.c RetroArch/menu/drivers/ozone/ozone.c
+--- temp/RetroArch/menu/drivers/ozone/ozone.c	2021-06-13 08:30:59.700835411 +0000
++++ RetroArch/menu/drivers/ozone/ozone.c	2021-06-13 08:25:48.718632805 +0000
+@@ -1093,7 +1093,7 @@ static void ozone_set_layout(
+    if (!ozone)
+       return;
+ 
+-   scale_factor = ozone->last_scale_factor;
++   scale_factor = ozone->last_scale_factor * 1.5;
+ 
+    /* Calculate dimensions */
+    ozone->dimensions.header_height                 = HEADER_HEIGHT * scale_factor;
+@@ -2303,10 +2303,10 @@ static void ozone_draw_header(
+          gfx_display_draw_text(
+                ozone->fonts.time.font,
+                msg,
+-               video_width - 85 * scale_factor,
++               video_width - 100 * scale_factor,
+                  ozone->dimensions.header_height / 2 
+                + ozone->fonts.time.line_centre_offset,
+-               video_width,
++               video_width + 15,
+                video_height,
+                ozone->theme->text_rgba,
+                TEXT_ALIGN_RIGHT,
+@@ -2328,11 +2328,11 @@ static void ozone_draw_header(
+                      status_icon_size,
+                      status_icon_size,
+                      ozone->icons_textures[powerstate.charging? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_CHARGING : (powerstate.percent > 80)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_FULL : (powerstate.percent > 60)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_80 : (powerstate.percent > 40)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_60 : (powerstate.percent > 20)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_40 : OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_20],
+-                     video_width - (60 + 56) * scale_factor,
++                     video_width - (105 + 56) * scale_factor,
+                      0,
+                      video_width,
+-                     video_height,
+-                     0, 1, col);
++                     video_height - 8,
++                     0, 1.5, col);
+             if (dispctx->blend_end)
+                dispctx->blend_end(userdata);
+          }
+@@ -2357,10 +2357,10 @@ static void ozone_draw_header(
+       gfx_display_draw_text(
+             ozone->fonts.time.font,
+             timedate,
+-            video_width - (85 * scale_factor) - timedate_offset,
++            video_width - (100 * scale_factor) - timedate_offset,
+               ozone->dimensions.header_height / 2 
+             + ozone->fonts.time.line_centre_offset,
+-            video_width,
++            video_width + 30,
+             video_height,
+             ozone->theme->text_rgba,
+             TEXT_ALIGN_RIGHT,
+@@ -2382,11 +2382,11 @@ static void ozone_draw_header(
+                   status_icon_size,
+                   status_icon_size,
+                   ozone->icons_textures[OZONE_ENTRIES_ICONS_TEXTURE_CLOCK],
+-                  video_width - (60 + 56) * scale_factor - timedate_offset,
++                  video_width - (140 + 56) * scale_factor - timedate_offset,
+                   0,
+-                  video_width,
+-                  video_height,
+-                  0, 1, col);
++                  video_width + 20,
++                  video_height - 8,
++                  0, 1.2, col);
+          if (dispctx->blend_end)
+             dispctx->blend_end(userdata);
+       }
+diff -ruNp temp/RetroArch/menu/menu_setting.c RetroArch/menu/menu_setting.c
+--- temp/RetroArch/menu/menu_setting.c	2021-06-13 08:30:59.712835473 +0000
++++ RetroArch/menu/menu_setting.c	2021-06-13 06:43:46.621808432 +0000
+@@ -8784,7 +8784,7 @@ static bool setting_append_list(
+               parent_group);
+ #endif
+ 
+-#if defined(HAVE_LAKKA)
++#if defined(HAVE_LAKKA) || defined(HAVE_ODROIDGO2)
+ #ifdef HAVE_LAKKA_SWITCH
+         CONFIG_ACTION(
+                list, list_info,
+diff -ruNp temp/RetroArch/retroarch.c RetroArch/retroarch.c
+--- temp/RetroArch/retroarch.c	2021-06-13 08:31:00.172837842 +0000
++++ RetroArch/retroarch.c	2021-06-13 06:43:46.649808526 +0000
+@@ -14284,7 +14284,7 @@ bool command_event(enum event_command cm
+          runloop_msg_queue_push(msg_hash_to_str(MSG_VALUE_SHUTTING_DOWN), 1, 180, true, NULL, MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
+          command_event(CMD_EVENT_MENU_SAVE_CURRENT_CONFIG, NULL);
+          command_event(CMD_EVENT_QUIT, NULL);
+-         system("shutdown -P now");
++         system("sudo shutdown -P now");
+ #endif
+          break;
+       case CMD_EVENT_REBOOT:
+@@ -14292,7 +14292,7 @@ bool command_event(enum event_command cm
+          runloop_msg_queue_push(msg_hash_to_str(MSG_VALUE_REBOOTING), 1, 180, true, NULL, MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
+          command_event(CMD_EVENT_MENU_SAVE_CURRENT_CONFIG, NULL);
+          command_event(CMD_EVENT_QUIT, NULL);
+-         system("shutdown -r now");
++         system("sudo shutdown -r now");
+ #endif
+          break;
+       case CMD_EVENT_RESUME:

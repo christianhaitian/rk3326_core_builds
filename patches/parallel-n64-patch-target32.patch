@@ -1,0 +1,33 @@
+diff --git a/Makefile b/Makefile
+index 16bc2e85..9675b7ff 100644
+--- a/Makefile
++++ b/Makefile
+@@ -285,6 +285,28 @@ else ifneq (,$(findstring imx6,$(platform)))
+    WITH_DYNAREC=arm
+    HAVE_NEON=1
+ 
++# Emuelec OdroidGoA
++else ifneq (,$(findstring Odroidgoa,$(platform)))
++   TARGET := $(TARGET_NAME)_libretro.so
++   LDFLAGS += -shared -Wl,--version-script=$(LIBRETRO_DIR)/link.T
++   fpic = -fPIC
++   GLES = 1
++   GL_LIB := -lGLESv2
++   CPUFLAGS += -DNO_ASM -DARM -D__arm__ -DARM_ASM -D__NEON_OPT -DNOSSE -DARM_FIX -DCLASSIC
++   PLATFORM_EXT := unix
++   WITH_DYNAREC=arm
++   HAVE_NEON=1
++   ASFLAGS += -D__ARM_NEON__ -marm -mcpu=cortex-a35 -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++
++   CPUFLAGS += -O2 \
++      -fno-lto -fuse-linker-plugin -fno-semantic-interposition -fno-trapping-math \
++      -fdata-sections -ffunction-sections -Wl,--gc-sections \
++      -fno-stack-protector -fno-ident -fomit-frame-pointer \
++      -falign-functions=32 -falign-jumps=1 -falign-loops=1 \
++      -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-unroll-loops \
++      -fno-strict-aliasing -fmerge-all-constants -fno-math-errno
++   CPUFLAGS += -marm -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++
+ # OS X
+ else ifneq (,$(findstring osx,$(platform)))
+    TARGET := $(TARGET_NAME)_libretro.dylib

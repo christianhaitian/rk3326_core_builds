@@ -4,7 +4,7 @@ var="$1"
 cur_wd="$PWD"
 
 # Libretro mgba build
-if [[ "$var" == "mgba" || "$var" == "all" ]]; then
+if [[ "$var" == "mgba" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
  gba_rumblepatch="no"
  cd $cur_wd
   if [ ! -d "mgba/" ]; then
@@ -192,13 +192,13 @@ if [[ "$var" == "flycast" || "$var" == "all" ]]; then
 fi
 
 # Libretro Pcsx_rearmed build
-if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]]; then
- if [[ "$(getconf LONG_BIT)" != "32" ]]; then
-   echo " "
-   echo "This environment is not 32 bit.  Can't build the pcsx_rearmed core here."
-   echo " "
-   exit 1
- fi
+if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "32" ]]; then
+# if [[ "$(getconf LONG_BIT)" != "32" ]]; then
+#   echo " "
+#   echo "This environment is not 32 bit.  Can't build the pcsx_rearmed core here."
+#   echo " "
+#   exit 1
+# fi
  pcsx_rearmed_rumblepatch="no"
  cd $cur_wd
   if [ ! -d "pcsx_rearmed/" ]; then
@@ -279,7 +279,118 @@ if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]]; then
 
   echo " "
   echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
-  unset export
+fi
+
+# Libretro Parallel-n64 build
+if [[ "$var" == "parallel-n64" || "$var" == "all" ]]; then
+ cd $cur_wd
+  if [ ! -d "parallel-n64/" ]; then
+    git clone https://github.com/libretro/parallel-n64.git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the parallel-n64 libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/parallel-n64-patch* parallel-n64/.
+  fi
+
+ cd parallel-n64/
+ 
+ parallel-n64_patches=$(find *.patch)
+ 
+ if [[ ! -z "$parallel-n64_patches" ]]; then
+  for patching in parallel-n64-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi
+  make clean
+  if [[ "$(getconf LONG_BIT)" == "32" ]]; then
+    make platform=Odroidgoa -lto -j$(nproc)
+  else
+    make platform=emuelec64-armv8 -lto -j$(nproc)
+  fi
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest lr-parallel-n64 core.  Stopping here."
+    exit 1
+  fi
+
+  strip parallel_n64_libretro.so
+
+  if [ ! -d "../cores$(getconf LONG_BIT)/" ]; then
+    mkdir -v ../cores$(getconf LONG_BIT)
+  fi
+
+  cp parallel_n64_libretro.so ../cores$(getconf LONG_BIT)/.
+
+  echo " "
+  echo "parallel_n64_libretro.so has been created and has been placed in the rk3326_core_builds/cores$(getconf LONG_BIT) subfolder"
+fi
+
+# Libretro Retroarch build
+if [[ "$var" == "retroarch" ]]; then
+ cd $cur_wd
+  if [ ! -d "retroarch/" ]; then
+    git clone https://github.com/libretro/retroarch.git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the retroarch libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/retroarch-patch* retroarch/.
+  fi
+
+ cd retroarch/
+ 
+ retroarch_patches=$(find *.patch)
+ 
+ if [[ ! -z "$retroarch_patches" ]]; then
+  for patching in retroarch-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi
+  ./configure --disable-opengl --disable-opengl1 --disable-qt --disable-wayland --disable-x11 --enable-alsa --enable-egl --enable-kms --enable-odroidgo2 --enable-opengles --enable-opengles3 --enable-udev --disable-vulkan --disable-vulkan_display --enable-networking --enable-ozone --disable-caca --enable-opengles3_1 --enable-opengles3_2 --enable-wifi
+  make -j$(nproc)
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest retroarch.  Stopping here."
+    exit 1
+  fi
+
+  strip retroarch
+
+  if [ ! -d "../retroarch$(getconf LONG_BIT)/" ]; then
+    mkdir -v ../retroarch$(getconf LONG_BIT)
+  fi
+
+  cp retroarch ../cores$(getconf LONG_BIT)/.
+
+  if [[ "$(getconf LONG_BIT)" == "32" ]]; then
+    mv ../cores$(getconf LONG_BIT)/retroarch ../cores$(getconf LONG_BIT)/retroarch32
+  fi
+
+  echo " "
+  if [[ "$(getconf LONG_BIT)" == "32" ]]; then
+    echo "retroarch32 has been created and has been placed in the rk3326_core_builds/retroarch$(getconf LONG_BIT) subfolder"
+  else
+    echo "retroarch has been created and has been placed in the rk3326_core_builds/retroarch$(getconf LONG_BIT) subfolder"
+  fi
 fi
 
 # Clean up the directory and remove other lr gits and created cores
