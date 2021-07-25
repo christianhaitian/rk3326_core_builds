@@ -301,6 +301,10 @@ if [[ "$var" == "parallel-n64" || "$var" == "all" ]]; then
  if [[ ! -z "$parallel-n64_patches" ]]; then
   for patching in parallel-n64-patch*
   do
+     if [[ $patching == *"target64"* ]] && [[ "$(getconf LONG_BIT)" == "32" ]]; then
+       echo "Skipping the $patching as it breaks 32 bit building for this core"
+       sleep 3
+     else
        patch -Np1 < "$patching"
        if [[ $? != "0" ]]; then
         echo " "
@@ -308,6 +312,7 @@ if [[ "$var" == "parallel-n64" || "$var" == "all" ]]; then
         exit 1
        fi
        rm "$patching" 
+     fi
   done
  fi
   make clean
