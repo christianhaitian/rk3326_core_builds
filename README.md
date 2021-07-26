@@ -1,4 +1,4 @@
-# Script to automate the build of various Libretro cores, Retroark, and PPSSPP for use with RK3326 devices (including Chi, OGA, OGS, RG351P/M/V, and the RK2020)
+# Script to automate the build of various Libretro cores, Retroarch, PPSSPP, ScummVM, Emulationstation-fcamod for use with RK3326 devices (including Chi, OGA, OGS, RG351P/M/V, and the RK2020)
 
 ### Assumptions:
 This script was designed to work with 32bit and 64bit chroot Linux environments for the RK3326 chipset. \
@@ -43,6 +43,12 @@ cd rk3326_core_builds
 
 ### To build just retroarch:
 `./rk3326_core_builds retroarch`
+
+### To add a system for screenscraper scraping in Emulationstation-fcamod (64bit only)
+`./rk3326_core_builds es_add_scrape`
+
+### To build Emulationstation-fcamod (64bit only)
+`./rk3326_core_builds es_build`
 
 ### To clean the folder of all builds and gits
 `./rk3326_core_builds clean`
