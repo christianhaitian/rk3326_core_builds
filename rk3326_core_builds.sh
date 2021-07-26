@@ -2,18 +2,32 @@
 
 var="$1"
 cur_wd="$PWD"
+valid_id='^[0-9]+$'
 
 # Emulationstation scraping adds
 if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+
  echo "What branch of emulationstation-fcamod are we working with?"
  echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for all"
  read branchnum
- echo "What string needs to be added? (ex. platform name)"
+ if [ "$branchnum" -lt 1 ] || [ "$branchnum" -gt 4 ]; then
+   echo "$branchnum is not a valid option.  Exiting."
+   exit 1
+ fi
+ if ! [[ $branchnum =~ $valid_id ]]; then
+   echo "$branchnum is not a number.  Exiting."
+   exit 1
+ fi
+ echo "What platform name to add? (ex. platform set in es_systems.cfg file)"
  read string
- echo "What Platform ID to use?"
+ echo "What Platform ID to add?"
  read platform_id
- echo "What is the screenscraper ID number?"
+ echo "What is the screenscraper ID number to add? (Can be found by going to screenscraper.fr and selecting a platform and see what platforme is equal to in the url)"
  read ss_id
+ if ! [[ $ss_id =~ $valid_id ]]; then
+   echo "$ss_id is not a number.  Exiting."
+   exit 1
+ fi
 
  case "$branchnum" in
      "1")
@@ -122,17 +136,41 @@ fi
 
 # Build Emulationstation-FCAMOD
 if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+
  echo "What branch of emulationstation-fcamod are you wanting to build?"
  echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for all"
  read branch_build
+ if [ "$branch_build" -lt 1 ] || [ "$branch_build" -gt 4 ]; then
+   echo "$branch_build is not a valid option.  Exiting."
+   exit 1
+ fi
+ if ! [[ $branch_build =~ $valid_id ]]; then
+   echo "$branch_build is not a number.  Exiting."
+   exit 1
+ fi
  echo "What is the Dev ID for screenscraper to use?"
  read devid
+ if [[ -z "$devid" ]]; then
+   devid=$(printenv DEV_ID)
+   echo "We're going to use $devid since you entered nothing above."
+ fi
  echo "What is the Dev password for screenscraper to use?"
  read devpass
+ if [[ -z "$devpass" ]]; then
+   devpass=$(printenv DEV_PASS)
+   echo "We're going to use $devpass since you entered nothing above."
+ fi
  echo "What is the apikey for TheGamesDB to use?"
  read apikey
+ if [[ -z "$apikey" ]]; then
+   apikey=$(printenv TGDB_APIKEY)
+   echo "We're going to use $apikey since you entered nothing above."
+ fi
  echo "What is the screenscraper software name to use?"
  read softname
+ if [[ -z "$softname" ]]; then
+   echo "We'll use either $SOFTNAME or $VSOFTNAME if this is a 351v build since you entered nothing above."
+ fi
 
  case "$branch_build" in
      "1")
@@ -149,7 +187,12 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
 
         cd emulationstation-fcamod-$branch 
 
+         if [[ -z "$softname" ]]; then
+           softname=$(printenv SOFTNAME)
+           echo "The software name has been set to $softname since one was not provided at start."
+         fi
         cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+
         if [[ $? != "0" ]]; then
           echo " "
           echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
@@ -187,6 +230,11 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         fi 
 
         cd emulationstation-fcamod-$branch 
+
+         if [[ -z "$softname" ]]; then
+           softname=$(printenv SOFTNAME)
+           echo "The software name has been set to $softname since one was not provided at start."
+         fi
 
         cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
         if [[ $? != "0" ]]; then
@@ -227,6 +275,11 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
 
         cd emulationstation-fcamod-$branch 
 
+         if [[ -z "$softname" ]]; then
+           softname=$(printenv SOFTNAME)
+           echo "The software name has been set to $softname since one was not provided at start."
+         fi
+
         cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
         if [[ $? != "0" ]]; then
           echo " "
@@ -265,6 +318,11 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         fi 
 
         cd emulationstation-fcamod-$branch 
+
+         if [[ -z "$softname" ]]; then
+           softname=$(printenv SOFTNAME)
+           echo "The software name has been set to $softname since one was not provided at start."
+         fi
 
         cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
         if [[ $? != "0" ]]; then
@@ -339,6 +397,13 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         fi 
 
         cd emulationstation-fcamod-$branch 
+
+         if [[ "$softname" == "ArkOSEmulationStation" ]]; then
+           softname=$(printenv VSOFTNAME)
+           echo "The software name has been set to $softname for the 351v build for ArkOS since one was not provided at start."
+           echo "No particular reason to do this, it's just what was done for some reason by the crazy dev. ¯\_(ツ)_/¯"
+         fi
+
 
         cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
         if [[ $? != "0" ]]; then
