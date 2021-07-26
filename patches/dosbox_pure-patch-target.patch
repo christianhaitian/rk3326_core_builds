@@ -1,0 +1,23 @@
+diff --git a/Makefile b/Makefile
+index 1a8ba6e..760ca42 100644
+--- a/Makefile
++++ b/Makefile
+@@ -137,6 +137,18 @@ else ifeq ($(platform), gcw0)
+   LDFLAGS := -Wl,--gc-sections -fno-ident
+   CPUFLAGS := -ffast-math -march=mips32r2 -mtune=mips32r2 -mhard-float -fexpensive-optimizations -frename-registers
+   COMMONFLAGS += -pthread
++else ifeq ($(platform), goadvance)
++  OUTNAME  := dosbox_pure_libretro.so
++  CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++  CXX      := g++
++  BUILD    := RELEASE
++  BUILDDIR := release
++  CFLAGS   := -DNDEBUG -Ofast -fno-ident
++  LDFLAGS  += -Ofast -fno-ident
++  CFLAGS   += $(CPUFLAGS) -fpic -fomit-frame-pointer -fno-exceptions -fno-non-call-exceptions -Wno-psabi -Wno-format
++  CFLAGS   += -fvisibility=hidden -ffunction-sections
++  CFLAGS   += -pthread -D__LIBRETRO__ -Iinclude
++  LDFLAGS  += $(CPUFLAGS) -lpthread -Wl,--gc-sections -shared
+ else ifneq ($(findstring Haiku,$(shell uname -s)),)
+   OUTNAME := dosbox_pure_libretro.so
+   LDFLAGS := -Wl,--gc-sections -fno-ident -lroot -lnetwork
