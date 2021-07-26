@@ -3,6 +3,374 @@
 var="$1"
 cur_wd="$PWD"
 
+# Emulationstation scraping adds
+if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ echo "What branch of emulationstation-fcamod are we working with?"
+ echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for all"
+ read branchnum
+ echo "What string needs to be added? (ex. platform name)"
+ read string
+ echo "What Platform ID to use?"
+ read platform_id
+ echo "What is the screenscraper ID number?"
+ read ss_id
+
+ case "$branchnum" in
+     "1")
+        cd $cur_wd
+        branch="master"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+        exit 0
+        ;;
+     "2")
+        cd $cur_wd
+        branch="fullscreen"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+        exit 0
+     ;;
+     "3")
+        cd $cur_wd
+        branch="351v"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+        exit 0
+     ;;
+     "4")
+        cd $cur_wd
+        branch="master"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+
+        cd $cur_wd
+        branch="351v"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+
+        cd $cur_wd
+        branch="fullscreen"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+        cd emulationstation-fcamod-$branch
+        sed -i '/TI_99 },/c\\t\t{ \"ti99\", \t\t\t\t\tTI_99 },\n\t\t{ \"'$string'\", \t\t\t'$platform_id' },' es-app/src/PlatformId.cpp
+        sed -i '/TI_99,/c\\t\tTI_99,\n\t\t'$platform_id',' es-app/src/PlatformId.h
+        sed -i '/{ TI_99, 205 },/c\\t{ TI_99, 205 },\n\t{ '$platform_id', '$ss_id' },' es-app/src/scrapers/ScreenScraper.cpp
+        exit 0
+     ;;
+     *)
+        echo "I don't understand $branchnum.  Try again."
+        exit 0
+ esac
+fi
+
+# Build Emulationstation-FCAMOD
+if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ echo "What branch of emulationstation-fcamod are you wanting to build?"
+ echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for all"
+ read branch_build
+ echo "What is the Dev ID for screenscraper to use?"
+ read devid
+ echo "What is the Dev password for screenscraper to use?"
+ read devpass
+ echo "What is the apikey for TheGamesDB to use?"
+ read apikey
+ echo "What is the screenscraper software name to use?"
+ read softname
+
+ case "$branch_build" in
+     "1")
+        cd $cur_wd
+        branch="master"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+        exit 0
+     ;;
+     "2")
+        cd $cur_wd
+        branch="fullscreen"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+        exit 0
+        ;;
+     "3")
+        cd $cur_wd
+        branch="351v"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+        exit 0
+        ;;
+     "4")
+        cd $cur_wd
+        branch="master"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+
+        cd $cur_wd
+        branch="fullscreen"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+
+        cd $cur_wd
+        branch="351v"
+        if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+            exit 1
+          fi
+        fi 
+
+        cd emulationstation-fcamod-$branch 
+
+        cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        make -j$(nproc)
+        if [[ $? != "0" ]]; then
+          echo " "
+          echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+          exit 1
+        fi
+
+        strip emulationstation
+
+        if [ ! -d "../es-fcamod/" ]; then
+          mkdir -v ../es-fcamod
+        fi
+
+        cp emulationstation ../es-fcamod/emulationstation.$branch
+        echo " "
+        echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+        exit 0
+        ;;
+     *)
+        echo "I don't understand $branch_build.  Try again."
+        exit 0
+ esac
+fi  
+
 # Libretro dosbox_pure
 if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
  cd $cur_wd
