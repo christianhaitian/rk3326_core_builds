@@ -3,6 +3,56 @@
 var="$1"
 cur_wd="$PWD"
 
+# Libretro dosbox_pure
+if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ cd $cur_wd
+  if [ ! -d "dosbox_pure/" ]; then
+    git clone https://github.com/libretro/dosbox-pure.git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/dosbox_pure-patch* dosbox-pure/.
+  fi
+
+ cd dosbox-pure/
+ 
+ dosbox-pure_patches=$(find *.patch)
+ 
+ if [[ ! -z "$dosbox-pure_patches" ]]; then
+  for patching in dosbox_pure-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi 
+ 
+  make platform=goadvance -j$(nproc)
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest lr-fbneo core.  Stopping here."
+    exit 1
+  fi
+
+  strip dosbox_pure_libretro.so
+
+  if [ ! -d "../cores64/" ]; then
+    mkdir -v ../cores64
+  fi
+
+  cp dosbox_pure_libretro.so ../cores64/.
+
+  echo " "
+  echo "dosbox_pure_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+fi
+
 # Libretro fbneo build
 if [[ "$var" == "fbneo" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
  cd $cur_wd
@@ -433,9 +483,151 @@ if [[ "$var" == "retroarch" ]]; then
   fi
 fi
 
+# PPSSPP Standalone build
+if [[ "$var" == "ppsspp" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ cd $cur_wd
+
+  # Now we'll start the clone and build of PPSSPP
+  if [ ! -d "ppsspp/" ]; then
+    git clone https://github.com/hrydgard/ppsspp.git --recursive
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the retroarch libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/ppsspp-patch* ppsspp/.
+  else
+    echo " "
+    echo "A ppsspp subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the ppsspp folder and rerun this script."
+    echo " "
+    exit 1
+  fi
+
+ # Ensure dependencies are installed and available
+ apt-get update
+ apt-get -y install libx11-dev libsm-dev libxext-dev git cmake mercurial libudev-dev libdrm-dev zlib1g-dev pkg-config libasound2-dev libfreetype6-dev libx11-xcb1 libxcb-dri2-0
+ if [[ $? != "0" ]]; then
+   echo " "
+   echo "There was an error while installing the necessary dependencies.  Is Internet active?  Stopping here."
+   exit 1
+ fi
+
+
+ cd ppsspp/ffmpeg
+ ./linux_arm64.sh
+ cd ..
+ 
+ ppsspp_patches=$(find *.patch)
+ 
+ if [[ ! -z "$ppsspp_patches" ]]; then
+  for patching in ppsspp-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi
+
+  mkdir build
+  cd build
+  cmake -DUSING_EGL=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO ../.
+  make -j$(nproc)
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest retroarch.  Stopping here."
+    exit 1
+  fi
+
+  strip PPSSPPSDL
+
+  if [ ! -d "../../ppsspp$(getconf LONG_BIT)/" ]; then
+    mkdir -v ../../ppsspp$(getconf LONG_BIT)
+  fi
+
+  cp PPSSPPSDL ../../ppsspp$(getconf LONG_BIT)/.
+  tar -zchvf ../../ppsspp$(getconf LONG_BIT)/ppssppsdl_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz assets/ PPSSPPSDL
+
+  echo " "
+  echo "PPSSPPSDL executable and ppssppsdl_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz package has been created and has been placed in the rk3326_core_builds/ppsspp$(getconf LONG_BIT) subfolder"
+
+fi
+
+# Scummvm Standalone Build
+if [[ "$var" == "scummvm" ]]; then
+ cd $cur_wd
+
+  # Now we'll start the clone and build process of scummvm
+  if [ ! -d "scummvm/" ]; then
+    git clone https://github.com/scummvm/scummvm.git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the retroarch libretro git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/scummvm-patch* scummvm/.
+  else
+    echo " "
+    echo "A scummvm subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the scummvm folder and rerun this script."
+    echo " "
+    exit 1
+  fi
+
+ cd scummvm/
+
+ # Ensure dependencies are installed and available
+ apt-get update
+ apt-get -y install --no-install-recommends libsdl2-dev liba52-0.7.4-dev libjpeg62-turbo-dev libmpeg2-4-dev libogg-dev libvorbis-dev libflac-dev libmad0-dev libpng-dev libtheora-dev libfaad-dev libfluidsynth-dev libfreetype6-dev libcurl4-openssl-dev libsdl2-net-dev libspeechd-dev zlib1g-dev libfribidi-dev libglew-dev
+ if [[ $? != "0" ]]; then
+   echo " "
+   echo "There was an error while installing the necessary dependencies.  Is Internet active?  Stopping here."
+   exit 1
+ fi 
+
+  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd
+  make clean
+  make -j$(nproc)
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest scummvm.  Stopping here."
+    exit 1
+  fi
+
+  strip scummvm
+  
+  mkdir extra
+  mkdir themes
+  cp backends/vkeybd/packs/*.zip extra/.
+  cp dists/pred.dic extra.
+  cp dists/engine-data/*.dat extra/.
+  cp gui/themes/*.zip themes/.
+  cp gui/themes/translations.dat themes/. 
+  echo "19000000030000000300000002030000,gameforce_gamepad,leftstick:b14,rightx:a3,leftshoulder:b4,start:b9,lefty:a0,dpup:b10,righty:a2,a:b1,b:b0,guide:b16,dpdown:b11,rightshoulder:b5,righttrigger:b7,rightstick:b15,dpright:b13,x:b2,back:b8,leftx:a1,y:b3,dpleft:b12,lefttrigger:b6,platform:Linux,
+190000004b4800000010000000010000,GO-Advance Gamepad,a:b1,b:b0,x:b2,y:b3,leftshoulder:b4,rightshoulder:b5,dpdown:b7,dpleft:b8,dpright:b9,dpup:b6,leftx:a0,lefty:a1,leftstick:b10,guide:b12,lefttrigger:b11,rightstick:b13,righttrigger:b14,start:b15,platform:Linux,
+190000004b4800000010000001010000,GO-Advance Gamepad (rev 1.1),a:b1,b:b0,x:b2,y:b3,leftshoulder:b4,rightshoulder:b5,dpdown:b9,dpleft:b10,dpright:b11,dpup:b8,leftx:a0,lefty:a1,guide:b12,leftstick:b14,lefttrigger:b13,rightstick:b15,righttrigger:b16,start:b17,platform:Linux,
+190000004b4800000011000000010000,GO-Super Gamepad,platform:Linux,x:b2,a:b1,b:b0,y:b3,back:b12,guide:b16,start:b13,dpleft:b10,dpdown:b9,dpright:b11,dpup:b8,leftshoulder:b4,lefttrigger:b6,rightshoulder:b5,righttrigger:b7,leftstick:b14,rightstick:b17,leftx:a0,lefty:a1,rightx:a2,righty:a3,platform:Linux,
+03000000091200000031000011010000,OpenSimHardware OSH PB Controller,a:b1,b:b0,x:b3,y:b2,leftshoulder:b4,rightshoulder:b5,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,leftx:a0~,lefty:a1~,guide:b10,leftstick:b8,lefttrigger:b13,rightstick:b9,back:b7,start:b6,rightx:a2,righty:a3,righttrigger:b11,platform:Linux," > extra/gamecontrollerdb.txt
+
+  if [ ! -d "../scummvm$(getconf LONG_BIT)/" ]; then
+    mkdir -v ../scummvm$(getconf LONG_BIT)
+  fi
+
+  cp scummvm ../scummvm$(getconf LONG_BIT)/.
+  tar -zchvf ../scummvm$(getconf LONG_BIT)/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ scummvm AUTHORS COPYING COPYING.* NEWS.md README.md
+
+  echo " "
+  echo "scummvm has been created and has been placed in the rk3326_core_builds/scummvm$(getconf LONG_BIT) subfolder"
+fi
+
+
 # Clean up the directory and remove other lr gits and created cores
 if [ "$var" == "clean" ]; then
-  find -maxdepth 1 ! -name patches ! -name .git -type d -not -path '.' -exec rm -rf {} +
+  find -maxdepth 1 ! -name patches ! -name .git ! -name docs -type d -not -path '.' -exec rm -rf {} +
   mkdir cores$(getconf LONG_BIT)
   echo " "
   echo "Directory has been cleaned!"

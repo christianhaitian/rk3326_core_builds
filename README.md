@@ -14,23 +14,35 @@ git clone https://github.com/christianhaitian/rk3326_core_builds.git
 cd rk3326_core_builds
 ```
 
-### To build just retroarch:
-`./rk3326_core_builds retroarch
-
-### To build all cores defined in the script:
+### To build all libretro cores defined in the script:
 `./rk3326_core_builds all`
+
+### To build just dosbox_pure (64bit only):
+`./rk3326_core_builds dosbox_pure`
+
+### To build just fbneo (64bit only):
+`./rk3326_core_builds fbneo`
 
 ### To build just flycast:
 `./rk3326_core_builds flycast`
 
-### To build just mgba:
+### To build just mgba (64bit only):
 `./rk3326_core_builds mgba`
+
+### To build just parallel-n64:
+`./rk3326_core_builds parallel-n64`
 
 ### To build just pcsx_rearmed (32bit only):
 `./rk3326_core_builds pcsx_rearmed`
 
-### To build just parallel-n64:
-`./rk3326_core_builds parallel-n64`
+### To build just ppsspp (64bit only):
+`./rk3326_core_builds ppsspp`
+
+### To build just scummvm:
+`./rk3326_core_builds scummvm`
+
+### To build just retroarch:
+`./rk3326_core_builds retroarch`
 
 ### To clean the folder of all builds and gits
 `./rk3326_core_builds clean`
