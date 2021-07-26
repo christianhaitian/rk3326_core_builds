@@ -469,10 +469,10 @@ if [[ "$var" == "retroarch" ]]; then
     mkdir -v ../retroarch$(getconf LONG_BIT)
   fi
 
-  cp retroarch ../cores$(getconf LONG_BIT)/.
+  cp retroarch ../retroarch$(getconf LONG_BIT)/.
 
   if [[ "$(getconf LONG_BIT)" == "32" ]]; then
-    mv ../cores$(getconf LONG_BIT)/retroarch ../cores$(getconf LONG_BIT)/retroarch32
+    mv ../retroarch$(getconf LONG_BIT)/retroarch ../retroarch$(getconf LONG_BIT)/retroarch32
   fi
 
   echo " "
