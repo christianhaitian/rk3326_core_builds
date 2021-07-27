@@ -3,6 +3,7 @@
 var="$1"
 cur_wd="$PWD"
 valid_id='^[0-9]+$'
+es_git="https://github.com/christianhaitian/emulationstation-fcamod.git"
 
 # Emulationstation scraping adds
 if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
@@ -34,7 +35,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="master"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -51,7 +52,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="fullscreen"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -68,7 +69,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="351v"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -85,7 +86,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="master"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -100,7 +101,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="351v"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -115,7 +116,7 @@ if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="fullscreen"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -177,7 +178,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="master"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -221,7 +222,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="fullscreen"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -265,7 +266,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="351v"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -309,7 +310,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="master"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -351,7 +352,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="fullscreen"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -388,7 +389,7 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         cd $cur_wd
         branch="351v"
         if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-          git clone --recursive https://github.com/christianhaitian/emulationstation-fcamod.git -b $branch emulationstation-fcamod-$branch
+          git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
           if [[ $? != "0" ]]; then
             echo " "
             echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
@@ -1071,5 +1072,19 @@ if [ -d "$cur_wd/cores$(getconf LONG_BIT)" ]; then
     echo " "
     echo "The cores$(getconf LONG_BIT) folder currently contains the following:"
     ls -l $cur_wd/cores$(getconf LONG_BIT)
+  fi
+fi
+if [ -d "$cur_wd/retroarch$(getconf LONG_BIT)" ]; then
+  if [ "$(ls -A $cur_wd/retroarch$(getconf LONG_BIT))" ]; then
+    echo " "
+    echo "The retroarch$(getconf LONG_BIT) folder currently contains the following:"
+    ls -l $cur_wd/retroarch$(getconf LONG_BIT)
+  fi
+fi
+if [ -d "$cur_wd/es-fcamod" ]; then
+  if [ "$(ls -A $cur_wd/es-fcamod)" ]; then
+    echo " "
+    echo "The es-fcamod folder currently contains the following:"
+    ls -l $cur_wd/es-fcamod
   fi
 fi
