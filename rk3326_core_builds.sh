@@ -152,24 +152,24 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
  read devid
  if [[ -z "$devid" ]]; then
    devid=$(printenv DEV_ID)
-   echo "We're going to use $devid since you entered nothing above."
+   [ ! -z $devid ] && echo "We're going to use $devid since you entered nothing above."
  fi
  echo "What is the Dev password for screenscraper to use?"
  read devpass
  if [[ -z "$devpass" ]]; then
    devpass=$(printenv DEV_PASS)
-   echo "We're going to use $devpass since you entered nothing above."
+   [ ! -z $devpass ] && echo "We're going to use $devpass since you entered nothing above."
  fi
  echo "What is the apikey for TheGamesDB to use?"
  read apikey
  if [[ -z "$apikey" ]]; then
    apikey=$(printenv TGDB_APIKEY)
-   echo "We're going to use $apikey since you entered nothing above."
+   [ ! -z $apikey ] && echo "We're going to use $apikey since you entered nothing above."
  fi
  echo "What is the screenscraper software name to use?"
  read softname
  if [[ -z "$softname" ]]; then
-   echo "We'll use either $SOFTNAME or $VSOFTNAME if this is a 351v build since you entered nothing above."
+   [ ! -z $SOFTNAME ] && [ ! -z $VSOFTNAME ] && echo "We'll use either $SOFTNAME or $VSOFTNAME if this is a 351v build since you entered nothing above."
  fi
 
  case "$branch_build" in
