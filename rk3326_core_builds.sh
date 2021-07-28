@@ -1022,7 +1022,7 @@ if [[ "$var" == "scummvm" ]]; then
    exit 1
  fi 
 
-  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd
+  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
   make clean
   make -j$(nproc)
 
