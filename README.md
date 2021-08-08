@@ -15,40 +15,43 @@ cd rk3326_core_builds
 ```
 
 ### To build all libretro cores defined in the script:
-`./rk3326_core_builds all`
+`./rk3326_core_builds.sh all`
 
 ### To build just dosbox_pure (64bit only):
-`./rk3326_core_builds dosbox_pure`
+`./rk3326_core_builds.sh dosbox_pure`
 
 ### To build just fbneo (64bit only):
-`./rk3326_core_builds fbneo`
+`./rk3326_core_builds.sh fbneo`
 
 ### To build just flycast:
-`./rk3326_core_builds flycast`
+`./rk3326_core_builds.sh flycast`
 
 ### To build just mgba (64bit only):
-`./rk3326_core_builds mgba`
+`./rk3326_core_builds.sh mgba`
 
 ### To build just parallel-n64:
-`./rk3326_core_builds parallel-n64`
+`./rk3326_core_builds.sh parallel-n64`
 
 ### To build just pcsx_rearmed (32bit only):
-`./rk3326_core_builds pcsx_rearmed`
+`./rk3326_core_builds.sh pcsx_rearmed`
 
 ### To build just ppsspp (64bit only):
-`./rk3326_core_builds ppsspp`
+`./rk3326_core_builds.sh ppsspp`
+
+### To build just sameboy:
+`./rk3326_core_builds.sh sameboy`
 
 ### To build just scummvm:
-`./rk3326_core_builds scummvm`
+`./rk3326_core_builds.sh scummvm`
 
 ### To build just retroarch:
-`./rk3326_core_builds retroarch`
+`./rk3326_core_builds.sh retroarch`
 
 ### To add a system for screenscraper scraping in Emulationstation-fcamod (64bit only)
-`./rk3326_core_builds es_add_scrape`
+`./rk3326_core_builds.sh es_add_scrape`
 
 ### To build Emulationstation-fcamod (64bit only)
-`./rk3326_core_builds es_build`
+`./rk3326_core_builds.sh es_build`
 
 ### To clean the folder of all builds and gits
-`./rk3326_core_builds clean`
+`./rk3326_core_builds.sh clean`
