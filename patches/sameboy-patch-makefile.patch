@@ -1,0 +1,40 @@
+diff --git a/Makefile b/Makefile
+index f6e4c4c..8373d94 100644
+--- a/Makefile
++++ b/Makefile
+@@ -430,8 +430,8 @@ $(BIN)/BootROMs/%.bin: BootROMs/%.asm $(OBJ)/BootROMs/SameBoyLogo.pb12
+ 
+ # Libretro Core (uses its own build system)
+ libretro:
+-	CFLAGS="$(WARNINGS)" $(MAKE) -C libretro
+-
++	CFLAGS="$(WARNINGS) -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto" $(MAKE) -C libretro
++    LDFLAGS="-Ofast -fno-ident -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -lpthread -Wl,--gc-sections -shared"
+ # install for Linux/FreeDesktop/etc.
+ # Does not install mimetype icons because FreeDesktop is cursed abomination with no right to exist.
+ # If you somehow find a reasonable way to make associate an icon with an extension in this dumpster
+diff --git a/libretro/Makefile b/libretro/Makefile
+index 50e3466..b542510 100644
+--- a/libretro/Makefile
++++ b/libretro/Makefile
+@@ -78,6 +78,20 @@ else ifeq ($(platform), linux-portable)
+    fpic := -fPIC -nostdlib
+    SHARED := -shared -Wl,--version-script=$(CORE_DIR)/libretro/link.T
+    LIBM :=   
++
++# RK3326 
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++   CFLAGS   := -DNDEBUG -Ofast -fno-ident
++   LDFLAGS  += -Ofast -fno-ident
++   CFLAGS  += $(CPUFLAGS) -fpic -fomit-frame-pointer -fno-exceptions -fno-non-call-exceptions -Wno-psabi -Wno-format
++   LDFLAGS += $(CPUFLAGS) -lpthread -Wl,--gc-sections -shared
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,-version-script=link.T
++   DEFINES += -std=c99 -D_GNU_SOURCE -DHAVE_LOCALE
++   HAVE_VFS_FD = 0
++
+ # (armv7 a7, hard point, neon based) ### 
+ # NESC, SNESC, C64 mini 
+ else ifeq ($(platform), classic_armv7_a7)
