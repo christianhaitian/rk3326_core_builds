@@ -3,7 +3,8 @@
 var="$1"
 cur_wd="$PWD"
 valid_id='^[0-9]+$'
-es_git="https://github.com/christianhaitian/emulationstation-fcamod.git"
+es_git="https://github.com/christianhaitian/EmulationStation-fcamod.git"
+#es_git="https://github.com/JuanMiguelBG/EmulationStation-fcamod-ogs.git"
 
 # Emulationstation scraping adds
 if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
@@ -187,6 +188,17 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         fi 
 
         cd emulationstation-fcamod-$branch 
+
+        if [[ "$es_git" == "https://github.com/JuanMiguelBG/EmulationStation-fcamod-ogs.git" ]]; then
+          cp ../patches/es-fcamod-patch-build.patch .
+          patch -Np1 < es-fcamod-patch-build.patch
+          if [[ $? != "0" ]]; then
+            echo " "
+            echo "There was an error while applying es-fcamod-patch-build.patch.  Stopping here."
+            exit 1
+          fi
+          rm es-fcamod-patch-build.patch
+        fi
 
          if [[ -z "$softname" ]]; then
            softname=$(printenv SOFTNAME)
@@ -471,7 +483,7 @@ if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" 
 
   if [[ $? != "0" ]]; then
     echo " "
-    echo "There was an error while building the newest lr-fbneo core.  Stopping here."
+    echo "There was an error while building the newest lr-dosbox_pure core.  Stopping here."
     exit 1
   fi
 
@@ -496,13 +508,28 @@ if [[ "$var" == "fbneo" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64
       echo " "
       echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
       exit 1
-     fi
+    fi
+    cp patches/fbneo-patch* fbneo/.
   fi
 
  cd fbneo/
  
-  # make -j$(nproc) -C ./src/burner/libretro generate-files
-  make -j$(nproc) -C ./src/burner/libretro profile=performance
+ fbneo_patches=$(find *.patch)
+ 
+  if [[ ! -z "$fbneo_patches" ]]; then
+  for patching in fbneo-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi 
+
+  make -j$(nproc) -C ./src/burner/libretro profile=performance platform=goadvance
 
   if [[ $? != "0" ]]; then
     echo " "
