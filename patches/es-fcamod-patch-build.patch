@@ -1,0 +1,47 @@
+diff --git a/es-app/src/guis/GuiSystemInformation.cpp b/es-app/src/guis/GuiSystemInformation.cpp
+index 391879bb..4449dc50 100644
+--- a/es-app/src/guis/GuiSystemInformation.cpp
++++ b/es-app/src/guis/GuiSystemInformation.cpp
+@@ -612,7 +612,7 @@ void GuiSystemInformation::openSoftware()
+ 	s->addWithLabel(_("SO BASE"), std::make_shared<TextComponent>(window, si.so_base, font, color));
+ 
+ 	// kernel
+-	s->addWithLabel(_("KERNEL"), std::make_shared<TextComponent>(window, si.linux, font, color));
++	s->addWithLabel(_("KERNEL"), std::make_shared<TextComponent>(window, si.Linux, font, color));
+ 
+ 	window->pushGui(s);
+ }
+diff --git a/es-core/src/platform.cpp b/es-core/src/platform.cpp
+index fb9efb68..96cb0349 100644
+--- a/es-core/src/platform.cpp
++++ b/es-core/src/platform.cpp
+@@ -676,7 +676,7 @@ SoftwareInformation querySoftwareInformation(bool summary)
+ 			if ( Utils::FileSystem::exists("/usr/bin/hostnamectl") )
+ 			{
+ 				si.so_base = getShOutput(R"(hostnamectl | grep -iw system | awk '{print $3 " " $4 " " $5}')");
+-				si.linux = getShOutput(R"(hostnamectl | grep -iw kernel | awk '{print $2 " " $3}')");
++				si.Linux = getShOutput(R"(hostnamectl | grep -iw kernel | awk '{print $2 " " $3}')");
+ 			}
+ 		}
+ 	} catch (...) {
+diff --git a/es-core/src/platform.h b/es-core/src/platform.h
+index 8163b306..2b9190d9 100644
+--- a/es-core/src/platform.h
++++ b/es-core/src/platform.h
+@@ -212,14 +212,14 @@ struct SoftwareInformation
+ 		application_name = "N/A";
+ 		version = "N/A";
+ 		so_base = "N/A";
+-		linux = "N/A";
++		Linux = "N/A";
+ 	}
+ 
+ 	std::string hostname;
+ 	std::string application_name;
+ 	std::string version;
+ 	std::string so_base;
+-	std::string linux;
++	std::string Linux;
+ };
+ 
+ SoftwareInformation querySoftwareInformation(bool summary);
