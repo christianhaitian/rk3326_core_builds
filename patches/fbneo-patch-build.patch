@@ -1,0 +1,22 @@
+diff --git a/src/burner/libretro/Makefile b/src/burner/libretro/Makefile
+index 0ee72599..69402efb 100644
+--- a/src/burner/libretro/Makefile
++++ b/src/burner/libretro/Makefile
+@@ -359,2 +359,16 @@
+
++else ifeq ($(platform), goadvance)
++        TARGET := $(TARGET_NAME)_libretro.so
++        fpic := -fPIC
++        SHARED := -shared -Wl,-no-undefined -Wl,--version-script=$(VERSION_SCRIPT)
++        PLATFORM_FLAGS = -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -Ofast -frename-registers -ftree-vectorize
++        USE_EXPERIMENTAL_FLAGS = 1
++        USE_CYCLONE = 1
++        ARCH = arm64
++        ENDIANNESS_DEFINES := -DLSB_FIRST
++        LDFLAGS += -static-libgcc -static-libstdc++
++        CFLAGS += $(PLATFORM_FLAGS)
++        CXXFLAGS += $(PLATFORM_FLAGS)
++#######################################
++
+ # Nintendo Game Cube / Wii / WiiU
+

@@ -5,6 +5,7 @@ cur_wd="$PWD"
 valid_id='^[0-9]+$'
 es_git="https://github.com/christianhaitian/EmulationStation-fcamod.git"
 #es_git="https://github.com/JuanMiguelBG/EmulationStation-fcamod-ogs.git"
+nxengevo_git="https://github.com/nxengine/nxengine-evo.git"
 
 # Emulationstation scraping adds
 if [[ "$var" == "es_add_scrape" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
@@ -448,6 +449,66 @@ if [[ "$var" == "es_build" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
         exit 0
  esac
 fi  
+
+# Nxengine-evo build
+if [[ "$var" == "nxengine-evo" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
+ cd $cur_wd
+  if [ ! -d "nxengine-evo/" ]; then
+    git clone $nxengevo_git
+    if [[ $? != "0" ]]; then
+      echo " "
+      echo "There was an error while cloning the nxengine-evo git.  Is Internet active or did the git location change?  Stopping here."
+      exit 1
+    fi
+    cp patches/nxengine-evo-patch* nxengine-evo/.
+  fi
+
+ cd nxengine-evo/
+ 
+ nxengine_patches=$(find *.patch)
+ 
+  if [[ ! -z "$nxengine_patches" ]]; then
+  for patching in nxengine-evo-patch*
+  do
+       patch -Np1 < "$patching"
+       if [[ $? != "0" ]]; then
+        echo " "
+        echo "There was an error while applying $patching.  Stopping here."
+        exit 1
+       fi
+       rm "$patching" 
+  done
+ fi 
+
+  mkdir build
+  cd build
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+  make -j$(nproc)
+
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the newest nxengine-evo engine.  Stopping here."
+    exit 1
+  fi
+
+  strip nxextract
+  strip nxengine-evo
+
+  if [ ! -d "../../nxengine-evo-$(getconf LONG_BIT)/" ]; then
+    mkdir -v ../../nxengine-evo-$(getconf LONG_BIT)
+  fi
+
+  cp nxengine-evo ../../nxengine-evo-$(getconf LONG_BIT)/.
+  cp nxextract ../../nxengine-evo-$(getconf LONG_BIT)/.
+  cp -rf ../data/ ../../nxengine-evo-$(getconf LONG_BIT)/
+
+  #Get language pack
+  wget -t 3 -T 60 --no-check-certificate https://github.com/nxengine/translations/releases/download/v1.14/all.zip
+  unzip -o all.zip -d ../../nxengine-evo-$(getconf LONG_BIT)/
+
+  echo " "
+  echo "nxengine-evo has been created and has been placed in the rk3326_core_builds/nxengine-evo-$(getconf LONG_BIT) subfolder"
+fi
 
 # Libretro dosbox_pure
 if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
@@ -965,7 +1026,7 @@ if [[ "$var" == "retroarch" ]]; then
        rm "$patching" 
   done
  fi
-  ./configure --disable-opengl --disable-opengl1 --disable-qt --disable-wayland --disable-x11 --enable-alsa --enable-egl --enable-kms --enable-odroidgo2 --enable-opengles --enable-opengles3 --enable-udev --disable-vulkan --disable-vulkan_display --enable-networking --enable-ozone --disable-caca --enable-opengles3_1 --enable-opengles3_2 --enable-wifi
+  ./configure --disable-opengl --disable-opengl1 --disable-qt --disable-wayland --disable-x11 --enable-alsa --enable-egl --enable-kms --enable-odroidgo2 --enable-opengles --enable-opengles3 --enable-udev --enable-freetype --disable-vulkan --disable-vulkan_display --enable-networking --enable-ozone --disable-caca --enable-opengles3_1 --enable-opengles3_2 --enable-wifi
   make -j$(nproc)
 
   if [[ $? != "0" ]]; then
