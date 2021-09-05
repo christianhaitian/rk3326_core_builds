@@ -1053,6 +1053,20 @@ if [[ "$var" == "retroarch" ]]; then
   else
     echo "retroarch has been created and has been placed in the rk3326_core_builds/retroarch$(getconf LONG_BIT) subfolder"
   fi
+
+  cd gfx/video_filters
+  ./configure
+  make -j$(nproc)
+  if [[ $? != "0" ]]; then
+    echo " "
+    echo "There was an error while building the video filters for retroarch.  Stopping here."
+    exit 1
+  fi
+  mkdir -p ../../../retroarch$(getconf LONG_BIT)/filters/video
+  cp *.so ../../../retroarch$(getconf LONG_BIT)/filters/video
+  cp *.filt ../../../retroarch$(getconf LONG_BIT)/filters/video
+  echo " "
+  echo "Video filters have been built and copied to the rk3326_core_builds/retroarch$(getconf LONG_BIT)/filters/video subfolder"
 fi
 
 # PPSSPP Standalone build
@@ -1064,7 +1078,7 @@ if [[ "$var" == "ppsspp" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
     git clone https://github.com/hrydgard/ppsspp.git --recursive
     if [[ $? != "0" ]]; then
       echo " "
-      echo "There was an error while cloning the retroarch libretro git.  Is Internet active or did the git location change?  Stopping here."
+      echo "There was an error while cloning the ppsspp standalone git.  Is Internet active or did the git location change?  Stopping here."
       exit 1
     fi
     cp patches/ppsspp-patch* ppsspp/.
@@ -1111,7 +1125,7 @@ if [[ "$var" == "ppsspp" ]] && [[ "$(getconf LONG_BIT)" == "64" ]]; then
 
   if [[ $? != "0" ]]; then
     echo " "
-    echo "There was an error while building the newest retroarch.  Stopping here."
+    echo "There was an error while building the newest ppsspp standalone.  Stopping here."
     exit 1
   fi
 
@@ -1138,7 +1152,7 @@ if [[ "$var" == "scummvm" ]]; then
     git clone https://github.com/scummvm/scummvm.git
     if [[ $? != "0" ]]; then
       echo " "
-      echo "There was an error while cloning the retroarch libretro git.  Is Internet active or did the git location change?  Stopping here."
+      echo "There was an error while cloning the scummvm standalone git.  Is Internet active or did the git location change?  Stopping here."
       exit 1
     fi
     cp patches/scummvm-patch* scummvm/.
