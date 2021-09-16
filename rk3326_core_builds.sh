@@ -525,9 +525,9 @@ if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" 
 
  cd dosbox-pure/
  
- dosbox-pure_patches=$(find *.patch)
+ dosboxpure_patches=$(find *.patch)
  
- if [[ ! -z "$dosbox-pure_patches" ]]; then
+ if [[ ! -z "$dosboxpure_patches" ]]; then
   for patching in dosbox_pure-patch*
   do
        patch -Np1 < "$patching"
@@ -590,7 +590,7 @@ if [[ "$var" == "fbneo" || "$var" == "all" ]] && [[ "$(getconf LONG_BIT)" == "64
   done
  fi 
 
-  make -j$(nproc) -C ./src/burner/libretro profile=performance platform=goadvance
+  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
 
   if [[ $? != "0" ]]; then
     echo " "
@@ -953,9 +953,9 @@ if [[ "$var" == "parallel-n64" || "$var" == "all" ]]; then
 
  cd parallel-n64/
  
- parallel-n64_patches=$(find *.patch)
+ paralleln64_patches=$(find *.patch)
  
- if [[ ! -z "$parallel-n64_patches" ]]; then
+ if [[ ! -z "$paralleln64_patches" ]]; then
   for patching in parallel-n64-patch*
   do
      if [[ $patching == *"target64"* ]] && [[ "$(getconf LONG_BIT)" == "32" ]]; then
