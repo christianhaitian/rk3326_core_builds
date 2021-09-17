@@ -33,7 +33,9 @@ if [[ "$var" == "Update" ]]; then
         rm $core
     done
    else
+    echo ""
     echo "There are no cores available to be added to the retroarch-cores repo."
+    echo ""
     exit 1
    fi
   fi
@@ -45,7 +47,7 @@ if [[ "$var" == "Update" ]]; then
         ../addcore $addupdatedcore
         git add . 
         file=$(basename $addupdatedcore)
-        git commit -m "Updated $file core"
+        git commit -m "Updated $file core to commit $(cat ../../cores$(getconf LONG_BIT)/${addupdatedcore}.commit)"
     done
   fi
 fi
