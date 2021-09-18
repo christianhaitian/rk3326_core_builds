@@ -14,7 +14,13 @@ do
       source scripts/"$var".sh
   else
       cd $cur_wd
-      source scripts/picodrive.sh
+      source scripts/dosbox_pure.sh
+      cd $cur_wd
+      source scripts/duckstation.sh
+      cd $cur_wd
+      source scripts/fbneo.sh
+      cd $cur_wd
+      source scripts/flycast.sh
       cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
@@ -22,13 +28,9 @@ do
       cd $cur_wd
       source scripts/parallel-n64.sh
       cd $cur_wd
-      source scripts/flycast.sh
-      cd $cur_wd
-      source scripts/dosbox_pure.sh
-      cd $cur_wd
-      source scripts/fbneo.sh
-      cd $cur_wd
       source scripts/pcsx_rearmed.sh
+      cd $cur_wd
+      source scripts/picodrive.sh
       cd $cur_wd
       source scripts/sameboy.sh
   fi
