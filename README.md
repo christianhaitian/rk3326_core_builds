@@ -1,4 +1,4 @@
-# Script to automate the build of various Libretro cores, Nxengine-evo, Retroarch, PPSSPP, ScummVM, Emulationstation-fcamod for use with RK3326 devices (including Chi, OGA, OGS, RG351P/M/V, and the RK2020)
+# Script to automate the build of various Libretro cores, Nxengine-evo, Retroarch, PPSSPP, ScummVM, Emulationstation-fcamod for use with RK3326 devices (including Chi, OGA, OGS, RG351P/M/MP/V, and the RK2020)
 
 ### Assumptions:
 This script was designed to work with 32bit and 64bit chroot Linux environments for the RK3326 chipset. \
