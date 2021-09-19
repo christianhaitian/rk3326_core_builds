@@ -20,6 +20,9 @@ cd rk3326_core_builds
 ### To build just dosbox_pure (64bit only):
 `./builds.sh dosbox_pure`
 
+### To download and unpack duckstation (64bit only):
+`./builds.sh duckstation`
+
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
