@@ -35,7 +35,7 @@ bitness="$(getconf LONG_BIT)"
 	  if [[ "$bitness" == "64" ]]; then
 		make -j$(nproc)
 	  else
-		make platform=unix -j$(nproc)
+		make platform=goadvance -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then

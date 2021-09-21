@@ -1,0 +1,24 @@
+diff --git a/Makefile b/Makefile
+index f043a85..5ddf848 100644
+--- a/Makefile
++++ b/Makefile
+@@ -248,6 +248,19 @@ else ifeq ($(platform), ctr)
+ 	HAVE_DYNAREC = 1
+ 	STATIC_LINKING = 1
+ 
++# Go-Advance
++else ifeq ($(platform), goadvance)
++	CPUFLAGS := -Ofast -marm -march=armv8-a+crc+simd -mtune=cortex-a35 -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++	CFLAGS   := -DNDEBUG -Ofast -fno-ident
++	LDFLAGS  += -Ofast -fno-ident
++	CFLAGS  += $(CPUFLAGS) -fpic -fomit-frame-pointer -ffast-math -fno-rtti -fno-exceptions -fno-non-call-exceptions -Wno-psabi -Wno-format
++	LDFLAGS += $(CPUFLAGS) -lpthread -Wl,--gc-sections -shared
++	TARGET := $(TARGET_NAME)_libretro.so
++	fpic := -fPIC
++	SHARED := -shared -Wl,--version-script=link.T -Wl,--no-undefined
++	CPU_ARCH := arm
++	HAVE_DYNAREC = 1
++
+ # Raspberry Pi 3
+ else ifeq ($(platform), rpi3)
+ 	TARGET := $(TARGET_NAME)_libretro.so
