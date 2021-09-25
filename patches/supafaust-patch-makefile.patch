@@ -1,0 +1,25 @@
+diff --git a/Makefile b/Makefile
+index 5a20bbf..45a0e6b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -199,6 +199,20 @@ else ifeq ($(platform), ngc)
+    AR = $(DEVKITPPC)/bin/powerpc-eabi-ar$(EXE_EXT)
+    ENDIANNESS_DEFINES += -DGEKKO -DHW_DOL -mrvl -mcpu=750 -meabi -mhard-float -DMSB_FIRST
+ 
++# Go-Advance 
++else ifeq ($(platform), goadvance)
++   CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++   CFLAGS   := -DNDEBUG -Ofast -fno-ident
++   LDFLAGS  += -Ofast -fno-ident
++   CFLAGS  += $(CPUFLAGS) -fpic -fomit-frame-pointer -fno-exceptions -fno-non-call-exceptions -Wno-psabi -Wno-format -mtune=cortex-a35
++   LDFLAGS += $(CPUFLAGS) -lpthread -Wl,--gc-sections -shared
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,-version-script=link.T
++   DEFINES += -std=c99 -D_GNU_SOURCE -DHAVE_LOCALE
++   ASFLAGS += -mtune=cortex-a35
++   HAVE_NEON = 1
++
+    EXTRA_INCLUDES := -I$(DEVKITPRO)/libogc/include
+    STATIC_LINKING = 1
+ else ifeq ($(platform), wii)
