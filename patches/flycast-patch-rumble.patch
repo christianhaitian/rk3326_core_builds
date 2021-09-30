@@ -1,15 +1,15 @@
 diff --git a/core/libretro/libretro.cpp b/core/libretro/libretro.cpp
-index 35e8516b..240c9536 100644
+index 35e8516b..e36fa6c0 100644
 --- a/core/libretro/libretro.cpp
 +++ b/core/libretro/libretro.cpp
 @@ -3118,10 +3118,23 @@ void UpdateVibration(u32 port, u32 value, u32 max_duration)
     u8 POW_NEG = (value >> 12) & 0x7;
     u8 FREQ = (value >> 16) & 0xFF;
     s16 INC = (value >> 24) & 0xFF;
--   if (value & 0x8000)                 // INH
--         INC = -INC;
--   else if (!(value & 0x0800)) // EXH
--         INC = 0;
+-   if (value & 0x8000)			// INH
+-	  INC = -INC;
+-   else if (!(value & 0x0800))	// EXH
+-	  INC = 0;
 +
 +   FILE *file;
 +   if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
