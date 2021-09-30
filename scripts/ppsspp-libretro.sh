@@ -62,11 +62,13 @@ bitness="$(getconf LONG_BIT)"
 		exit 1
 	  fi
 
-	  strip ppsspp_libretro.so
+	  strip lib/ppsspp_libretro.so
 
 	  if [ ! -d "../../cores64/" ]; then
 		mkdir -v ../../cores64
 	  fi
+
+      cp lib/ppsspp_libretro.so ../../cores$(getconf LONG_BIT)/.
 
 	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../../cores$bitness/ppsspp_libretro.so.commit
