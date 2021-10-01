@@ -1,16 +1,32 @@
 diff --git a/src/platform/libretro/libretro.c b/src/platform/libretro/libretro.c
-index 663674dd..b29697f4 100644
+index f03def3b..c29e087d 100644
 --- a/src/platform/libretro/libretro.c
 +++ b/src/platform/libretro/libretro.c
-@@ -1624,9 +1624,11 @@ void retro_run(void) {
+@@ -1623,12 +1623,23 @@ void retro_run(void) {
+ */
  
  	if (rumbleCallback) {
++        FILE *file;
  		if (rumbleUp) {
-+			system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
- 			rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
- 			rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
+-			rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
+-			rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++               system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++               fclose(file);
++            } else {
++			   rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++			   rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++			}
  		} else {
-+			system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
- 			rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
- 			rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
+-			rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
+-			rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
++            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++               system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++               fclose(file);
++            } else {
++			   rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
++			   rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
++			}
  		}
+ 		rumbleUp = 0;
+ 		rumbleDown = 0;
