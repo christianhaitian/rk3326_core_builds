@@ -1,18 +1,35 @@
 diff --git a/mupen64plus-core/src/plugin/emulate_game_controller_via_libretro.c b/mupen64plus-core/src/plugin/emulate_game_controller_via_libretro.c
-index 98d276cb..8ad07886 100644
+index 98d276cb..a03c1666 100644
 --- a/mupen64plus-core/src/plugin/emulate_game_controller_via_libretro.c
 +++ b/mupen64plus-core/src/plugin/emulate_game_controller_via_libretro.c
-@@ -259,11 +259,13 @@ EXPORT void CALL inputControllerCommand(int Control, unsigned char *Command)
+@@ -257,15 +257,26 @@ EXPORT void CALL inputControllerCommand(int Control, unsigned char *Command)
+ 
+                 if ((dwAddress == PAK_IO_RUMBLE) && (rumble.set_rumble_state))
                  {
++                    FILE *file;
                      if (*Data)
                      {
-+                        system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
-                         rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0xFFFF);
-                         rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0xFFFF);
+-                        rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0xFFFF);
+-                        rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0xFFFF);
++                        if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++                           system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++                           fclose(file);
++                        } else {
++                           rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0xFFFF);
++                           rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0xFFFF);
++                        }
                      }
                      else
                      {
-+                        system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
-                         rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0);
-                         rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0);
+-                        rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0);
+-                        rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0);
++                        if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++                           system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++                           fclose(file);
++                        } else {
++                           rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0);
++                           rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0);
++                        }
                      }
+                 }
+             }
