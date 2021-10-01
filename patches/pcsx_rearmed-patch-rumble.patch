@@ -1,19 +1,27 @@
 diff --git a/frontend/libretro.c b/frontend/libretro.c
-index d0a0da7..6d617f3 100644
+index 33f2a42..dd26e31 100644
 --- a/frontend/libretro.c
 +++ b/frontend/libretro.c
-@@ -495,6 +495,14 @@ void plat_trigger_vibrate(int pad, int low, int high)
+@@ -495,8 +495,20 @@ void plat_trigger_vibrate(int pad, int low, int high)
  
     if (in_enable_vibration)
     {
-+      if(high <= 0x80)
-+      {
-+        system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
+-      rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
+-      rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
++      FILE *file;
++      if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++            if(high <= 0x80)
++            {
++              system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++            }
++            else
++            {
++              system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
++            }
++      } else {
++         rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
++         rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
 +      }
-+      else
-+      {
-+        system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle");
-+      }
-       rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
-       rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
     }
+ }
+ 
