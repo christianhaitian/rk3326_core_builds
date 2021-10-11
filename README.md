@@ -32,8 +32,14 @@ cd rk3326_core_builds
 ### To build just flycast:
 `./builds.sh flycast`
 
+### To build just fmsx (64bit only):
+`./builds.sh fmsx`
+
 ### To build just mgba (64bit only):
 `./builds.sh mgba`
+
+### To build just pokemini (64bit only):
+`./builds.sh pokemini`
 
 ### To build just parallel-n64:
 `./builds.sh parallel-n64`
@@ -44,14 +50,23 @@ cd rk3326_core_builds
 ### To build just pcsx_rearmed (32bit only):
 `./builds.sh pcsx_rearmed`
 
-### To build just ppsspp (64bit only):
+### To build just ppsspp standalone emulator (64bit only):
 `./builds.sh ppsspp`
 
-### To build just sameboy:
+### To build just libretro-ppsspp (64bit only):
+`./builds.sh ppsspp-libretro`
+
+### To build just sameboy (64bit only):
 `./builds.sh sameboy`
 
-### To build just scummvm:
+### To build just scummvm standalone:
 `./builds.sh scummvm`
+
+### To build just snes9x (64bit only):
+`./builds.sh snes9x`
+
+### To build just supafaust (64bit only):
+`./builds.sh supafaust`
 
 ### To build just retroarch:
 `./builds.sh retroarch`
