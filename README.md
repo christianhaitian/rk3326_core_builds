@@ -2,7 +2,7 @@
 
 ### Assumptions:
 This script was designed to work with 32bit and 64bit chroot Linux environments for the RK3326 chipset. \
-See [this document](https://github.com/christianhaitian/builds/blob/main/docs/chroot.md) for instructions on how to create them yourself. \
+See [this document](https://github.com/christianhaitian/rk3326_core_builds/blob/main/docs/chroot.md) for instructions on how to create them yourself. \
 You can also download a prebuilt one I created by following the information [here](https://forum.odroid.com/viewtopic.php?p=306185#p306185)
 
 This script is designed to only build cores, retroarch and PPSSPP that are compatible with the aarch64 or armhf environment it's run from.  So to build cores for the 32bit armhf environment, it should be run from an arm32 environment such as a 32bit chroot.
