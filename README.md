@@ -62,6 +62,9 @@ cd rk3326_core_builds
 ### To build just scummvm standalone:
 `./builds.sh scummvm`
 
+### To build just scummvm libretro (64bit only):
+`./builds.sh scummvm-libretro`
+
 ### To build just snes9x (64bit only):
 `./builds.sh snes9x`
 
