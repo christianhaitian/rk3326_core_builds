@@ -38,6 +38,9 @@ cd rk3326_core_builds
 ### To build just mgba (64bit only):
 `./builds.sh mgba`
 
+### To build just mess (64bit only): <--Very long build.  Could be 24 hours or more to complete.
+`./builds.sh mess`
+
 ### To build just pokemini (64bit only):
 `./builds.sh pokemini`
 
