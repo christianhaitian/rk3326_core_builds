@@ -22,6 +22,8 @@ do
       cd $cur_wd
       source scripts/flycast.sh
       cd $cur_wd
+      source scripts/fmsx.sh
+      cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
       source scripts/mgba.sh
@@ -32,6 +34,19 @@ do
       cd $cur_wd
       source scripts/picodrive.sh
       cd $cur_wd
+      source scripts/pokemini.sh
+      cd $cur_wd
+      source scripts/ppsspp-libretro.sh
+      cd $cur_wd
       source scripts/sameboy.sh
+      cd $cur_wd
+      source scripts/scummvm-libretro.sh
+      cd $cur_wd
+      source scripts/snes9x.sh
+      cd $cur_wd
+      source scripts/supafaust.sh
+      #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is last in this script.
+      cd $cur_wd
+      source scripts/mess.sh
   fi
 done
