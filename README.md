@@ -74,6 +74,9 @@ cd rk3326_core_builds
 ### To build just supafaust (64bit only):
 `./builds.sh supafaust`
 
+### To build just yabasanshiro (32bit only):
+`./builds.sh yabasanshiro`
+
 ### To build just retroarch:
 `./builds.sh retroarch`
 

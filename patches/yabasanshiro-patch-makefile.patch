@@ -1,0 +1,26 @@
+diff --git a/yabause/src/libretro/Makefile b/yabause/src/libretro/Makefile
+index 1021cf347..c5e5dcd5d 100644
+--- a/yabause/src/libretro/Makefile
++++ b/yabause/src/libretro/Makefile
+@@ -162,6 +162,21 @@ else ifeq ($(platform), rpi4)
+ 	DYNAREC_DEVMIYAX = 1
+ 	FLAGS += -mcpu=cortex-a72 -mtune=cortex-a72
+ 
++# Go-Advance (32-bit)
++else ifeq ($(platform), goadvance)
++        override platform += unix
++        TARGET := $(TARGET_NAME)_libretro.so
++        fpic := -fPIC
++        SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
++        LDFLAGS += -lpthread
++        FLAGS += -march=armv8-a+crc -mtune=cortex-a35 -mfpu=neon-fp-armv8
++        ARCH_IS_LINUX = 1
++        HAVE_SSE = 0
++        FORCE_GLES = 1
++        USE_ARM_DRC = 1
++        DYNAREC_DEVMIYAX = 1
++        FLAGS += -mcpu=cortex-a72 -mtune=cortex-a72 -mfloat-abi=hard -mvectorize-with-neon-quad
++
+ # ODROIDs
+ else ifeq ($(platform), odroid-n2)
+ 	override platform += unix
