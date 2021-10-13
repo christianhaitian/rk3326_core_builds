@@ -45,6 +45,8 @@ do
       source scripts/snes9x.sh
       cd $cur_wd
       source scripts/supafaust.sh
+      cd $cur_wd
+      source scripts/yabasanshiro.sh
       #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is last in this script.
       cd $cur_wd
       source scripts/mess.sh
