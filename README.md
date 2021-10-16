@@ -26,6 +26,9 @@ cd rk3326_core_builds
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
+### To build just gambatte (64bit only):
+`./builds.sh gambatte`
+
 ### To build just gpsp:
 `./builds.sh gpsp`
 
@@ -73,6 +76,9 @@ cd rk3326_core_builds
 
 ### To build just supafaust (64bit only):
 `./builds.sh supafaust`
+
+### To build just quicknes (64bit only):
+`./builds.sh quicknes`
 
 ### To build just yabasanshiro (32bit only):
 `./builds.sh yabasanshiro`

@@ -24,6 +24,8 @@ do
       cd $cur_wd
       source scripts/fmsx.sh
       cd $cur_wd
+      source scripts/gambatte.sh
+      cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
       source scripts/mgba.sh
@@ -37,6 +39,8 @@ do
       source scripts/pokemini.sh
       cd $cur_wd
       source scripts/ppsspp-libretro.sh
+      cd $cur_wd
+      source scripts/quicknes.sh
       cd $cur_wd
       source scripts/sameboy.sh
       cd $cur_wd
