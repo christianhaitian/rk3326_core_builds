@@ -47,6 +47,9 @@ cd rk3326_core_builds
 ### To build just mame (64bit only): <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
 
+### To build just pcfx (64bit Only):
+`./builds.sh pcfx`
+
 ### To build just pokemini (64bit only):
 `./builds.sh pokemini`
 
