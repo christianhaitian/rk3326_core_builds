@@ -51,8 +51,11 @@ do
       source scripts/supafaust.sh
       cd $cur_wd
       source scripts/yabasanshiro.sh
-      #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is last in this script.
+      #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is towards the end of this script.
       cd $cur_wd
       source scripts/mess.sh
+      #Warning...mame is a very long build.  Could be over 24 hours to complete.  That is why it is last in this script.
+      cd $cur_wd
+      source scripts/mame.sh
   fi
 done
