@@ -34,6 +34,8 @@ do
       cd $cur_wd
       source scripts/pcsx_rearmed.sh
       cd $cur_wd
+      source scripts/pcfx.sh
+      cd $cur_wd
       source scripts/picodrive.sh
       cd $cur_wd
       source scripts/pokemini.sh
