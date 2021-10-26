@@ -17,6 +17,9 @@ cd rk3326_core_builds
 ### To build all libretro cores defined in the script:
 `./builds.sh all`
 
+### To build just caprice32 (64bit only):
+`./builds.sh cap32`
+
 ### To build just dosbox_pure (64bit only):
 `./builds.sh dosbox_pure`
 
@@ -28,6 +31,9 @@ cd rk3326_core_builds
 
 ### To build just gambatte (64bit only):
 `./builds.sh gambatte`
+
+### To build just genesis-plus-gx (64bit only):
+`./builds.sh genesis-plus-gx`
 
 ### To build just gpsp:
 `./builds.sh gpsp`
@@ -70,6 +76,9 @@ cd rk3326_core_builds
 
 ### To build just sameboy (64bit only):
 `./builds.sh sameboy`
+
+### To build just sameduck (64bit only):
+`./builds.sh sameduck`
 
 ### To build just scummvm standalone:
 `./builds.sh scummvm`

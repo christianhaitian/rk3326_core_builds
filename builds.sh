@@ -14,6 +14,8 @@ do
       source scripts/"$var".sh
   else
       cd $cur_wd
+      source scripts/cap32.sh
+      cd $cur_wd
       source scripts/dosbox_pure.sh
       cd $cur_wd
       source scripts/duckstation.sh
@@ -25,6 +27,8 @@ do
       source scripts/fmsx.sh
       cd $cur_wd
       source scripts/gambatte.sh
+      cd $cur_wd
+      source scripts/genesis-plus-gx.sh
       cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
@@ -45,6 +49,8 @@ do
       source scripts/quicknes.sh
       cd $cur_wd
       source scripts/sameboy.sh
+      cd $cur_wd
+      source scripts/sameduck.sh
       cd $cur_wd
       source scripts/scummvm-libretro.sh
       cd $cur_wd
