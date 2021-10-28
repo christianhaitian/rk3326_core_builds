@@ -9,6 +9,7 @@ bitness="$(getconf LONG_BIT)"
 	  # Now we'll start the clone and build of PPSSPP
 	  if [ ! -d "ppsspp/" ]; then
 		git clone https://github.com/hrydgard/ppsspp.git --recursive
+
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the ppsspp standalone git.  Is Internet active or did the git location change?  Stopping here."
@@ -53,7 +54,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  mkdir build
 	  cd build
-	  cmake -DUSING_EGL=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO ../.
+	  cmake -DUSING_EGL=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -fpermissive ../.
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
