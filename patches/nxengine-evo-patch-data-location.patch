@@ -1,0 +1,13 @@
+diff --git a/src/ResourceManager.cpp b/src/ResourceManager.cpp
+index 29355ae..bd3f1bf 100644
+--- a/src/ResourceManager.cpp
++++ b/src/ResourceManager.cpp
+@@ -125,7 +125,7 @@ std::string ResourceManager::getPath(const std::string &filename, bool localized
+     std::string _data = getBasePath();
+ 
+     #if defined(HAVE_UNIX_LIKE) and !defined(PORTABLE)
+-      _data += "../share/nxengine/data/";
++      _data += "data/";
+     #else
+       _data += "data/";
+     #endif

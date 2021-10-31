@@ -1,12 +1,20 @@
 diff --git a/src/input.cpp b/src/input.cpp
-index 4b8b116..e9ff0a3 100644
+index cac7782..95d861b 100644
 --- a/src/input.cpp
 +++ b/src/input.cpp
-@@ -130,6 +130,7 @@ bool input_init(void)
+@@ -123,8 +123,14 @@ bool input_init(void)
+ 
  void rumble(float str, uint32_t len)
  {
-   if (settings->rumble)
-+    system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.12 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
+-  if (settings->rumble)
++  if (settings->rumble){
++    FILE *file;
++    if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++      system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.12 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
++      fclose(file);
++    }
      SDL_JoystickRumble(joy, 0xFFFF * str, 0xFFFF * str, len);
++  }
  }
  
+ // set the SDL key that triggers an input
