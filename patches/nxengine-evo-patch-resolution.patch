@@ -1,5 +1,5 @@
 diff --git a/src/graphics/Renderer.cpp b/src/graphics/Renderer.cpp
-index 38c26ab..6c9eb02 100644
+index 7c410f3..3bb3786 100644
 --- a/src/graphics/Renderer.cpp
 +++ b/src/graphics/Renderer.cpp
 @@ -221,11 +221,13 @@ const Graphics::gres_t *Renderer::getResolutions(bool full_list)
@@ -13,6 +13,6 @@ index 38c26ab..6c9eb02 100644
           // widescreen
           {(char *)"480x272", 480, 272, 480, 272, 1, true, true},
 +         {(char *)"480x320", 480, 320, 480, 320, 1, true, true},
+          {(char *)"1024x600", 1024, 600, 512, 300, 2, true, true},
           {(char *)"1360x768", 1360, 768, 454, 256, 3, true, true},
           {(char *)"1366x768", 1366, 768, 455, 256, 3, true, true},
-          {(char *)"1440x900", 1440, 900, 480, 300, 3, true, true},
