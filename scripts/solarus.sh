@@ -71,6 +71,6 @@ bitness="$(getconf LONG_BIT)"
 	  cp libsolarus.so.* ../../solarus$bitness/.
 	  
 	  echo " "
-	  echo "solarusSDL executable and related files package have been created and has been placed in the rk3326_core_builds/solarus$bitness subfolder"
+	  echo "solarus-run executable and related files have been created and has been placed in the rk3326_core_builds/solarus$bitness subfolder"
 
 	fi
