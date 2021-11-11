@@ -1,8 +1,8 @@
 diff --git a/Makefile b/Makefile
-index f043a85..5ddf848 100644
+index 65796cf..9a7d68a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -248,6 +248,19 @@ else ifeq ($(platform), ctr)
+@@ -250,6 +250,17 @@ else ifeq ($(platform), ctr)
  	HAVE_DYNAREC = 1
  	STATIC_LINKING = 1
  
@@ -14,7 +14,7 @@ index f043a85..5ddf848 100644
 +	fpic := -fPIC
 +	SHARED := -shared -Wl,--version-script=link.T -Wl,--no-undefined
 +	CPU_ARCH := arm
-+ MMAP_JIT_CACHE = 1
++    MMAP_JIT_CACHE = 1
 +	HAVE_DYNAREC = 1
 +
  # Raspberry Pi 3
