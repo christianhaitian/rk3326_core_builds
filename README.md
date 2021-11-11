@@ -26,6 +26,9 @@ cd rk3326_core_builds
 ### To download and unpack duckstation (64bit only):
 `./builds.sh duckstation`
 
+### To build just easyrpg (64bit only):
+`./builds.sh easyrpg`
+
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
@@ -85,6 +88,9 @@ cd rk3326_core_builds
 
 ### To build just scummvm libretro (64bit only):
 `./builds.sh scummvm-libretro`
+
+### To build just solarus standalone (64bit only):
+`./builds.sh solarus`
 
 ### To build just snes9x (64bit only):
 `./builds.sh snes9x`
