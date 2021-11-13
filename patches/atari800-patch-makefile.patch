@@ -1,0 +1,36 @@
+diff --git a/Makefile b/Makefile
+index 9f10e29..bd181f1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -357,6 +357,31 @@ else ifeq ($(platform), retrofw)
+ 	CFLAGS += -fomit-frame-pointer -march=mips32 -mtune=mips32 -mhard-float
+ 	PLATFORM_DEFINES += -DRETROFW
+ 
++# (armv8 a35, hard point, neon based) ###
++# PlayStation Classic
++else ifeq ($(platform), arkos)
++	TARGET := $(TARGET_NAME)_libretro.so
++	fpic := -fPIC
++    LDFLAGS := -shared -Wl,--version-script=link.T  -Wl,--no-undefined
++	CFLAGS += -O2 \
++	 -fuse-linker-plugin \
++	-fdata-sections -ffunction-sections -Wl,--gc-sections \
++	-fno-stack-protector -fno-ident -fomit-frame-pointer \
++	-falign-functions=1 -falign-jumps=1 -falign-loops=1 \
++	-fno-unwind-tables -fno-asynchronous-unwind-tables -fno-unroll-loops \
++	-fmerge-all-constants -fno-math-errno \
++	#-marm -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++	CXXFLAGS += $(CFLAGS)
++	CPPFLAGS += $(CFLAGS)
++	ASFLAGS += $(CFLAGS)
++	HAVE_NEON = 1
++	CFLAGS += -march=armv8-a
++	LDFLAGS += -static-libgcc
++	CFLAGS += -DDEFAULT_CFG_NAME="\".config/retroarch/config/Atari800/Atari800.cfg\""
++#######################################
++
++
++
+ # emscripten
+ else ifeq ($(platform), emscripten)
+ 	TARGET := $(TARGET_NAME)_libretro_emscripten.bc

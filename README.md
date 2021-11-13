@@ -17,6 +17,9 @@ cd rk3326_core_builds
 ### To build all libretro cores defined in the script:
 `./builds.sh all`
 
+### To build just atari800 (64bit only):
+`./builds.sh atari800`
+
 ### To build just caprice32 (64bit only):
 `./builds.sh cap32`
 
