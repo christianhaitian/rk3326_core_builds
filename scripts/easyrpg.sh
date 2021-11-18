@@ -6,7 +6,7 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "easyrpg" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "easyrpg/" ]; then
-		git clone https://github.com/EasyRPG/Player/ -b 0-7-0-stable
+		git clone https://github.com/EasyRPG/Player/
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
