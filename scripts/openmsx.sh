@@ -60,6 +60,13 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+      ./configure
+	  if [[ $? != "0" ]]; then
+		echo " "
+		echo "There was an error that occured while verifying the necessary dependancies to build the newest openmsx standalone.  Stopping here."
+		exit 1
+	  fi
+
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
@@ -75,7 +82,8 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	  cp derived/aarch64-linux-opt/bin/openmsx ../openmsx$bitness/.
-	  tar -zchvf ../openmsx$bitness/openmsx_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz share/ derived/aarch64-linux-opt/bin/openmsx
+	  cp derived/aarch64-linux-opt/bin/openmsx .
+	  tar -zchvf ../openmsx$bitness/openmsx_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz share/ openmsx
 
 	  echo " "
 	  echo "The openmsx executable and openmsx_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz package has been created and has been placed in the rk3326_core_builds/openmsx$bitness subfolder"
