@@ -20,6 +20,9 @@ cd rk3326_core_builds
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
 
+### To build just bluemsx (64bit only):
+`./builds.sh bluemsx`
+
 ### To build just caprice32 (64bit only):
 `./builds.sh cap32`
 
@@ -58,6 +61,9 @@ cd rk3326_core_builds
 
 ### To build just mame (64bit only): <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
+
+### To build just openmsx standalone emulator (64bit only):
+`./builds.sh openmsx`
 
 ### To build just pcfx (64bit Only):
 `./builds.sh pcfx`
