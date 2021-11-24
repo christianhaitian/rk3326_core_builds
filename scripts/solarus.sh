@@ -24,13 +24,24 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 # Ensure dependencies are installed and available
-	 apt-get update
-	 apt-get -y install build-essential cmake pkg-config libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev qtbase5-dev qttools5-dev qttools5-dev-tools libglm-dev
-	 if [[ $? != "0" ]]; then
-	   echo " "
-	   echo "There was an error while installing the necessary dependencies.  Is Internet active?  Stopping here."
-	   exit 1
-	 fi
+     neededlibs=( build-essential cmake pkg-config libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libluajit-5.1-dev libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev qtbase5-dev qttools5-dev qttools5-dev-tools libglm-dev )
+     updateapt="N"
+     for libs in "${neededlibs[@]}"
+     do
+          dpkg -s "${libs}" &>/dev/null
+          if [[ $? != "0" ]]; then
+           if [[ "$updateapt" == "N" ]]; then
+            apt-get -y update
+            updateapt="Y"
+           fi
+           apt-get -y install "${libs}"
+           if [[ $? != "0" ]]; then
+            echo " "
+            echo "Could not install needed library ${libs}.  Stopping here so this can be reviewed."
+            exit 1
+           fi
+          fi
+     done
 
 	 cd solarus
 	 

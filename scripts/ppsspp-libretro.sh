@@ -23,14 +23,24 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 # Ensure dependencies are installed and available
-	 apt-get update
-	 apt-get -y install libx11-dev libsm-dev libxext-dev git cmake mercurial libudev-dev libdrm-dev zlib1g-dev pkg-config libasound2-dev libfreetype6-dev libx11-xcb1 libxcb-dri2-0
-	 if [[ $? != "0" ]]; then
-	   echo " "
-	   echo "There was an error while installing the necessary dependencies.  Is Internet active?  Stopping here."
-	   exit 1
-	 fi
-
+     neededlibs=( libx11-dev libsm-dev libxext-dev git cmake mercurial libudev-dev libdrm-dev zlib1g-dev pkg-config libasound2-dev libfreetype6-dev libx11-xcb1 libxcb-dri2-0 )
+     updateapt="N"
+     for libs in "${neededlibs[@]}"
+     do
+          dpkg -s "${libs}" &>/dev/null
+          if [[ $? != "0" ]]; then
+           if [[ "$updateapt" == "N" ]]; then
+            apt-get -y update
+            updateapt="Y"
+           fi
+           apt-get -y install "${libs}"
+           if [[ $? != "0" ]]; then
+            echo " "
+            echo "Could not install needed library ${libs}.  Stopping here so this can be reviewed."
+            exit 1
+           fi
+          fi
+     done
 
 	 cd ppsspp/ffmpeg
 	 ./linux_arm64.sh

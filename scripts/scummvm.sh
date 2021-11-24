@@ -25,13 +25,24 @@ bitness="$(getconf LONG_BIT)"
 	 cd scummvm/
 
 	 # Ensure dependencies are installed and available
-	 apt-get update
-	 apt-get -y install --no-install-recommends libsdl2-dev liba52-0.7.4-dev libjpeg62-turbo-dev libmpeg2-4-dev libogg-dev libvorbis-dev libflac-dev libmad0-dev libpng-dev libtheora-dev libfaad-dev libfluidsynth-dev libfreetype6-dev libcurl4-openssl-dev libsdl2-net-dev libspeechd-dev zlib1g-dev libfribidi-dev libglew-dev
-	 if [[ $? != "0" ]]; then
-	   echo " "
-	   echo "There was an error while installing the necessary dependencies.  Is Internet active?  Stopping here."
-	   exit 1
-	 fi 
+     neededlibs=( libsdl2-dev liba52-0.7.4-dev libjpeg62-turbo-dev libmpeg2-4-dev libogg-dev libvorbis-dev libflac-dev libmad0-dev libpng-dev libtheora-dev libfaad-dev libfluidsynth-dev libfreetype6-dev libcurl4-openssl-dev libsdl2-net-dev libspeechd-dev zlib1g-dev libfribidi-dev libglew-dev )
+     updateapt="N"
+     for libs in "${neededlibs[@]}"
+     do
+          dpkg -s "${libs}" &>/dev/null
+          if [[ $? != "0" ]]; then
+           if [[ "$updateapt" == "N" ]]; then
+            apt-get -y update
+            updateapt="Y"
+           fi
+           apt-get -y install --no-install-recommends "${libs}"
+           if [[ $? != "0" ]]; then
+            echo " "
+            echo "Could not install needed library ${libs}.  Stopping here so this can be reviewed."
+            exit 1
+           fi
+          fi
+     done
 
 	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
 	  make clean
