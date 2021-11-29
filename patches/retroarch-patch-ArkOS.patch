@@ -1,5 +1,5 @@
 diff --git a/intl/msg_hash_us.h b/intl/msg_hash_us.h
-index 211e2f9ba3..457473a38e 100644
+index 2421a18c88..fd8528a165 100644
 --- a/intl/msg_hash_us.h
 +++ b/intl/msg_hash_us.h
 @@ -10,7 +10,7 @@
@@ -11,7 +11,7 @@ index 211e2f9ba3..457473a38e 100644
     )
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_SETTINGS_TAB,
-@@ -4443,7 +4443,7 @@ MSG_HASH(
+@@ -4501,7 +4501,7 @@ MSG_HASH(
     )
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_MAIN_TAB,
@@ -21,10 +21,10 @@ index 211e2f9ba3..457473a38e 100644
  MSG_HASH(
     MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_PLAYLISTS_TAB,
 diff --git a/menu/drivers/ozone.c b/menu/drivers/ozone.c
-index 03912409a9..8c177859af 100644
+index 01f9404769..2fb12af6b9 100644
 --- a/menu/drivers/ozone.c
 +++ b/menu/drivers/ozone.c
-@@ -7225,7 +7225,7 @@ static void ozone_set_layout(
+@@ -7370,7 +7370,7 @@ static void ozone_set_layout(
     if (!ozone)
        return;
  
@@ -33,7 +33,7 @@ index 03912409a9..8c177859af 100644
  
     /* Calculate dimensions */
     ozone->dimensions.header_height                 = HEADER_HEIGHT * scale_factor;
-@@ -8451,10 +8451,10 @@ static void ozone_draw_header(
+@@ -8607,10 +8607,10 @@ static void ozone_draw_header(
           gfx_display_draw_text(
                 ozone->fonts.time.font,
                 msg,
@@ -46,7 +46,7 @@ index 03912409a9..8c177859af 100644
                 video_height,
                 ozone->theme->text_rgba,
                 TEXT_ALIGN_RIGHT,
-@@ -8476,12 +8476,12 @@ static void ozone_draw_header(
+@@ -8632,12 +8632,12 @@ static void ozone_draw_header(
                       status_icon_size,
                       status_icon_size,
                       ozone->icons_textures[powerstate.charging? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_CHARGING : (powerstate.percent > 80)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_FULL : (powerstate.percent > 60)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_80 : (powerstate.percent > 40)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_60 : (powerstate.percent > 20)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_40 : OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_20],
@@ -61,7 +61,7 @@ index 03912409a9..8c177859af 100644
                       col,
                       mymat);
              if (dispctx->blend_end)
-@@ -8508,10 +8508,10 @@ static void ozone_draw_header(
+@@ -8664,10 +8664,10 @@ static void ozone_draw_header(
        gfx_display_draw_text(
              ozone->fonts.time.font,
              timedate,
@@ -74,7 +74,7 @@ index 03912409a9..8c177859af 100644
              video_height,
              ozone->theme->text_rgba,
              TEXT_ALIGN_RIGHT,
-@@ -8533,12 +8533,12 @@ static void ozone_draw_header(
+@@ -8689,12 +8689,12 @@ static void ozone_draw_header(
                    status_icon_size,
                    status_icon_size,
                    ozone->icons_textures[OZONE_ENTRIES_ICONS_TEXTURE_CLOCK],
@@ -92,10 +92,26 @@ index 03912409a9..8c177859af 100644
                    mymat);
           if (dispctx->blend_end)
 diff --git a/menu/menu_setting.c b/menu/menu_setting.c
-index 893625038e..fd1495d123 100644
+index 232223281b..5cb190b5bf 100644
 --- a/menu/menu_setting.c
 +++ b/menu/menu_setting.c
-@@ -9223,7 +9223,7 @@ static bool setting_append_list(
+@@ -9150,6 +9150,7 @@ static bool setting_append_list(
+                parent_group);
+          SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
+ 
++         /*
+          CONFIG_ACTION(
+                list, list_info,
+                MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
+@@ -9159,6 +9160,7 @@ static bool setting_append_list(
+                parent_group);
+          MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_RESET_TO_DEFAULT_CONFIG);
+          SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
++         */
+ 
+          CONFIG_ACTION(
+                list, list_info,
+@@ -9260,7 +9262,7 @@ static bool setting_append_list(
                parent_group);
  #endif
  
@@ -105,24 +121,24 @@ index 893625038e..fd1495d123 100644
          CONFIG_ACTION(
                 list, list_info,
 diff --git a/retroarch.c b/retroarch.c
-index b3040f3299..f17a6885d6 100644
+index a94c6a7f5e..b3974914f9 100644
 --- a/retroarch.c
 +++ b/retroarch.c
-@@ -12884,7 +12884,7 @@ bool command_event(enum event_command cmd, void *data)
-          runloop_msg_queue_push(msg_hash_to_str(MSG_VALUE_SHUTTING_DOWN), 1, 180, true, NULL, MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
-          command_event(CMD_EVENT_MENU_SAVE_CURRENT_CONFIG, NULL);
+@@ -2446,7 +2446,7 @@ bool command_event(enum event_command cmd, void *data)
+          system("(sleep 1 && shutdown -P now) & disown");
+ #else
           command_event(CMD_EVENT_QUIT, NULL);
 -         system("shutdown -P now");
 +         system("sudo shutdown -P now");
+ #endif /* HAVE_LAKKA */
  #endif
           break;
-       case CMD_EVENT_REBOOT:
-@@ -12892,7 +12892,7 @@ bool command_event(enum event_command cmd, void *data)
-          runloop_msg_queue_push(msg_hash_to_str(MSG_VALUE_REBOOTING), 1, 180, true, NULL, MESSAGE_QUEUE_ICON_DEFAULT, MESSAGE_QUEUE_CATEGORY_INFO);
-          command_event(CMD_EVENT_MENU_SAVE_CURRENT_CONFIG, NULL);
+@@ -2461,7 +2461,7 @@ bool command_event(enum event_command cmd, void *data)
+          system("(sleep 1 && shutdown -r now) & disown");
+ #else
           command_event(CMD_EVENT_QUIT, NULL);
 -         system("shutdown -r now");
 +         system("sudo shutdown -r now");
+ #endif /* HAVE_LAKKA */
  #endif
           break;
-       case CMD_EVENT_RESUME:
