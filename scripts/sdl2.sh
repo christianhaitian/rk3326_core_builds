@@ -153,5 +153,4 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 
 	  echo " "
 	  echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
-	fi
 
