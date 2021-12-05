@@ -1,16 +1,18 @@
-From b2d17230779c9da13433dc9f3abf37ee1e6da85d Mon Sep 17 00:00:00 2001
-From: JohnnyonFlame <johnnyonflame@hotmail.com>
-Date: Sat, 4 Dec 2021 02:38:47 +0000
-Subject: [PATCH] kmsdrm: Workaround missing gbm_bo_get_offset and
- SDL_GL_CONTEXT_PROFILE defaults
-
----
- src/video/kmsdrm/SDL_kmsdrmopengles.c | 14 ++++++++++----
- src/video/kmsdrm/SDL_kmsdrmsym.h      |  2 +-
- 2 files changed, 11 insertions(+), 5 deletions(-)
-
+diff --git a/src/video/SDL_egl.c b/src/video/SDL_egl.c
+index 87d693e8d..891d588c4 100644
+--- a/src/video/SDL_egl.c
++++ b/src/video/SDL_egl.c
+@@ -1032,7 +1032,7 @@ SDL_EGL_CreateContext(_THIS, EGLSurface egl_surface)
+         return NULL;
+     }
+ 
+-    _this->egl_data->egl_swapinterval = 0;
++    _this->egl_data->egl_swapinterval = 1;
+ 
+     if (SDL_EGL_MakeCurrent(_this, egl_surface, egl_context) < 0) {
+         /* Save the SDL error set by SDL_EGL_MakeCurrent */
 diff --git a/src/video/kmsdrm/SDL_kmsdrmopengles.c b/src/video/kmsdrm/SDL_kmsdrmopengles.c
-index 55a53df76..3d76284fd 100644
+index 55a53df76..841c23101 100644
 --- a/src/video/kmsdrm/SDL_kmsdrmopengles.c
 +++ b/src/video/kmsdrm/SDL_kmsdrmopengles.c
 @@ -41,11 +41,17 @@ KMSDRM_GLES_DefaultProfileConfig(_THIS, int *mask, int *major, int *minor)
@@ -35,6 +37,14 @@ index 55a53df76..3d76284fd 100644
  }
  
  int
+@@ -72,6 +78,7 @@ SDL_EGL_CreateContext_impl(KMSDRM)
+ 
+ int KMSDRM_GLES_SetSwapInterval(_THIS, int interval) {
+ 
++  interval = 1;
+     if (!_this->egl_data) {
+         return SDL_SetError("EGL not initialized");
+     }
 diff --git a/src/video/kmsdrm/SDL_kmsdrmsym.h b/src/video/kmsdrm/SDL_kmsdrmsym.h
 index ea3d8d116..b17f823c9 100644
 --- a/src/video/kmsdrm/SDL_kmsdrmsym.h
@@ -48,7 +58,3 @@ index ea3d8d116..b17f823c9 100644
  SDL_KMSDRM_SYM(union gbm_bo_handle,gbm_bo_get_handle,(struct gbm_bo *bo))
  SDL_KMSDRM_SYM(int,gbm_bo_write,(struct gbm_bo *bo, const void *buf, size_t count))
  SDL_KMSDRM_SYM(struct gbm_device *,gbm_bo_get_device,(struct gbm_bo *bo))
--- 
-2.25.1
-
-
