@@ -48,13 +48,65 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 	  done
 	 fi
 
-      ./autogen.sh
-      ./configure --host=arm-linux-gnueabihf \
-      --enable-video-kmsdrm \
-      --disable-video-x11 \
-      --disable-video-rpi \
-      --disable-video-wayland \
-      --disable-video-vulkan
+        if [[ $bitness == "32" ]]; then
+         ./autogen.sh
+         ./configure --host=arm-linux-gnueabihf \
+         --enable-video-kmsdrm \
+         --disable-video-x11 \
+         --disable-video-rpi \
+         --disable-video-wayland \
+         --disable-video-vulkan
+       else
+         mkdir build
+         cd build
+         cmake -DSDL_STATIC=OFF \
+               -DLIBC=ON \
+               -DGCC_ATOMICS=ON \
+               -DALTIVEC=OFF \
+               -DOSS=OFF \
+               -DALSA=ON \
+               -DALSA_SHARED=ON \
+               -DJACK=OFF \
+               -DJACK_SHARED=OFF \
+               -DESD=OFF \
+               -DESD_SHARED=OFF \
+               -DARTS=OFF \
+               -DARTS_SHARED=OFF \
+               -DNAS=OFF \
+               -DNAS_SHARED=OFF \
+               -DLIBSAMPLERATE=ON \
+               -DLIBSAMPLERATE_SHARED=ON \
+               -DSNDIO=OFF \
+               -DDISKAUDIO=OFF \
+               -DDUMMYAUDIO=OFF \
+               -DVIDEO_WAYLAND=OFF \
+               -DVIDEO_WAYLAND_QT_TOUCH=ON \
+               -DWAYLAND_SHARED=OFF \
+               -DVIDEO_MIR=OFF \
+               -DMIR_SHARED=OFF \
+               -DVIDEO_COCOA=OFF \
+               -DVIDEO_DIRECTFB=OFF \
+               -DVIDEO_VIVANTE=OFF \
+               -DDIRECTFB_SHARED=OFF \
+               -DFUSIONSOUND=OFF \
+               -DFUSIONSOUND_SHARED=OFF \
+               -DVIDEO_DUMMY=OFF \
+               -DINPUT_TSLIB=OFF \
+               -DPTHREADS=ON \
+               -DPTHREADS_SEM=ON \
+               -DDIRECTX=OFF \
+               -DSDL_DLOPEN=ON \
+               -DCLOCK_GETTIME=OFF \
+               -DRPATH=OFF \
+               -DRENDER_D3D=OFF \
+               -DVIDEO_X11=OFF \
+               -DVIDEO_OPENGL=OFF \
+               -DVIDEO_OPENGLES=ON \
+               -DVIDEO_VULKAN=OFF \
+               -DVIDEO_KMSDRM=ON \
+               -DPULSEAUDIO=ON ..
+          export LDFLAGS="${LDFLAGS} -lrga"
+       fi
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
@@ -67,17 +119,29 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 		exit 1
 	  fi
 
-	  strip build/.libs/libSDL2-2.0.so.0.16.0
-
-	  if [ ! -d "../sdl2-$bitness/" ]; then
-		mkdir -v ../sdl2-$bitness
+      if [[ $bitness == "32" ]]; then
+	     strip build/.libs/libSDL2-2.0.so.0.16.0
+	  else
+	     strip libSDL2-2.0.so.0.16.0
 	  fi
 
-	  cp build/.libs/libSDL2-2.0.so.0.16.0 ../sdl2-$bitness/.
+	  if [ ! -d "$cur_wd/sdl2-$bitness/" ]; then
+		mkdir -v $cur_wd/sdl2-$bitness
+	  fi
+
+      if [[ $bitness == "32" ]]; then
+	     cp build/.libs/libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/.
+	  else
+	     cp libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/.
+	  fi
 
 	  echo " "
 	  echo "sdl $(git describe --tags | cut -c 9-) has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
 	fi
+
+    if [[ $bitness == "64" ]]; then
+       cd ..
+    fi
 
     if [[ $sdl2_rotationpatch == "yes" ]]; then
 	  for patching in sdl2-patch*
@@ -92,6 +156,10 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 	  done
 	fi
 
+    if [[ $bitness == "64" ]]; then
+       cd build
+    fi
+
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
@@ -100,9 +168,13 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 		exit 1
 	  fi
 
-	  strip build/.libs/libSDL2-2.0.so.0.16.0
-
-	  cp build/.libs/libSDL2-2.0.so.0.16.0 ../sdl2-$bitness/libSDL2-2.0.so.0.16.0.rotated
+      if [[ $bitness == "32" ]]; then
+	     strip build/.libs/libSDL2-2.0.so.0.16.0
+	     cp build/.libs/libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.16.0.rotated
+	  else
+	     strip libSDL2-2.0.so.0.16.0
+	     cp libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.16.0.rotated
+      fi
 
 	  echo " "
 	  echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
