@@ -53,14 +53,17 @@ cd rk3326_core_builds
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
-### To build just mgba (64bit only):
-`./builds.sh mgba`
+##To build just mame (4bit only); <-Vry long build.  Culd be 24 hours or more to complete.
+`./builds.sh mame`
+
+### To build just mame2003-plus (64bit only):
+`./builds.sh mame2003-plus`
 
 ### To build just mess (64bit only): <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mess`
 
-### To build just mame (64bit only): <--Very long build.  Could be 24 hours or more to complete.
-`./builds.sh mame`
+### To build just mgba (64bit only):
+`./builds.sh mgba`
 
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
@@ -124,6 +127,9 @@ cd rk3326_core_builds
 
 ### To build Emulationstation-fcamod (64bit only)
 `./builds.sh es_build`
+
+### To build SDL 2.0.16
+`./builds.sh sdl2`
 
 ### To update the retroarch-cores repo with new or updated cores:
 `./builds.sh update`
