@@ -1,0 +1,24 @@
+diff --git a/src/io/input.cpp b/src/io/input.cpp
+index 711b025..dc8fddc 100644
+--- a/src/io/input.cpp
++++ b/src/io/input.cpp
+@@ -140,14 +140,14 @@ int g_joy_btn_defs[SWITCH_COUNT][2] = {
+     {0, 0}, // toggle console (TODO)
+     {0, 0}  // Tilt/Slam switch
+ };
+-// default joystick axis assignments, in case .ini file is missing for rg351p
++// default joystick axis assignments, in case .ini file is missing
+ // Three values defined: 1st=joystick index (0=1st joystick), 2nd=axis index (0=not defined), 3rd=direction (-1/1, 0=not defined)
+ // Only first four switch defined (SWITCH_UP to SWITCH_RIGHT)
+ int g_joy_axs_defs[SWITCH_START1][3] = {
+-    {0, 2, 1}, // up
+-    {0, 1, 1}, // left
+-    {0, 2, -1},  // down
+-    {0, 1, -1}   // right
++    {0, 2, -1}, // up
++    {0, 1, -1}, // left
++    {0, 2, 1},  // down
++    {0, 1, 1}   // right
+ };
+ 
+ // Mouse button to key mappings
