@@ -50,6 +50,9 @@ cd rk3326_core_builds
 ### To build just gpsp:
 `./builds.sh gpsp`
 
+### To build just fceumm (64bit only):
+`./builds.sh fceumm`
+
 ### To build just flycast:
 `./builds.sh flycast`
 
