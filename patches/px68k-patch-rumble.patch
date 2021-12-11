@@ -1,0 +1,40 @@
+diff --git a/libretro.c b/libretro.c
+index d1def91..f21d225 100644
+--- a/libretro.c
++++ b/libretro.c
+@@ -1360,17 +1360,30 @@ static void rumbleFrames(void)
+ 
+    if (last_read_state != FDD_IsReading)
+    {
++      FILE *file;
+       if (opt_rumble_enabled && FDD_IsReading)
+       {
+-         rumble_cb(0, RETRO_RUMBLE_STRONG, 0x8000);
+-         rumble_cb(0, RETRO_RUMBLE_WEAK, 0x800);
++            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++               fputs("10", file);
++               fclose(file);
++            } else {
++                rumble_cb(0, RETRO_RUMBLE_STRONG, 0x8000);
++                rumble_cb(0, RETRO_RUMBLE_WEAK, 0x800);
++			}
++
+       }
+       else
+       {
+-         rumble_cb(0, RETRO_RUMBLE_STRONG, 0);
+-         rumble_cb(0, RETRO_RUMBLE_WEAK, 0);
++            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++               fputs("1000000", file);
++               fclose(file);
++            } else {
++                rumble_cb(0, RETRO_RUMBLE_STRONG, 0);
++                rumble_cb(0, RETRO_RUMBLE_WEAK, 0);
++			}
+       }
+-   }
++
++    }
+ 
+    last_read_state = FDD_IsReading;
+ }

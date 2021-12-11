@@ -1,0 +1,13 @@
+diff --git a/libretro.c b/libretro.c
+index ef4b250..b18e01e 100644
+--- a/libretro.c
++++ b/libretro.c
+@@ -125,7 +125,7 @@ void retro_init(void)
+ 
+     // Get map layout
+ 
+-    gb.keyboardLayout = 1; // French
++    gb.keyboardLayout = 0; // English
+ 
+     for (i = 0; i < RETROK_LAST; i++) {
+         KeySymToCPCKey[i] = CPC_NIL;
