@@ -26,6 +26,9 @@ cd rk3326_core_builds
 ### To build just caprice32 (64bit only):
 `./builds.sh cap32`
 
+### To build just crocods (64bit only):
+`./builds.sh crocods`
+
 ### To build just dosbox_pure (64bit only):
 `./builds.sh dosbox_pure`
 
@@ -53,7 +56,7 @@ cd rk3326_core_builds
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
-##To build just mame (4bit only); <-Vry long build.  Culd be 24 hours or more to complete.
+##To build just mame (64bit only); <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
 
 ### To build just mame2003-plus (64bit only):
@@ -68,8 +71,14 @@ cd rk3326_core_builds
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
 
+### To build just pce_fast (64bit Only):
+`./builds.sh pce_fast`
+
 ### To build just pcfx (64bit Only):
 `./builds.sh pcfx`
+
+### To build just px68k (64bit Only):
+`./builds.sh px68k`
 
 ### To build just pokemini (64bit only):
 `./builds.sh pokemini`
@@ -109,6 +118,9 @@ cd rk3326_core_builds
 
 ### To build just supafaust (64bit only):
 `./builds.sh supafaust`
+
+### To build just supergrafx (64bit Only):
+`./builds.sh supergrafx`
 
 ### To build just quicknes (64bit only):
 `./builds.sh quicknes`
