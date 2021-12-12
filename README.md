@@ -71,6 +71,9 @@ cd rk3326_core_builds
 ### To build just mgba (64bit only):
 `./builds.sh mgba`
 
+### To build just nestopia (64bit only):
+`./builds.sh nestopia`
+
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
 
@@ -124,6 +127,9 @@ cd rk3326_core_builds
 
 ### To build just supergrafx (64bit Only):
 `./builds.sh supergrafx`
+
+### To build just tic-80 (64bit only):
+`./builds.sh tic-80`
 
 ### To build just quicknes (64bit only):
 `./builds.sh quicknes`
