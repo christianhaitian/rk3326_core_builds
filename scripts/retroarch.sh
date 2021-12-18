@@ -32,7 +32,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  if [[ "$bitness" == "64" ]]; then
-	    ./configure --disable-caca \
+	    CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a35 -ftree-vectorize -funsafe-math-optimizations" ./configure --disable-caca \
 	    --disable-mali_fbdev \
 	    --disable-opengl \
 	    --disable-opengl1 \
@@ -57,7 +57,7 @@ bitness="$(getconf LONG_BIT)"
 	    --enable-udev \
 	    --enable-wifi
       else
-	    ./configure --disable-caca \
+	    CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -funsafe-math-optimizations" ./configure --disable-caca \
 	    --disable-mali_fbdev \
 	    --disable-opengl \
 	    --disable-opengl1 \
