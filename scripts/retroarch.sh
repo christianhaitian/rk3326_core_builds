@@ -31,7 +31,59 @@ bitness="$(getconf LONG_BIT)"
 		   rm "$patching" 
 	  done
 	 fi
-	  ./configure --disable-opengl --disable-opengl1 --disable-qt --disable-wayland --disable-x11 --enable-alsa --enable-egl --enable-kms --enable-odroidgo2 --enable-opengles --enable-opengles3 --enable-udev --enable-freetype --disable-vulkan --disable-vulkan_display --enable-networking --enable-ozone --disable-caca --enable-opengles3_1 --enable-opengles3_2 --enable-wifi
+	  if [[ "$bitness" == "64" ]]; then
+	    ./configure --disable-caca \
+	    --disable-mali_fbdev \
+	    --disable-opengl \
+	    --disable-opengl1 \
+	    --disable-qt \
+	    --disable-sdl \
+	    --disable-vg \
+	    --disable-vulkan \
+	    --disable-vulkan_display \
+	    --disable-wayland \
+	    --disable-x11 \
+	    --enable-alsa \
+	    --enable-egl \
+	    --enable-freetype \
+	    --enable-kms \
+	    --enable-networking \
+	    --enable-odroidgo2 \
+	    --enable-opengles \
+	    --enable-opengles3 \
+	    --enable-opengles3_1 \
+	    --enable-opengles3_2 \
+	    --enable-ozone \
+	    --enable-udev \
+	    --enable-wifi
+      else
+	    ./configure --disable-caca \
+	    --disable-mali_fbdev \
+	    --disable-opengl \
+	    --disable-opengl1 \
+	    --disable-qt \
+	    --disable-sdl \
+	    --disable-vg \
+	    --disable-vulkan \
+	    --disable-vulkan_display \
+	    --disable-wayland \
+	    --disable-x11 \
+	    --enable-alsa \
+	    --enable-egl \
+	    --enable-freetype \
+	    --enable-kms \
+        --enable-neon \
+	    --enable-networking \
+	    --enable-odroidgo2 \
+	    --enable-opengles \
+	    --enable-opengles3 \
+	    --enable-opengles3_1 \
+	    --enable-opengles3_2 \
+	    --enable-ozone \
+	    --enable-udev \
+	    --enable-wifi
+      fi
+
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
