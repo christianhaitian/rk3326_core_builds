@@ -1,0 +1,22 @@
+diff --git a/intl/msg_hash_us.h b/intl/msg_hash_us.h
+index f6b63d35a3..f3895a819b 100644
+--- a/intl/msg_hash_us.h
++++ b/intl/msg_hash_us.h
+@@ -10,7 +10,7 @@
+ 
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MAIN_MENU,
+-   "Main Menu"
++   "ArkOS"
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_SETTINGS_TAB,
+@@ -4509,7 +4509,7 @@ MSG_HASH(
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_MAIN_TAB,
+-   "Main Menu"
++   "ArkOS"
+    )
+ MSG_HASH(
+    MENU_ENUM_LABEL_VALUE_MENU_ADD_CONTENT_ENTRY_DISPLAY_PLAYLISTS_TAB,
