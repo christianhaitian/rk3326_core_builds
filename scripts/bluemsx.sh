@@ -50,7 +50,7 @@ bitness="$(getconf LONG_BIT)"
 	  cp bluemsx_libretro.so ../cores64/.
 
 	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$(getconf LONG_BIT)/blueMSX_libretro.so.commit
+	  echo $gitcommit > ../cores$(getconf LONG_BIT)/bluemsx_libretro.so.commit
 
 	  echo " "
 	  echo "bluemsx_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
