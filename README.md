@@ -68,6 +68,9 @@ cd rk3326_core_builds
 ### To build just mame2003-plus (64bit only):
 `./builds.sh mame2003-plus`
 
+### To build just melonds (64bit only):
+`./builds.sh melonds`
+
 ### To build just mess (64bit only): <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mess`
 
