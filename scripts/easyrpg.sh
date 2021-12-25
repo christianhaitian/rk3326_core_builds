@@ -83,7 +83,7 @@ bitness="$(getconf LONG_BIT)"
 	  cp easyrpg_libretro.so ../cores64/.
       cp ../liblcf/.libs/liblcf.so.0 ../cores64/.
          
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/easyrpg_libretro.so.commit
 
 	  echo " "

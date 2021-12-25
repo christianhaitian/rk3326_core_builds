@@ -96,17 +96,17 @@ bitness="$(getconf LONG_BIT)"
 		  echo " "
 		  if [[ "$bitness" == "64" ]]; then
 			echo "flycast_libretro.so and flycast_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores$bitness subfolder"
-	        gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	        gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
        	    echo $gitcommit > ../cores$bitness/flycast_rumble_libretro.so.commit
 		  else
 			echo "flycast_libretro.so and flycast32_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores$bitness subfolder"
-	        gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	        gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	        echo $gitcommit > ../cores$bitness/flycast32_rumble_libretro.so.commit
 		  fi
 		done
 	  fi
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
 
 	  echo " "

@@ -8,7 +8,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of openmsx
 	  if [ ! -d "openmsx/" ]; then
-		git clone https://github.com/openMSX/openMSX.git -b gles2
+		git clone https://github.com/openMSX/openMSX.git
 
 		if [[ $? != "0" ]]; then
 		  echo " "

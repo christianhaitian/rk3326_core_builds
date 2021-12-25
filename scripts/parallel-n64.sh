@@ -57,7 +57,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp parallel_n64_libretro.so ../cores$bitness/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/parallel_n64_libretro.so.commit
 
 	  echo " "

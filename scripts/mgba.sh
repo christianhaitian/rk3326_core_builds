@@ -56,7 +56,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp mgba_libretro.so ../cores64/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
 
 	  if [[ $gba_rumblepatch == "yes" ]]; then
@@ -85,7 +85,7 @@ bitness="$(getconf LONG_BIT)"
 		done
 	  fi
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/mgba_rumble_libretro.so.commit
 
 	  echo " "

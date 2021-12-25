@@ -48,7 +48,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp backends/platform/libretro/build/scummvm_libretro.so ../cores64/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
 
 	  echo " "
