@@ -50,7 +50,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp desmume2015_libretro.so ../../cores64/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../../cores$(getconf LONG_BIT)/desmume2015_libretro.so.commit
 
 	  echo " "

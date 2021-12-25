@@ -49,7 +49,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp yabause/src/libretro/yabasanshiro_libretro.so ../cores32/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/yabasanshiro_libretro.so.commit
 
 	  echo " "

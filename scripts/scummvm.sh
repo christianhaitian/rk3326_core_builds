@@ -1,6 +1,7 @@
 #!/bin/bash
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+minfluidsynthverneeded="3"
 
 	# Scummvm Standalone Build
 	if [[ "$var" == "scummvm" ]]; then
@@ -25,7 +26,7 @@ bitness="$(getconf LONG_BIT)"
 	 cd scummvm/
 
 	 # Ensure dependencies are installed and available
-     neededlibs=( libsdl2-dev liba52-0.7.4-dev libjpeg62-turbo-dev libmpeg2-4-dev libogg-dev libvorbis-dev libflac-dev libmad0-dev libpng-dev libtheora-dev libfaad-dev libfluidsynth-dev libfreetype6-dev libcurl4-openssl-dev libsdl2-net-dev libspeechd-dev zlib1g-dev libfribidi-dev libglew-dev )
+     neededlibs=( libsdl2-dev liba52-0.7.4-dev libjpeg62-turbo-dev libmpeg2-4-dev libogg-dev libvorbis-dev libflac-dev libmad0-dev libpng-dev libtheora-dev libfaad-dev libfreetype6-dev libcurl4-openssl-dev libsdl2-net-dev libspeechd-dev zlib1g-dev libfribidi-dev libglew-dev )
      updateapt="N"
      for libs in "${neededlibs[@]}"
      do
@@ -44,7 +45,38 @@ bitness="$(getconf LONG_BIT)"
           fi
      done
 
-	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
+     fluidsynthver=$(ldconfig -p | grep -m 1 "libfluidsynth.so" | cut -c -19 | cut -c 19-)
+     if [[ "$fluidsynthver" < "$minfluidsynthverneeded" ]; then
+      echo " "
+      echo "You either don't have libfluidsynth installed or the version you have is to old, let's build and install the latest version"
+      sleep 5
+      
+      git clone --recursive https://github.com/FluidSynth/fluidsynth.git
+      cd fluidsynth
+      mkdir build
+      cd build      
+      cmake -DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX="" ..
+      make -j$(nproc)
+	  if [[ $? != "0" ]]; then
+	    echo " "
+	    echo "There was an error while building the latest fluidsynth.  Stopping here."
+	    exit 1
+	  fi
+      make install
+
+      if [[ "$bitness" == "64" ]]; then    
+        cp -r -v /usr/include/fluidsynth /usr/lib/aarch64-linux-gnu/
+        cp -r -v /usr/lib/libfluidsynth.so* /usr/lib/aarch64-linux-gnu/
+      else
+        cp -r -v /usr/include/fluidsynth /usr/lib/arm-linux-gnueabihf/
+        cp -r -v /usr/lib/libfluidsynth.so* /usr/lib/arm-linux-gnueabihf/
+      fi
+      ldconfig
+
+      cd ../..
+     fi      
+
+	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release --force-opengl-game-es2
 	  make clean
 	  make -j$(nproc)
 
@@ -78,35 +110,4 @@ bitness="$(getconf LONG_BIT)"
 
 	  echo " "
 	  echo "scummvm has been created and has been placed in the rk3326_core_builds/scummvm$bitness subfolder"
-	fi
-
-
-	# Clean up the directory and remove other lr gits and created cores
-	if [ "$var" == "clean" ]; then
-	  find -maxdepth 1 ! -name patches ! -name .git ! -name docs -type d -not -path '.' -exec rm -rf {} +
-	  mkdir cores$bitness
-	  echo " "
-	  echo "Directory has been cleaned!"
-	fi
-
-	if [ -d "$cur_wd/cores$bitness" ]; then
-	  if [ "$(ls -A $cur_wd/cores$bitness)" ]; then
-		echo " "
-		echo "The cores$bitness folder currently contains the following:"
-		ls -l $cur_wd/cores$bitness
-	  fi
-	fi
-	if [ -d "$cur_wd/retroarch$bitness" ]; then
-	  if [ "$(ls -A $cur_wd/retroarch$bitness)" ]; then
-		echo " "
-		echo "The retroarch$bitness folder currently contains the following:"
-		ls -l $cur_wd/retroarch$bitness
-	  fi
-	fi
-	if [ -d "$cur_wd/es-fcamod" ]; then
-	  if [ "$(ls -A $cur_wd/es-fcamod)" ]; then
-		echo " "
-		echo "The es-fcamod folder currently contains the following:"
-		ls -l $cur_wd/es-fcamod
-	  fi
 	fi

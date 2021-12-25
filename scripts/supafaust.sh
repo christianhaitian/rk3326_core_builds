@@ -48,7 +48,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp mednafen_supafaust_libretro.so ../cores64/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mednafen_$(basename $PWD)_libretro.so.commit
 
 	  echo " "

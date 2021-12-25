@@ -49,7 +49,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cp mess_libretro.so ../cores$(getconf LONG_BIT)/.
 
-	  gitcommit=$(git show | grep commit | cut -c -14 | cut -c 8-)
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mess_libretro.so.commit
 
 	  echo " "
