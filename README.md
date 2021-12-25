@@ -143,6 +143,9 @@ cd rk3326_core_builds
 ### To build just quicknes (64bit only):
 `./builds.sh quicknes`
 
+### To build just uae4arm:
+`./builds.sh uae4arm`
+
 ### To build just yabasanshiro (32bit only):
 `./builds.sh yabasanshiro`
 
