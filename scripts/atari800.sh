@@ -33,7 +33,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make platform=arkos -j$(nproc)
+	  make platform=arkos -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

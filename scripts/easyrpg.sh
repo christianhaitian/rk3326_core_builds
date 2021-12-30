@@ -27,7 +27,7 @@ bitness="$(getconf LONG_BIT)"
          cd liblcf
          autoreconf -i
          ./configure
-         make -j$(nproc)
+         make -j$(($(nproc) - 1))
 	     if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error while building the newest liblcf library.  Stopping here."
@@ -65,8 +65,8 @@ bitness="$(getconf LONG_BIT)"
      autoreconf -i
      ./configure
      cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo .
-     #make -j$(nproc)
-     cmake --build . -j $(nproc)
+     #make -j$(($(nproc) - 1))
+     cmake --build . -j $(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

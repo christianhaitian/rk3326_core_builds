@@ -32,7 +32,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi 
 
-	  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
+	  make -j$(($(nproc) - 1)) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
 
 	  if [[ $? != "0" ]]; then
 		echo " "

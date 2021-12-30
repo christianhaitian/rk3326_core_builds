@@ -63,7 +63,7 @@ bitness="$(getconf LONG_BIT)"
 	  mkdir build
 	  cd build
 	  cmake -DSOLARUS_GL_ES=ON -DSOLARUS_GUI=OFF -DSOLARUS_USE_LUAJIT=ON -DSOLARUS_TESTS=OFF ..
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

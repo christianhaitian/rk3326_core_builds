@@ -33,7 +33,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

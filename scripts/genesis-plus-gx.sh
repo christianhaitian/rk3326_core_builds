@@ -33,7 +33,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make -f Makefile.libretro -j$(nproc)
+	  make -f Makefile.libretro -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

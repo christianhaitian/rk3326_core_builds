@@ -46,7 +46,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-	  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(nproc)
+	  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -72,7 +72,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		  fi
 		  rm "$patching"
-		  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(nproc)
+		  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(($(nproc) - 1))
 
 		  if [[ $? != "0" ]]; then
 			echo " "
