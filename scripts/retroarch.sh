@@ -84,7 +84,7 @@ bitness="$(getconf LONG_BIT)"
 	    --enable-wifi
       fi
 
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -113,7 +113,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  cd gfx/video_filters
 	  ./configure
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 	  if [[ $? != "0" ]]; then
 		echo " "
 		echo "There was an error while building the video filters for retroarch.  Stopping here."

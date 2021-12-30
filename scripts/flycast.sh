@@ -42,9 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  make clean
 
 	  if [[ "$bitness" == "64" ]]; then
-		make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
+		make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(($(nproc) - 1))
 	  else 
-		make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+		make FORCE_GLES=1 platform=classic_armv8_a35 -j$(($(nproc) - 1))
 	  fi
 
 	  if [[ $? != "0" ]]; then
@@ -73,9 +73,9 @@ bitness="$(getconf LONG_BIT)"
 		  rm "$patching"
 
 		  if [[ "$bitness" == "64" ]]; then
-			make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
+			make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(($(nproc) - 1))
 		  else 
-			make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+			make FORCE_GLES=1 platform=classic_armv8_a35 -j$(($(nproc) - 1))
 		  fi
 
 		  if [[ $? != "0" ]]; then

@@ -40,7 +40,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  cmake .
 	  make clean
-	  make -f Makefile.libretro platform=goadvance -j$(nproc)
+	  make -f Makefile.libretro platform=goadvance -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -69,7 +69,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		  fi
 		  rm "$patching"
-		  make -f Makefile.libretro platform=goadvance -j$(nproc)
+		  make -f Makefile.libretro platform=goadvance -j$(($(nproc) - 1))
 
 		  if [[ $? != "0" ]]; then
 			echo " "
