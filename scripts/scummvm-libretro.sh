@@ -32,7 +32,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-      make -C backends/platform/libretro/build CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
+      make -C backends/platform/libretro/build CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

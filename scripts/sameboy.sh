@@ -32,7 +32,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-	  make -C libretro platform=rk3326 -j$(nproc)
+	  make -C libretro platform=rk3326 -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

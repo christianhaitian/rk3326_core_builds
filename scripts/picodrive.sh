@@ -34,9 +34,9 @@ bitness="$(getconf LONG_BIT)"
 	  make clean
       ./configure
 	  if [[ "$(getconf LONG_BIT)" == "64" ]]; then
-		make -f Makefile.libretro platform=arm64 -j$(nproc)
+		make -f Makefile.libretro platform=arm64 -j$(($(nproc) - 1))
 	  else
-		make -f Makefile.libretro platform=armv6 -j$(nproc)
+		make -f Makefile.libretro platform=armv6 -j$(($(nproc) - 1))
 	  fi
 
 	  if [[ $? != "0" ]]; then

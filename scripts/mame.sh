@@ -33,7 +33,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make -f Makefile.libretro clean
-      make SUBTARGET=arcade -f Makefile.libretro -j3
+	  make SUBTARGET=arcade -f Makefile.libretro -j2
 
 	  if [[ $? != "0" ]]; then
 		echo " "

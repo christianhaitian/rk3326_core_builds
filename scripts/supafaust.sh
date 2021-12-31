@@ -32,7 +32,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-	  make platform=goadvance -j$(nproc)
+	  make platform=goadvance -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
