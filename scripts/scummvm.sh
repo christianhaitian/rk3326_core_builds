@@ -56,7 +56,7 @@ minfluidsynthverneeded="3"
       mkdir build
       cd build      
       cmake -DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX="" ..
-      make -j$(nproc)
+      make -j$(($(nproc) - 1))
 	  if [[ $? != "0" ]]; then
 	    echo " "
 	    echo "There was an error while building the latest fluidsynth.  Stopping here."
@@ -78,7 +78,7 @@ minfluidsynthverneeded="3"
 
 	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release --force-opengl-game-es2
 	  make clean
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

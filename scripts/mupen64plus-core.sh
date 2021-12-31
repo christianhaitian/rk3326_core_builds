@@ -50,7 +50,7 @@ bitness="$(getconf LONG_BIT)"
       export CXXFLAGS="$CXXFLAGS $CFLAGS"
       
       make -C "projects/unix" clean
-	  make -j$(nproc) -C "projects/unix" $_opts all
+	  make -j$(($(nproc) - 1)) -C "projects/unix" $_opts all
 
 	  if [[ $? != "0" ]]; then
 		echo " "

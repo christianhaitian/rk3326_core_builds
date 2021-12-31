@@ -34,7 +34,7 @@ bitness="$(getconf LONG_BIT)"
 
       cmake -DBUILD_PLAYER=OFF -DBUILD_SOKOL=OFF -DBUILD_SDL=OFF -DBUILD_DEMO_CARTS=OFF -DBUILD_LIBRETRO=ON .
 	  make clean
-	  make -j$(nproc)
+	  make -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "

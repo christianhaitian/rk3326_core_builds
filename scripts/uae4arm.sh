@@ -37,9 +37,9 @@ bitness="$bitness"
 	 fi
 
 	  if [[ "$bitness" == "64" ]]; then
-		make -f Makefile.libretro platform=unix_aarch64 "CPU_FLAGS=-mcpu=cortex-a35+crypto+crc" -j$(nproc)
+		make -f Makefile.libretro platform=unix_aarch64 "CPU_FLAGS=-mcpu=cortex-a35+crypto+crc" -j$(($(nproc) - 1))
 	  else
-		make -f Makefile.libretro platform=unix-neon "CPU_FLAGS=-O2 -march=armv8-a+crc -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -funsafe-math-optimizations" -j$(nproc)
+		make -f Makefile.libretro platform=unix-neon "CPU_FLAGS=-O2 -march=armv8-a+crc -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -funsafe-math-optimizations" -j$(($(nproc) - 1))
 	  fi
 
 	  if [[ $? != "0" ]]; then
