@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
+
 cur_wd="$PWD"
 valid_id='^[0-9]+$'
 es_git="https://github.com/christianhaitian/EmulationStation-fcamod.git"
