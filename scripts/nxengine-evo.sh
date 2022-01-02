@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 nxengevo_git="https://github.com/nxengine/nxengine-evo.git"
 bitness="$(getconf LONG_BIT)"
