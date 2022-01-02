@@ -42,6 +42,45 @@ bitness="$(getconf LONG_BIT)"
 	   [ ! -z $SOFTNAME ] && [ ! -z $VSOFTNAME ] && echo "We'll use either $SOFTNAME or $VSOFTNAME if this is a 351v build since you entered nothing above."
 	 fi
 
+	 # Ensure dependencies are installed and available
+     neededlibs=( libboost-system-dev libboost-filesystem-dev libboost-locale-dev libfreeimage-dev libfreetype6-dev libeigen3-dev libcurl4-openssl-dev libboost-date-time-dev libasound2-dev cmake libsdl2-dev rapidjson-dev libvlc-dev libvlccore-dev vlc-bin libsdl2-mixer-dev )
+     updateapt="N"
+     for libs in "${neededlibs[@]}"
+     do
+          dpkg -s "${libs}" &>/dev/null
+          if [[ $? != "0" ]]; then
+           if [[ "$ updateapt" == "N" ]]; then
+            apt-get -y update
+            updateapt="Y"
+           fi
+           apt-get -y install --no-install-recommends "${libs}"
+           if [[ $? != "0" ]]; then
+            echo " "
+            echo "Could not install needed library ${libs}.  Stopping here so this can be reviewed."
+            exit 1
+           fi
+          fi
+     done
+
+     if [ ! -d "/usr/share/doc/libmali-rk-dev" ] && [[ $es_git == *"christianhaitian"* ]]; then
+       wget $(echo $es_git | sed 's/\.git//')/raw/master/libmali-rk-dev_1.7-1%2Bdeb10_arm64.deb
+       if [[ $? != "0" ]]; then
+         echo " "
+         echo "Could not download needed library libmali-rk-dev_1.7-1+deb10_arm64.deb.  Stopping here so this can be reviewed."
+         exit 1
+       fi
+       wget $(echo $es_git | sed 's/\.git//')/raw/master/libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2%2Bdeb10_arm64.deb
+       if [[ $? != "0" ]]; then
+         echo " "
+         echo "Could not download needed library libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb.  Stopping here so this can be reviewed."
+         exit 1
+       fi
+       dpkg -i --force-all libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
+       dpkg -i libmali-rk-dev_1.7-1+deb10_arm64.deb
+       rm libmali-rk-dev_1.7-1+deb10_arm64.deb
+       rm libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
+     fi
+
 	 case "$branch_build" in
 		 "1")
 			cd $cur_wd
@@ -282,7 +321,7 @@ bitness="$(getconf LONG_BIT)"
 			 if [[ "$softname" == "ArkOSEmulationStation" ]]; then
 			   softname=$(printenv VSOFTNAME)
 			   echo "The software name has been set to $softname for the 351v build for ArkOS since one was not provided at start."
-			   echo "No particular reason to do this, it's just what was done for some reason by the crazy dev. ¯\_(ツ)_/¯"
+			   echo "No particular reason to do this, it's just what was done for some reason by the crazy dev. ¯\_(?)_/¯"
 			 fi
 
 
@@ -316,3 +355,4 @@ bitness="$(getconf LONG_BIT)"
 			exit 0
 	 esac
 	fi
+
