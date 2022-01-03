@@ -78,5 +78,7 @@ if [[ "$var" == "update" ]]; then
       file=$(basename $addupdatedcore)
       git commit -m "Updated $file core to commit $(cat ../../cores$bitness/${addupdatedcore}.commit)"
     done
+    git add .
+    git commit -m "Update index and index-extended for recent core updates"
   fi
 fi
