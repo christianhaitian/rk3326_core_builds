@@ -42,7 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-      make -C backends/platform/libretro/build CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(($(nproc) - 1))
+	  sed -i '/a53/s//a35/' backends/platform/libretro/build/Makefile
+	  sed -i '/rpi3_64/s//rk3326/' backends/platform/libretro/build/Makefile
+	  make -C backends/platform/libretro/build platform=rk3326 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
