@@ -74,7 +74,7 @@ if [[ "$var" == "update" ]]; then
     for addupdatedcore in $updaterepocore_so
     do
       ../addcore $addupdatedcore
-      git add . 
+      git add ${addupdatedcore}.zip
       file=$(basename $addupdatedcore)
       git commit -m "Updated $file core to commit $(cat ../../cores$bitness/${addupdatedcore}.commit)"
     done
