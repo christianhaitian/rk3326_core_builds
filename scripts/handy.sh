@@ -46,8 +46,8 @@ bitness="$(getconf LONG_BIT)"
 	  if [[ "$bitness" == "64" ]]; then
 	    make -j$(($(nproc) - 1))
 	  else
-        make platform=classic_armv8_a35 -j$(($(nproc) - 1))
-      fi
+	    make platform=classic_armv8_a35 -j$(($(nproc) - 1))
+	  fi
 
 	  if [[ $? != "0" ]]; then
 		echo " "
