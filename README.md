@@ -134,6 +134,9 @@ cd rk3326_core_builds
 ### To build just snes9x (64bit only):
 `./builds.sh snes9x`
 
+### To build just snes9x2005:
+`./builds.sh snes9x2005`
+
 ### To build just supafaust (64bit only):
 `./builds.sh supafaust`
 
