@@ -9,29 +9,28 @@
 # repository.                                                    #
 ##################################################################
 
-	  # Now we'll start the clone and build of mupen64plus-core
-	  if [ ! -d "mupen64plus-core/" ]; then
-        #git clone --depth=1 https://github.com/OtherCrashOverride/mupen64plus-core-go2 mupen64plus-core
-		git clone --depth=1 https://github.com/mupen64plus/mupen64plus-core.git
+	  # Now we'll start the clone and build of mupen64plus-input-sdl
+	  if [ ! -d "mupen64plus-input-sdl/" ]; then
+		git clone --depth=1 https://github.com/mupen64plus/mupen64plus-input-sdl.git
 		if [[ $? != "0" ]]; then
 		  echo " "
-		  echo "There was an error while cloning the mupen64plus-core standalone git.  Is Internet active or did the git location change?  Stopping here."
+		  echo "There was an error while cloning the mupen64plus-input-sdl standalone git.  Is Internet active or did the git location change?  Stopping here."
 		  exit 1
 		fi
-		cp patches/mupen64plus-core-patch* mupen64plus-core/.
+		cp patches/mupen64plus-input-sdl-patch* mupen64plus-input-sdl/.
 	  else
 		echo " "
-		echo "A mupen64plus-core subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the mupen64plus-core folder and rerun this script."
+		echo "A mupen64plus-input-sdl subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the mupen64plus-input-sdl folder and rerun this script."
 		echo " "
 		exit 1
 	  fi
 
-	 cd mupen64plus-core
+	 cd mupen64plus-input-sdl
 	 
 	 mupen64plus_core_patches=$(find *.patch)
 	 
 	 if [[ ! -z "$mupen64plus_core_patches" ]]; then
-	  for patching in mupen64plus-core-patch*
+	  for patching in mupen64plus-input-sdl-patch*
 	  do
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
@@ -57,18 +56,18 @@
 
 	  if [[ $? != "0" ]]; then
 		echo " "
-		echo "There was an error while building the newest mupen64plus-core standalone.  Stopping here."
+		echo "There was an error while building the newest mupen64plus-input-sdl standalone.  Stopping here."
 		exit 1
 	  fi
 
-	  strip projects/unix/libmupen64plus.so.2.0.0
+	  strip projects/unix/mupen64plus-input-sdl.so
 
 	  if [ ! -d "../mupen64plussa-$bitness/" ]; then
 		mkdir -v ../mupen64plussa-$bitness
 	  fi
 
-	  cp projects/unix/libmupen64plus.so.2.0.0 ../mupen64plussa-$bitness/.
+	  cp projects/unix/mupen64plus-input-sdl.so ../mupen64plussa-$bitness/.
 	  
 	  echo " "
-	  echo "mupen64plus-core executable has been placed in the rk3326_core_builds/mupen64plussa-$bitness subfolder"
+	  echo "mupen64plus-input-sdl executable has been placed in the rk3326_core_builds/mupen64plussa-$bitness subfolder"
 
