@@ -42,7 +42,11 @@ do
       cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
+      source scripts/handy.sh
+      cd $cur_wd
       source scripts/mgba.sh
+      cd $cur_wd
+      source scripts/mupen64plus-next.sh
       cd $cur_wd
       source scripts/parallel-n64.sh
       cd $cur_wd
@@ -66,7 +70,11 @@ do
       cd $cur_wd
       source scripts/snes9x.sh
       cd $cur_wd
+      source scripts/snes9x2005.sh
+      cd $cur_wd
       source scripts/supafaust.sh
+      cd $cur_wd
+      source scripts/uae4arm.sh
       cd $cur_wd
       source scripts/yabasanshiro.sh
       #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is towards the end of this script.
