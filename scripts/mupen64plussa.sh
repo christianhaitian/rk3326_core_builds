@@ -18,15 +18,15 @@ bitness="$(getconf LONG_BIT)"
    cd $cur_wd
    source scripts/mupen64plus-rsp-hle.sh
    cd $cur_wd
-   source scripts/mupen64plus-video-rice.sh
-   cd $cur_wd
-   source scripts/mupen64plus-video-glide64mk2.sh
-   cd $cur_wd
    source scripts/mupen64plus-audio-sdl.sh
    cd $cur_wd
    source scripts/mupen64plus-input-sdl.sh
    cd $cur_wd
    source scripts/mupen64plus-ui-console.sh
+   cd $cur_wd
+   source scripts/mupen64plus-video-rice.sh
+   cd $cur_wd
+   source scripts/mupen64plus-video-glide64mk2.sh
 
    cd $cur_wd
    gitcommit=$(git --git-dir mupen64plus-core/.git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
