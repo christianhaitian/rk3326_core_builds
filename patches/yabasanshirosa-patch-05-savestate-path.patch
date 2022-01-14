@@ -1,5 +1,5 @@
 diff --git a/yabause/src/retro_arena/main.cpp b/yabause/src/retro_arena/main.cpp
-index 599878d9..0865ef8e 100644
+index 599878d9..4a832be8 100644
 --- a/yabause/src/retro_arena/main.cpp
 +++ b/yabause/src/retro_arena/main.cpp
 @@ -286,14 +286,19 @@ int main(int argc, char** argv)
@@ -24,17 +24,13 @@ index 599878d9..0865ef8e 100644
    g_keymap_filename = home_dir + "keymapv2.json";
  
    std::string current_exec_name = argv[0]; // Name of the current exec program
-@@ -594,11 +599,11 @@ int main(int argc, char** argv)
- 
-         snprintf(last_state_filename, 256, "%s/%s_%d.yss", s_savepath, cdip->itemnum, e.user.code);
-         ret = YabSaveState(last_state_filename);
--        if( ret == 0 ){
-+        /*if( ret == 0 ){
+@@ -597,7 +602,8 @@ int main(int argc, char** argv)
+         if( ret == 0 ){
            char pngname[256];
            snprintf(pngname,256,"%s/%s_%d.png", s_savepath, cdip->itemnum, e.user.code);
-           fs::copy(tmpfilename, pngname, fs::copy_options::overwrite_existing );
--        }
-+        }*/
+-          fs::copy(tmpfilename, pngname, fs::copy_options::overwrite_existing );
++          //fs::copy(tmpfilename, pngname, fs::copy_options::overwrite_existing );
++          system((std::string("cp -f ") + tmpfilename + " " + pngname).c_str()); 
+         }
          hideMenuScreen();
        }
- 
