@@ -24,13 +24,25 @@ do
       source scripts/"$var".sh
   else
       cd $cur_wd
+      source scripts/atari800.sh
+      cd $cur_wd
+      source scripts/bluemsx.sh
+      cd $cur_wd
       source scripts/cap32.sh
+      cd $cur_wd
+      source scripts/crocods.sh
+      cd $cur_wd
+      source scripts/desmume2015.sh
       cd $cur_wd
       source scripts/dosbox_pure.sh
       cd $cur_wd
       source scripts/duckstation.sh
       cd $cur_wd
+      source scripts/easyrpg.sh
+      cd $cur_wd
       source scripts/fbneo.sh
+      cd $cur_wd
+      source scripts/fceumm.sh
       cd $cur_wd
       source scripts/flycast.sh
       cd $cur_wd
@@ -44,11 +56,17 @@ do
       cd $cur_wd
       source scripts/handy.sh
       cd $cur_wd
+      source scripts/melonds.sh
+      cd $cur_wd
       source scripts/mgba.sh
       cd $cur_wd
       source scripts/mupen64plus-next.sh
       cd $cur_wd
+      source scripts/nestopia.sh
+      cd $cur_wd
       source scripts/parallel-n64.sh
+      cd $cur_wd
+      source scripts/pce-fast.sh
       cd $cur_wd
       source scripts/pcsx_rearmed.sh
       cd $cur_wd
@@ -59,6 +77,10 @@ do
       source scripts/pokemini.sh
       cd $cur_wd
       source scripts/ppsspp-libretro.sh
+      cd $cur_wd
+      source scripts/puae.sh
+      cd $cur_wd
+      source scripts/px68k.sh
       cd $cur_wd
       source scripts/quicknes.sh
       cd $cur_wd
