@@ -44,6 +44,9 @@ cd rk3326_core_builds
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
+### To build just freeintv (64bit only):
+`./builds.sh freeintv`
+
 ### To build just gambatte (64bit only):
 `./builds.sh gambatte`
 
