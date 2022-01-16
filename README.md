@@ -65,6 +65,12 @@ cd rk3326_core_builds
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
+### To build just hypseus (64bit only):
+`./builds.sh hypseus`
+
+### To build just hypseus-singe (64bit only):
+`./builds.sh hypseus-singe`
+
 ##To build just mame (64bit only); <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
 
