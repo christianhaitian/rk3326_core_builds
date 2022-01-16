@@ -81,9 +81,9 @@ bitness="$(getconf LONG_BIT)"
                      -DCMAKE_TOOLCHAIN_FILE=../yabause/src/retro_arena/n2.cmake \
                      -DCMAKE_BUILD_TYPE=Release
                if [[ $? != "0" ]]; then
-		       echo " "
-		       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro standalone.  Stopping here."
-                       exit 1
+		         echo " "
+		         echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro standalone.  Stopping here."
+                 exit 1
                fi
             else
                cmake ../yabause \
@@ -94,9 +94,9 @@ bitness="$(getconf LONG_BIT)"
                      -DCMAKE_TOOLCHAIN_FILE=../yabause/src/retro_arena/pi4.cmake \
                      -DCMAKE_BUILD_TYPE=Release
                if [[ $? != "0" ]]; then
-                       echo " "
-                       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro s$
-                       exit 1
+                 echo " "
+                 echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro standalone.  Stopping here."
+                 exit 1
                fi
             fi
            make -j$(($(nproc) - 1))
