@@ -16,7 +16,7 @@ else
   param_device="chi"
 fi
 
-if [[ $1 == "standalone" ]]; then
+if [[ $1 == *"standalone"* ]]; then
   directory=$(dirname "$2" | cut -d "/" -f2)
   if [[ ! -d "/$directory/saturn/yabasanshiro" ]]; then
     mkdir /$directory/saturn/yabasanshiro
@@ -29,7 +29,21 @@ if [[ $1 == "standalone" ]]; then
     cp -f /etc/emulationstation/es_input.cfg input.cfg
   fi
   sudo ./oga_controls yabasanshiro $param_device &
-  ./yabasanshiro -r 3 -i "$2" -b /$directory/bios/saturn_bios.bin
+  if [[ $1 == "standalone-bios" ]]; then
+    if [[ ! -f "/$directory/bios/saturn_bios.bin" ]]; then
+      printf "\033c" >> /dev/tty1
+      printf "\033[1;33m" >> /dev/tty1
+      printf "\n I don't detect a saturn_bios.bin bios file in the" >> /dev/tty1
+      printf "\n /$directory/bios folder.  Either place one in that" >> /dev/tty1
+      printf "\n location or switch to the standalone-nobios emulator." >> /dev/tty1
+      sleep 10
+      printf "\033[0m" >> /dev/tty1
+    else
+      ./yabasanshiro -r 3 -i "$2" -b /$directory/bios/saturn_bios.bin
+    fi
+  else
+    ./yabasanshiro -r 3 -i "$2"
+  fi
   if [[ ! -z $(pidof oga_controls) ]]; then
     sudo kill -9 $(pidof oga_controls)
   fi
