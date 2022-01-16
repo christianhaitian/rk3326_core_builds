@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# yabasanshiro Standalone build
-	if [[ "$var" == "yabasanshirosa" ]] && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "yabasanshirosa" ]]; then
 	 cd $cur_wd
 
 	  # Now we'll start the clone and build of yabasanshiro
@@ -72,19 +72,33 @@ bitness="$(getconf LONG_BIT)"
 
              mkdir build
              cd build
-             cmake ../yabause \
-                   -DYAB_PORTS=retro_arena \
-                   -DYAB_WANT_DYNAREC_DEVMIYAX=ON \
-                   -DYAB_WANT_ARM7=ON \
-                   -DYAB_WANT_VULKAN=OFF \
-                   -DCMAKE_TOOLCHAIN_FILE=../yabause/src/retro_arena/n2.cmake \
-                   -DCMAKE_BUILD_TYPE=Release
-             if [[ $? != "0" ]]; then
+             if [[ "$bitness" == "64" ]]; then
+               cmake ../yabause \
+                     -DYAB_PORTS=retro_arena \
+                     -DYAB_WANT_DYNAREC_DEVMIYAX=ON \
+                     -DYAB_WANT_ARM7=ON \
+                     -DYAB_WANT_VULKAN=OFF \
+                     -DCMAKE_TOOLCHAIN_FILE=../yabause/src/retro_arena/n2.cmake \
+                     -DCMAKE_BUILD_TYPE=Release
+               if [[ $? != "0" ]]; then
 		       echo " "
 		       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro standalone.  Stopping here."
-               exit 1
-             fi
-
+                       exit 1
+               fi
+            else
+               cmake ../yabause \
+                     -DYAB_PORTS=retro_arena \
+                     -DYAB_WANT_DYNAREC_DEVMIYAX=ON \
+                     -DYAB_WANT_ARM7=ON \
+                     -DYAB_WANT_VULKAN=OFF \
+                     -DCMAKE_TOOLCHAIN_FILE=../yabause/src/retro_arena/pi4.cmake \
+                     -DCMAKE_BUILD_TYPE=Release
+               if [[ $? != "0" ]]; then
+                       echo " "
+                       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro s$
+                       exit 1
+               fi
+            fi
            make -j$(($(nproc) - 1))
            if [[ $? != "0" ]]; then
 		     echo " "
