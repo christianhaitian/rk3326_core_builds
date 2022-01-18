@@ -1,10 +1,6 @@
 #!/bin/bash
 
-if [ -f "/opt/system/Advanced/Switch to main SD for Roms.sh" ]; then
-  directory="roms2"
-else
-  directory="roms"
-fi
+directory=$(dirname "$2" | cut -d "/" -f2)
 
 if [[ ! -d "/$directory/bios/openmsx" ]]; then
   cp -rf /opt/openmsx/backupconfig/openmsx  /$directory/bios

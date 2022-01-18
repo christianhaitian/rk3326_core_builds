@@ -18,7 +18,7 @@ else
 fi
 sudo systemctl start solarushotkey
 rm -rf ~/.solarus
-directory=$(dirname "$1")
+directory=$(dirname "$2" | cut -d "/" -f2)
 if [[ ! -d "$directory/.solarus" ]]; then
   mkdir $directory/.solarus
 fi
