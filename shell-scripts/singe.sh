@@ -1,9 +1,11 @@
 #!/bin/bash
 
-if [[ $1 == "/roms/alg/Scan_for_new_games.alg" ]]
+directory=$(dirname "$2" | cut -d "/" -f2)
+
+if [[ $1 == "/$directory/alg/Scan_for_new_games.alg" ]]
 then
   printf "\033c" >> /dev/tty1
-  cd /roms/alg
+  cd /$directory/alg
   ./Scan_for_new_games.alg
   printf "\n\nFinished scanning the alg folder for games." >> /dev/tty1
   printf "\nPlease restart emulationstaton to find the new shortcuts" >> /dev/tty1
@@ -14,7 +16,7 @@ then
 fi
 
 HYPSEUS_BIN=/opt/hypseus-singe/hypseus-singe
-HYPSEUS_SHARE=/roms/alg
+HYPSEUS_SHARE=/$directory/alg
 HYPSEUS_HOME=/opt/hypseus-singe
 
 dir="$1"
