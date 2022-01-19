@@ -81,7 +81,7 @@ bitness="$(getconf LONG_BIT)"
              fi
            fi
 
-           make -j$(($(nproc) - 1))
+           make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error that occured while making the hypseus-singe standalone.  Stopping here."

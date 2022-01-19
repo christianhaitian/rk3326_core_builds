@@ -43,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make -C libretro -j$(($(nproc) - 1))
+	  make -C libretro -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

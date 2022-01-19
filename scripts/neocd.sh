@@ -12,25 +12,25 @@
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
-	# Libretro crocods build
-	if [[ "$var" == "crocods" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	# Libretro neocd build
+	if [[ "$var" == "neocd" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
-	  if [ ! -d "libretro-crocods/" ]; then
-		git clone https://github.com/libretro/libretro-crocods.git
+	  if [ ! -d "neocd/" ]; then
+		git clone https://github.com/libretro/neocd_libretro.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
 		  exit 1
 		 fi
-		cp patches/crocods-patch* libretro-crocods/.
+		cp patches/neocd-patch* neocd_libretro/.
 	  fi
 
-	 cd libretro-crocods/
+	 cd neocd_libretro/
 	 
-	 crocods_patches=$(find *.patch)
+	 neocd_patches=$(find *.patch)
 	 
-	 if [[ ! -z "$crocods_patches" ]]; then
-	  for patching in crocods-patch*
+	 if [[ ! -z "$neocd_patches" ]]; then
+	  for patching in neocd-patch*
 	  do
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
@@ -47,21 +47,21 @@ bitness="$(getconf LONG_BIT)"
 
 	  if [[ $? != "0" ]]; then
 		echo " "
-		echo "There was an error while building the newest lr-crocods core.  Stopping here."
+		echo "There was an error while building the newest lr-neocd core.  Stopping here."
 		exit 1
 	  fi
 
-	  strip crocods_libretro.so
+	  strip neocd_libretro.so
 
 	  if [ ! -d "../cores64/" ]; then
 		mkdir -v ../cores64
 	  fi
 
-	  cp crocods_libretro.so ../cores64/.
+	  cp neocd_libretro.so ../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$(getconf LONG_BIT)/crocods_libretro.so.commit
+	  echo $gitcommit > ../cores$(getconf LONG_BIT)/neocd_libretro.so.commit
 
 	  echo " "
-	  echo "crocods_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "neocd_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
 	fi

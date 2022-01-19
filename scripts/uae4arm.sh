@@ -64,11 +64,11 @@ bitness="$bitness"
 	 fi
 
 	 if [[ "$bitness" == "64" ]]; then
-	   make -f Makefile.libretro platform=unix_aarch64 "CPU_FLAGS=-mcpu=cortex-a35+crypto+crc" -j$(($(nproc) - 1))
+	   make -f Makefile.libretro platform=unix_aarch64 "CPU_FLAGS=-mcpu=cortex-a35+crypto+crc" -j$(nproc)
 	 else
 	   sed -i '/a53/s//a35/' Makefile.libretro
 	   sed -i '/rpi3/s//rk3326/' Makefile.libretro
-	   make -f Makefile.libretro platform=rk3326 -j$(($(nproc) - 1))
+	   make -f Makefile.libretro platform=rk3326 -j$(nproc)
 	 fi
 
 	 if [[ $? != "0" ]]; then

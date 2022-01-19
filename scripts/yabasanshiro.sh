@@ -43,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make -C yabause/src/libretro clean
-	  make -C yabause/src/libretro platform=goadvance -j$(($(nproc) - 1))
+	  make -C yabause/src/libretro platform=goadvance -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

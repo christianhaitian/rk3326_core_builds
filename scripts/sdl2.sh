@@ -120,7 +120,7 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 	  #make install
 
 	  if [[ $? != "0" ]]; then
@@ -170,7 +170,7 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
        cd build
     fi
 
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

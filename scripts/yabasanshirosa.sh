@@ -99,7 +99,7 @@ bitness="$(getconf LONG_BIT)"
                  exit 1
                fi
             fi
-           make -j$(($(nproc) - 1))
+           make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error that occured while making the yabasanshiro standalone.  Stopping here."
