@@ -87,10 +87,13 @@ cd rk3326_core_builds
 `./builds.sh mgba`
 
 ### To build just mupen64plus-next:
-`./builds.sh mupen64plus-nx
+`./builds.sh mupen64plus-nx`
 
 ### To build just mupen64plus Standalone emulator:
-`./builds.sh mupen64plussa
+`./builds.sh mupen64plussa`
+
+### To build just neocd (64bit only):
+`./builds.sh neocd`
 
 ### To build just nestopia (64bit only):
 `./builds.sh nestopia`
