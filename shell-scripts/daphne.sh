@@ -3,7 +3,11 @@
 if  [[ $1 == "standalone" ]]; then
 
   directory=$(dirname "$2" | cut -d "/" -f2)
+
   unlink /opt/hypseus-singe/roms
+  if [ $? != 0 ]; then
+    sudo rm -rf /opt/hypseus-singe/roms
+  fi
   ln -sfv /$directory/daphne/roms/ /opt/hypseus-singe/roms
 
   dir="$2"
@@ -17,9 +21,9 @@ if  [[ $1 == "standalone" ]]; then
   sudo systemctl start singehotkey.service
 
   rm -f /home/ark/.asoundrc
-#  cd /opt/hypseus/
   cd /opt/hypseus-singe
-#  LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libSDL2-2.0.so.0.10.0 ./hypseus "$basefilename" vldp -framefile "$dir/$basefilename.txt" -fullscreen -useoverlaysb 2 $extraparams
+  
+  # Preloading sdl 2.0.10 because daphne emulation audio lags with sdl 2.0.16 for some reason
   LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libSDL2-2.0.so.0.10.0 ./hypseus-singe "$basefilename" vldp -framefile "$dir/$basefilename.txt" -fullscreen -useoverlaysb 2 $extraparams
   rm *.csv
   cp /home/ark/.asoundrcbak /home/ark/.asoundrc
