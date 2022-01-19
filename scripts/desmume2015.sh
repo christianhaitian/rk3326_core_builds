@@ -44,7 +44,7 @@ bitness="$(getconf LONG_BIT)"
 
       cd desmume/
 	  make -f Makefile.libretro clean
-	  make -f Makefile.libretro platform=arm64-unix LDFLAGS="-lpthread" -j$(($(nproc) - 1))
+	  make -f Makefile.libretro platform=arm64-unix LDFLAGS="-lpthread" -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

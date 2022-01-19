@@ -48,9 +48,9 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  make clean
 	  if [[ "$bitness" == "32" ]]; then
-		make platform=Odroidgoa -lto -j$(($(nproc) - 1))
+		make platform=Odroidgoa -lto -j$(nproc)
 	  else
-		make platform=emuelec64-armv8 -lto -j$(($(nproc) - 1))
+		make platform=emuelec64-armv8 -lto -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then

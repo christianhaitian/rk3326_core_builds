@@ -46,7 +46,7 @@ bitness="$(getconf LONG_BIT)"
 	  mkdir build
 	  cd build
 	  cmake -DCMAKE_BUILD_TYPE=Release -DPORTABLE=ON ..
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

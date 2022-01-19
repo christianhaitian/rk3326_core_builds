@@ -75,7 +75,7 @@ bitness="$(getconf LONG_BIT)"
 	  mkdir build
 	  cd build
 	  cmake -DUSING_EGL=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -fpermissive ../.
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

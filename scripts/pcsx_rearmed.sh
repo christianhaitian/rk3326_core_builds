@@ -63,9 +63,9 @@ bitness="$(getconf LONG_BIT)"
 	  sed -i '/rpi3_64/s//rk3326_64/' Makefile.libretro
 
 	  if [[ "$bitness" == "64" ]]; then
-	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(($(nproc) - 1))
+	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
 	  else
-	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(($(nproc) - 1))
+	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
@@ -94,9 +94,9 @@ bitness="$(getconf LONG_BIT)"
 		  rm "$patching"
 
 		  if [[ "$bitness" == "64" ]]; then
-		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(($(nproc) - 1))
+		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
 		  else
-		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(($(nproc) - 1))
+		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
 		  fi
 
 		  if [[ $? != "0" ]]; then

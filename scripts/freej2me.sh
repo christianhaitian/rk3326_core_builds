@@ -43,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi 
 
       ant #This creates the needed freej2me-lr.jar for this emulator.  It will need to be copied to the bios folder.
-	  make -j$(($(nproc) - 1)) -C ./src/libretro
+	  make -j$(nproc) -C ./src/libretro
 
 	  if [[ $? != "0" ]]; then
 		echo " "

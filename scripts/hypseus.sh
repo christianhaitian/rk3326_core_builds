@@ -78,7 +78,7 @@ bitness="$(getconf LONG_BIT)"
            fi
 
            cd $cur_wd/hypseus/build
-           make -j$(($(nproc) - 1))
+           make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error that occured while making the hypseus.$(echo $patching | cut -d '-' -f 4 | cut -d '.' -f 1) standalone.  Stopping here."
