@@ -52,6 +52,18 @@ if [[ ! -f "/$directory/pico-8/$pico8executable" ]]; then
       printf "\033[0m" >> /dev/tty1
 fi
 
+if [[ ! -f "/$directory/pico-8/pico8.dat" ]]; then
+      printf "\033c" >> /dev/tty1
+      printf "\033[1;33m" >> /dev/tty1
+      printf "\n I don't detect a pico8.dat file in the" >> /dev/tty1
+      printf "\n /$directory/pico-8 folder.  Please place your purchased" >> /dev/tty1
+      printf "\n pico-8 files in this location and try to launch your" >> /dev/tty1
+      printf "\n cart again." >> /dev/tty1
+      sleep 10
+      printf "\033[0m" >> /dev/tty1
+      exit 1
+fi
+
 basefile=$(basename -- $2)
 basefilenoext=${basefile%.*}
 
