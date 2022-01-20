@@ -1,7 +1,11 @@
 #!/bin/bash
 
+res="480,320"
 if [[ -e "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick" ]]; then
   param_device="anbernic"
+  if [ -f "/boot/rk3326-rg351v-linux.dtb" ]; then
+    res="640,480"
+  fi
 elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
   if [[ ! -z $(cat /etc/emulationstation/es_input.cfg | grep "190000004b4800000010000001010000") ]]; then
     param_device="oga"
@@ -10,10 +14,16 @@ elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; the
   fi
 elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
   param_device="ogs"
+  res="854,480"
+  if [ -f "/boot/rk3326-rg351mp-linux.dtb" ]; then
+    res="640,480"
+  fi
 elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
   param_device="rg552"
+  res="1920,1152"
 else
   param_device="chi"
+  res="640,480"
 fi
 
 directory=$(dirname "$2" | cut -d "/" -f2)
@@ -63,7 +73,7 @@ else
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,480,320
 	else
-		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,480,320 -run "$2"
+		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res -run "$2"
 	fi
 fi
 
