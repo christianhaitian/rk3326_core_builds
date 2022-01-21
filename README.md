@@ -101,6 +101,9 @@ cd rk3326_core_builds
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
 
+### To build just opera (64bit only):
+`./builds.sh opera`
+
 ### To build just pce_fast (64bit Only):
 `./builds.sh pce_fast`
 
