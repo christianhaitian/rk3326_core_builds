@@ -44,6 +44,9 @@ cd rk3326_core_builds
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
+### To build just freeintv (64bit only):
+`./builds.sh freeintv`
+
 ### To build just gambatte (64bit only):
 `./builds.sh gambatte`
 
@@ -62,6 +65,12 @@ cd rk3326_core_builds
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
+### To build just hypseus (64bit only):
+`./builds.sh hypseus`
+
+### To build just hypseus-singe (64bit only):
+`./builds.sh hypseus-singe`
+
 ##To build just mame (64bit only); <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
 
@@ -77,11 +86,23 @@ cd rk3326_core_builds
 ### To build just mgba (64bit only):
 `./builds.sh mgba`
 
+### To build just mupen64plus-next:
+`./builds.sh mupen64plus-nx`
+
+### To build just mupen64plus Standalone emulator:
+`./builds.sh mupen64plussa`
+
+### To build just neocd (64bit only):
+`./builds.sh neocd`
+
 ### To build just nestopia (64bit only):
 `./builds.sh nestopia`
 
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
+
+### To build just opera (64bit only):
+`./builds.sh opera`
 
 ### To build just pce_fast (64bit Only):
 `./builds.sh pce_fast`
@@ -131,6 +152,9 @@ cd rk3326_core_builds
 ### To build just snes9x (64bit only):
 `./builds.sh snes9x`
 
+### To build just snes9x2005:
+`./builds.sh snes9x2005`
+
 ### To build just supafaust (64bit only):
 `./builds.sh supafaust`
 
@@ -148,6 +172,9 @@ cd rk3326_core_builds
 
 ### To build just yabasanshiro (32bit only):
 `./builds.sh yabasanshiro`
+
+### To build just yabasanshiro standalone:
+`./builds.sh yabasanshirosa`
 
 ### To build just retroarch:
 `./builds.sh retroarch`

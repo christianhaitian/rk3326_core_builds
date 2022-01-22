@@ -1,0 +1,13 @@
+diff --git a/src/main.c b/src/main.c
+index 04a46f0..cfc458a 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -748,7 +748,7 @@ static m64p_error ParseCommandLineMain(int argc, const char **argv)
+                 {
+                     if (fread(PIF_buffer, 1, PIF_ROM_SIZE, pifPtr) == PIF_ROM_SIZE)
+                     {
+-                        pif_status = (*CoreDoCommand)(M64CMD_PIF_OPEN, PIF_ROM_SIZE, PIF_buffer);
++                        //pif_status = (*CoreDoCommand)(M64CMD_PIF_OPEN, PIF_ROM_SIZE, PIF_buffer);
+                     }
+                     free(PIF_buffer);
+                 }

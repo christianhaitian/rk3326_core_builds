@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -34,9 +44,9 @@ bitness="$(getconf LONG_BIT)"
 	  make clean
       ./configure
 	  if [[ "$(getconf LONG_BIT)" == "64" ]]; then
-		make -f Makefile.libretro platform=arm64 -j$(($(nproc) - 1))
+		make -f Makefile.libretro platform=arm64 -j$(nproc)
 	  else
-		make -f Makefile.libretro platform=armv6 -j$(($(nproc) - 1))
+		make -f Makefile.libretro platform=armv6 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then

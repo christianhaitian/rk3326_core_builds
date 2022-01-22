@@ -1,9 +1,19 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro Pcsx_rearmed build
-	if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]] && [[ "$bitness" == "32" ]]; then
+	if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]]; then
 	# if [[ "$(getconf LONG_BIT)" != "32" ]]; then
 	#   echo " "
 	#   echo "This environment is not 32 bit.  Can't build the pcsx_rearmed core here."
@@ -46,7 +56,17 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-	  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(($(nproc) - 1))
+
+      sed -i '/a53/s//a35/g' Makefile.libretro
+      sed -i '/a72/s//a35/g' Makefile.libretro
+	  sed -i '/rpi3/s//rk3326/' Makefile.libretro
+	  sed -i '/rpi3_64/s//rk3326_64/' Makefile.libretro
+
+	  if [[ "$bitness" == "64" ]]; then
+	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
+	  else
+	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
+	  fi
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -56,11 +76,11 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip pcsx_rearmed_libretro.so
 
-	  if [ ! -d "../cores32/" ]; then
-		mkdir -v ../cores32
+	  if [ ! -d "../cores$bitness/" ]; then
+		mkdir -v ../cores$bitness
 	  fi
 
-	  cp pcsx_rearmed_libretro.so ../cores32/.
+	  cp pcsx_rearmed_libretro.so ../cores$bitness/.
 
 	  if [[ $pcsx_rearmed_rumblepatch == "yes" ]]; then
 		for patching in pcsx_rearmed-patch*
@@ -72,7 +92,12 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		  fi
 		  rm "$patching"
-		  make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(($(nproc) - 1))
+
+		  if [[ "$bitness" == "64" ]]; then
+		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
+		  else
+		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
+		  fi
 
 		  if [[ $? != "0" ]]; then
 			echo " "
@@ -82,7 +107,7 @@ bitness="$(getconf LONG_BIT)"
 
 		  strip pcsx_rearmed_libretro.so
 		  mv pcsx_rearmed_libretro.so pcsx_rearmed_rumble_libretro.so
-		  cp pcsx_rearmed_rumble_libretro.so ../cores32/.
+		  cp pcsx_rearmed_rumble_libretro.so ../cores$bitness/.
 		  echo " "
 		  echo "pcsx_rearmed_libretro.so and pcsx_rearmed_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores32 subfolder"
 	      gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)

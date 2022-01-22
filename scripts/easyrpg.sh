@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -27,7 +37,7 @@ bitness="$(getconf LONG_BIT)"
          cd liblcf
          autoreconf -i
          ./configure
-         make -j$(($(nproc) - 1))
+         make -j$(nproc)
 	     if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error while building the newest liblcf library.  Stopping here."
@@ -65,7 +75,7 @@ bitness="$(getconf LONG_BIT)"
      autoreconf -i
      ./configure
      cmake -DPLAYER_TARGET_PLATFORM=libretro -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo .
-     #make -j$(($(nproc) - 1))
+     #make -j$(nproc)
      cmake --build . -j $(($(nproc) - 1))
 
 	  if [[ $? != "0" ]]; then

@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -68,7 +78,7 @@ bitness="$(getconf LONG_BIT)"
            fi
 
            cd $cur_wd/hypseus/build
-           make -j$(($(nproc) - 1))
+           make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error that occured while making the hypseus.$(echo $patching | cut -d '-' -f 4 | cut -d '.' -f 1) standalone.  Stopping here."

@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
+
 cur_wd="$PWD"
 valid_id='^[0-9]+$'
 es_git="https://github.com/christianhaitian/EmulationStation-fcamod.git"
@@ -14,13 +24,25 @@ do
       source scripts/"$var".sh
   else
       cd $cur_wd
+      source scripts/atari800.sh
+      cd $cur_wd
+      source scripts/bluemsx.sh
+      cd $cur_wd
       source scripts/cap32.sh
+      cd $cur_wd
+      source scripts/crocods.sh
+      cd $cur_wd
+      source scripts/desmume2015.sh
       cd $cur_wd
       source scripts/dosbox_pure.sh
       cd $cur_wd
       source scripts/duckstation.sh
       cd $cur_wd
+      source scripts/easyrpg.sh
+      cd $cur_wd
       source scripts/fbneo.sh
+      cd $cur_wd
+      source scripts/fceumm.sh
       cd $cur_wd
       source scripts/flycast.sh
       cd $cur_wd
@@ -32,9 +54,19 @@ do
       cd $cur_wd
       source scripts/gpsp.sh
       cd $cur_wd
+      source scripts/handy.sh
+      cd $cur_wd
+      source scripts/melonds.sh
+      cd $cur_wd
       source scripts/mgba.sh
       cd $cur_wd
+      source scripts/mupen64plus-next.sh
+      cd $cur_wd
+      source scripts/nestopia.sh
+      cd $cur_wd
       source scripts/parallel-n64.sh
+      cd $cur_wd
+      source scripts/pce-fast.sh
       cd $cur_wd
       source scripts/pcsx_rearmed.sh
       cd $cur_wd
@@ -46,6 +78,10 @@ do
       cd $cur_wd
       source scripts/ppsspp-libretro.sh
       cd $cur_wd
+      source scripts/puae.sh
+      cd $cur_wd
+      source scripts/px68k.sh
+      cd $cur_wd
       source scripts/quicknes.sh
       cd $cur_wd
       source scripts/sameboy.sh
@@ -56,7 +92,11 @@ do
       cd $cur_wd
       source scripts/snes9x.sh
       cd $cur_wd
+      source scripts/snes9x2005.sh
+      cd $cur_wd
       source scripts/supafaust.sh
+      cd $cur_wd
+      source scripts/uae4arm.sh
       cd $cur_wd
       source scripts/yabasanshiro.sh
       #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is towards the end of this script.

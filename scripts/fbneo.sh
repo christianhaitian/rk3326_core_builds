@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -32,7 +42,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi 
 
-	  make -j$(($(nproc) - 1)) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
+	  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
 
 	  if [[ $? != "0" ]]; then
 		echo " "

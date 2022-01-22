@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 minfluidsynthverneeded="3"
@@ -56,7 +66,7 @@ minfluidsynthverneeded="3"
       mkdir build
       cd build      
       cmake -DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX="" ..
-      make -j$(($(nproc) - 1))
+      make -j$(nproc)
 	  if [[ $? != "0" ]]; then
 	    echo " "
 	    echo "There was an error while building the latest fluidsynth.  Stopping here."
@@ -78,7 +88,7 @@ minfluidsynthverneeded="3"
 
 	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release --force-opengl-game-es2
 	  make clean
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

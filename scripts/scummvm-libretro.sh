@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -32,7 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-      make -C backends/platform/libretro/build CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(($(nproc) - 1))
+	  sed -i '/a53/s//a35/' backends/platform/libretro/build/Makefile
+	  sed -i '/rpi3_64/s//rk3326/' backends/platform/libretro/build/Makefile
+	  make -C backends/platform/libretro/build platform=rk3326 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
