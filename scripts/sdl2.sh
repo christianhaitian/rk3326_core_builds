@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
@@ -110,7 +120,7 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 	  #make install
 
 	  if [[ $? != "0" ]]; then
@@ -160,7 +170,7 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
        cd build
     fi
 
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

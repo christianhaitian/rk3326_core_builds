@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -64,7 +74,7 @@ bitness="$(getconf LONG_BIT)"
 	  mkdir build
 	  cd build
 	  cmake -DLIBRETRO=ON -DUSING_FBDEV=ON -DUSING_EGL=ON -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO ../.
-	  make -j$(($(nproc) - 1))
+	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

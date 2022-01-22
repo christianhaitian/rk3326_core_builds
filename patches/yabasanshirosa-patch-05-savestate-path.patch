@@ -1,0 +1,36 @@
+diff --git a/yabause/src/retro_arena/main.cpp b/yabause/src/retro_arena/main.cpp
+index 599878d9..4a832be8 100644
+--- a/yabause/src/retro_arena/main.cpp
++++ b/yabause/src/retro_arena/main.cpp
+@@ -286,14 +286,19 @@ int main(int argc, char** argv)
+ 
+   // Inisialize home directory
+   std::string home_dir = getenv("HOME");
++  std::string home_dir2 = getenv("HOME");
+   home_dir = "/opt/yabasanshiro/";
++  home_dir2 = "/roms2/saturn/yabasanshiro/";
+   struct stat st = {0};
+   if (stat(home_dir.c_str(), &st) == -1) {
+     mkdir(home_dir.c_str(), 0700);
+   }  
+-  std::string bckup_dir = home_dir + "backup.bin";
++  if (stat(home_dir2.c_str(), &st) == -1) {
++    home_dir2 = "/roms/saturn/yabasanshiro/";
++  }  
++  std::string bckup_dir = home_dir2 + "backup.bin";
+   strcpy( buppath, bckup_dir.c_str() );
+-  strcpy( s_savepath, home_dir.c_str() );
++  strcpy( s_savepath, home_dir2.c_str() );
+   g_keymap_filename = home_dir + "keymapv2.json";
+ 
+   std::string current_exec_name = argv[0]; // Name of the current exec program
+@@ -597,7 +602,8 @@ int main(int argc, char** argv)
+         if( ret == 0 ){
+           char pngname[256];
+           snprintf(pngname,256,"%s/%s_%d.png", s_savepath, cdip->itemnum, e.user.code);
+-          fs::copy(tmpfilename, pngname, fs::copy_options::overwrite_existing );
++          //fs::copy(tmpfilename, pngname, fs::copy_options::overwrite_existing );
++          system((std::string("cp -f ") + tmpfilename + " " + pngname).c_str()); 
+         }
+         hideMenuScreen();
+       }

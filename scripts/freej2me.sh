@@ -1,4 +1,14 @@
 #!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
@@ -33,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi 
 
       ant #This creates the needed freej2me-lr.jar for this emulator.  It will need to be copied to the bios folder.
-	  make -j$(($(nproc) - 1)) -C ./src/libretro
+	  make -j$(nproc) -C ./src/libretro
 
 	  if [[ $? != "0" ]]; then
 		echo " "
