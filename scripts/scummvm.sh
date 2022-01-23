@@ -56,7 +56,7 @@ minfluidsynthverneeded="3"
      done
 
      fluidsynthver=$(ldconfig -p | grep -m 1 "libfluidsynth.so" | cut -c -19 | cut -c 19-)
-     if [[ "$fluidsynthver" < "$minfluidsynthverneeded" ]; then
+     if [[ "$fluidsynthver" < "$minfluidsynthverneeded" ]]; then
       echo " "
       echo "You either don't have libfluidsynth installed or the version you have is to old, let's build and install the latest version"
       sleep 5
