@@ -21,17 +21,29 @@ for var in $@
 do
   if [[ "$var" != "all" ]] && [[ "$var" != "ALL" ]]; then
       cd $cur_wd
+      bittest=$(head -20 scripts/"$var".sh | grep -i '"$bitness" == ' | tr -dc '0-9')
+      bitresult=${bittest: -2}
+      if [[ ! -z $bitresult ]] && [[ $bitresult != $bitness ]]; then
+        echo "$var cannot be built in this current ${bitness}bit environment."
+        exit 1
+      fi
       source scripts/"$var".sh
   else
+       cur_var="$var"
+       var=all
        for build_this in scripts/*.sh
        do
+           bittest=$(head -20 $build_this | grep -i '"$bitness" == ' | tr -dc '0-9')
+           bitresult=${bittest: -2}
            if [[ $build_this == *"mame"* ]] || [[ $build_this == *"mess"* ]]; then
              echo "Skipping $build_this for now.  We'll build this last if ALL was requested."
-           elif [[ $build_this == *"mupen64plus-"* ]] || [[ $build_this == *"mupen64plussa"* ]]; then
+           elif [[ -z "$(grep '"$var" == "all"' $build_this)" ]]; then
              echo "Skipping $build_this as it's not a libretro core"
+           elif [[ ! -z $bitresult ]] && [[ $bitresult != $bitness ]]; then
+             echo "Skipping $build_this as it's not to be built in this current ${bitness}bit environment"
            else
                 cd $cur_wd
-                source $build_this all
+                source $build_this
                 if [[ $? != "0" ]]; then
                      echo " "
                      echo "There was an error while processing $build_this.  Stopping here."
@@ -39,7 +51,9 @@ do
                 fi
            fi
        done
+       var="$cur_var"
        if [[ "$var" == "ALL" ]]; then
+         var=all
          cd $cur_wd
          source scripts/mess.sh
          cd $cur_wd
