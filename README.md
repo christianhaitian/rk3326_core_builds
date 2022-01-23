@@ -14,8 +14,11 @@ git clone https://github.com/christianhaitian/rk3326_core_builds.git
 cd rk3326_core_builds
 ```
 
-### To build all libretro cores defined in the script:
+### To build all libretro core scripts except for mame and mess ones:
 `./builds.sh all`
+
+### To build all libretro core scripts including mame and mess ones (Warning, a very long build.  Maybe even over 24 hours!):
+`./builds.sh ALL`
 
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
