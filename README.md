@@ -47,6 +47,9 @@ cd rk3326_core_builds
 ### To build just fbneo (64bit only):
 `./builds.sh fbneo`
 
+### To build just fbneo standalone emulator (64bit only):
+`./builds.sh fbneosa`
+
 ### To build just freeintv (64bit only):
 `./builds.sh freeintv`
 
