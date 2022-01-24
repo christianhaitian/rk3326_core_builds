@@ -98,7 +98,7 @@ bitness="$(getconf LONG_BIT)"
 		  if [[ "$bitness" == "64" ]]; then
 		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
 		  else
-		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
+		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rpi3 -j$(nproc)
 		  fi
 
 		  if [[ $? != "0" ]]; then
