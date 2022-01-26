@@ -83,6 +83,8 @@ bitness="$(getconf LONG_BIT)"
                   exit 1
             fi
             mv pcsx_rearmed_libretro.so ../cores$bitness/pcsx_rearmed_peops_libretro.so
+            gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+            echo $gitcommit > ../cores$bitness/pcsx_rearmed_peops_libretro.so.commit
           fi
 
 	  if [[ $pcsx_rearmed_rumblepatch == "yes" ]]; then
@@ -136,7 +138,7 @@ bitness="$(getconf LONG_BIT)"
           fi
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
+	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_rumble_peops_libretro.so.commit
 
 	  echo " "
 	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
