@@ -26,6 +26,7 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd yabause/
+	 git reset --hard 7ae0de7abc378f6077aff0fd365ab25cff58b055
 	 
 	 yabasanshiro_patches=$(find *.patch)
 	 
