@@ -19,7 +19,7 @@ index 1021cf347..c5e5dcd5d 100644
 +        FORCE_GLES = 1
 +        USE_ARM_DRC = 1
 +        DYNAREC_DEVMIYAX = 1
-+        FLAGS += -mcpu=cortex-a72 -mtune=cortex-a72 -mfloat-abi=hard -mvectorize-with-neon-quad
++        FLAGS += -mcpu=cortex-a35 -mtune=cortex-a35 -mfloat-abi=hard -mvectorize-with-neon-quad
 +
  # ODROIDs
  else ifeq ($(platform), odroid-n2)
