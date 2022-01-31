@@ -28,7 +28,7 @@ if [[ $1 == *"standalone"* ]]; then
     fi
     cp -f /etc/emulationstation/es_input.cfg input.cfg
   fi
-  sudo ./oga_controls yabasanshiro $param_device &
+  sudo /opt/quitter/oga_controls yabasanshiro $param_device &
   if [[ $1 == "standalone-bios" ]]; then
     if [[ ! -f "/$directory/bios/saturn_bios.bin" ]]; then
       printf "\033c" >> /dev/tty1
