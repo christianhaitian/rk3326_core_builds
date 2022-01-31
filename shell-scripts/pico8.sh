@@ -83,7 +83,7 @@ elif [[ $1 == "pixel-perfect" ]]; then
 	fi
 else
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
-		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,480,320
+		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
 	else
 		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res -run "$2"
 	fi
