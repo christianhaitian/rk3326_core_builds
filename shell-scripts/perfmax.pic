@@ -1,0 +1,23 @@
+#!/bin/bash
+printf "\033c" >> /dev/tty1
+rm /home/ark/.asoundrc
+if [ -f "/roms/launchimages/loading.jpg" ]; then
+  image-viewer /roms/launchimages/loading.jpg &
+  PROC=$!
+  (sleep 1.5s; kill -9 $PROC)
+fi
+if [[ $1 == "On" ]] || [[ $1 == "standalone-bios" ]] || [[ $1 == "standalone-nobios" ]] || [[ $1 == "standalone-Rice" ]] || [[ $1 == "standalone-Glide64mk2" ]] || [[ $1 == "retrorun" ]] || [[ $1 == "retrorun32" ]] || [[ $2 == "flycast" ]] || [[ $2 == "flycast32_rumble" ]] || [[ $2 == "flycast_xtreme" ]] || [[ $2 == "reicast_xtreme" ]] || [[ $1 == "standalone" ]] || [[ $1 == "standalone-go" ]] || [[ $2 == "yabasanshiro" ]] || [[ $2 == "yabause" ]] || [[ $2 == "mupen64plus" ]] || [[ $2 == "parallel_n64" ]] || [[ $2 == "mupen64plus_next" ]] || [[ $2 == "pcsx_rearmed_rumble" ]] || [[ $2 == "pcsx_rearmed" ]] || [[ $2 == "duckstation" ]]; then
+  chmod 777 /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
+  chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
+  echo performance > /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
+  echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  echo performance > /sys/devices/platform/dmc/devfreq/dmc/governor
+else
+  chmod 777 /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
+  chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
+  echo simple_ondemand > /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
+  echo interactive > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  echo dmc_ondemand > /sys/devices/platform/dmc/devfreq/dmc/governor
+fi
