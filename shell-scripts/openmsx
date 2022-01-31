@@ -24,7 +24,7 @@ export OPENMSX_USER_DATA="/$directory/bios/openmsx/share"
 export OPENMSX_HOME=$(dirname "$3")
 export SDL_GAMECONTROLLERCONFIG_FILE="./gamecontrollerdb.txt" 
 ./gptokeyb -1 "openmsx" -c "/$directory/bios/openmsx/openmsx.gptk" &
-LD_LIBRARY_PATH=libs/ ./openmsx -script "/$directory/bios/openmsx/commands.txt" "$3" "$4" "$5"
+LD_LIBRARY_PATH=libs/ ./openmsx -script "/$directory/bios/openmsx/commands.txt" "$3"
 unset SDL_GAMECONTROLLERCONFIG_FILE
 sudo kill -9 $(pidof gptokeyb)
 sudo systemctl restart oga_events &
