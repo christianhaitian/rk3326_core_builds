@@ -1,15 +1,13 @@
-diff --git a/share/scripts/keybindings.tcl b/share/scripts/keybindings.tcl
-index cc624f1a4..fea8bc576 100644
---- a/share/scripts/keybindings.tcl
-+++ b/share/scripts/keybindings.tcl
-@@ -54,8 +54,8 @@ if {$tcl_platform(os) eq "Darwin"} {
- 	bind_default META+S savestate
- 	bind_default META+R loadstate
- } else {
--	bind_default ALT+F8 savestate
--	bind_default ALT+F7 loadstate
-+	bind_default ALT+F8 {savestate [guess_title]}
-+	bind_default ALT+F7 {loadstate [guess_title]}
+diff --git a/share/scripts/osd_menu.tcl b/share/scripts/osd_menu.tcl
+index e6f2991e8..46ba631c8 100644
+--- a/share/scripts/osd_menu.tcl
++++ b/share/scripts/osd_menu.tcl
+@@ -83,7 +83,7 @@ proc remove_button {} {
+ 	osd destroy main_menu_pop_up_button
  }
  
- # vdrive
+-if {![regexp dingux "[openmsx_info platform]"] && $::osd_menu_button} {
++if {![regexp dingux "[openmsx_info platform]"] && 0} {
+ 	add_button
+ }
+ 
