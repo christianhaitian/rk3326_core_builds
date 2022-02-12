@@ -1,0 +1,13 @@
+diff --git a/src/common/rendering/gles/gles_hwtexture.cpp b/src/common/rendering/gles/gles_hwtexture.cpp
+index 43425ce7d..1fe9a60ce 100644
+--- a/src/common/rendering/gles/gles_hwtexture.cpp
++++ b/src/common/rendering/gles/gles_hwtexture.cpp
+@@ -153,7 +153,7 @@ unsigned int FHardwareTexture::CreateTexture(unsigned char * buffer, int w, int
+ 	else
+ 	{
+ 		sourcetype = GL_BGRA;
+-		texformat = GL_RGBA;
++		texformat = GL_BGRA;
+ 	}
+ #endif
+ 
