@@ -62,6 +62,9 @@ cd rk3326_core_builds
 ### To build just gpsp:
 `./builds.sh gpsp`
 
+### To build just gzdoom standalone (64bit only):
+`./build.sh gzdoom`
+
 ### To build just fceumm (64bit only):
 `./builds.sh fceumm`
 
