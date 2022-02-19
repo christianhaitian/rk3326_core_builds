@@ -1,8 +1,8 @@
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 1ecd359..64cf932 100644
+index c2fc9d0..9c85ecb 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -320,7 +320,7 @@ else ifeq ($(platform), rpi2)
+@@ -327,7 +327,7 @@ else ifeq ($(platform), rpi2)
  else ifeq ($(platform), rpi3)
  	TARGET := $(TARGET_NAME)_libretro.so
  	fpic := -fPIC
@@ -11,3 +11,31 @@ index 1ecd359..64cf932 100644
  	ASFLAGS += -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
  	HAVE_NEON = 1
  	ARCH = arm
+@@ -363,6 +363,27 @@ else ifeq ($(platform), rpi4_64)
+         fpic := -fPIC
+         CFLAGS += -march=armv8-a+crc+simd -mtune=cortex-a72 -ftree-vectorize
+ 
++# Odroid-Go Advance (32 bit)
++else ifeq ($(platform), rk3326)
++    TARGET := $(TARGET_NAME)_libretro.so
++    fpic := -fPIC
++    CFLAGS += -fmerge-all-constants -fno-math-errno -march=armv8-a \
++    -marm -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++    HAVE_NEON = 1
++    ARCH = arm
++    BUILTIN_GPU = neon
++    DYNAREC = ari64
++    LDFLAGS += -static-libgcc -static-libstdc++ -fPIC 
++
++# Odroid-Go Advance (32 bit)
++else ifeq ($(platform), rk3326_64)
++    TARGET := $(TARGET_NAME)_libretro.so
++    ARCH := arm64
++    BUILTIN_GPU = peops
++    DYNAREC = ari64
++    fpic := -fPIC
++    CFLAGS += -march=armv8-a+crc+simd -mtune=cortex-a35 -ftree-vectorize 
++
+ # Classic Platforms ####################
+ # Platform affix = classic_<ISA>_<µARCH>
+ # Help at https://modmyclassic.com/comp

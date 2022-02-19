@@ -1,0 +1,13 @@
+diff --git a/src/burner/sdl/drv.cpp b/src/burner/sdl/drv.cpp
+index 134471476..5e9fe96a6 100644
+--- a/src/burner/sdl/drv.cpp
++++ b/src/burner/sdl/drv.cpp
+@@ -3,7 +3,7 @@
+ #include "neocdlist.h"
+ int bDrvOkay = 0;                       // 1 if the Driver has been initted okay, and it's okay to use the BurnDrv functions
+ 
+-char szAppRomPaths[DIRS_MAX][MAX_PATH] = { { "/usr/local/share/roms/" }, { "roms/" }, };
++char szAppRomPaths[DIRS_MAX][MAX_PATH] = { { "/roms/arcade/" }, { "/roms/neogeo/" }, { "/roms/neocd/" }, { "/roms2/arcade/" }, { "/roms2/neogeo/" }, { "/roms2/neocd/" }, };
+ 
+ static bool bSaveRAM = false;
+ 

@@ -1,0 +1,22 @@
+diff --git a/yabause/src/retro_arena/MenuScreen.cpp b/yabause/src/retro_arena/MenuScreen.cpp
+index 33591a44..ba39804d 100644
+--- a/yabause/src/retro_arena/MenuScreen.cpp
++++ b/yabause/src/retro_arena/MenuScreen.cpp
+@@ -77,7 +77,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+   swindow = nullptr;
+   imageWindow = nullptr;
+ 
+-  int image_pix_size_w = this->width() / 2;
++  /*int image_pix_size_w = this->width() / 2;
+   int image_pix_size_h = this->height() / 2;
+   imageWindow = new Window(this, "About");                                                                                                         
+   imageWindow->setPosition(Vector2i(0, 0));                                                                                                                   
+@@ -92,7 +92,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+   imageView->setFixedWidth(image_pix_size_w);
+   imageView->setFixedHeight(image_pix_size_h);
+   imageWindow->center();
+-  //imageWindow->setModal(true);
++  //imageWindow->setModal(true);*/
+ 
+   std::string title = "Yaba Sanshiro "+ std::string(YAB_VERSION) +" Menu";
+         window = new Window(this, title);
