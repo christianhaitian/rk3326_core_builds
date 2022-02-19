@@ -14,12 +14,6 @@ bitness="$(getconf LONG_BIT)"
 
 	# Libretro Pcsx_rearmed build
 	if [[ "$var" == "pcsx_rearmed" || "$var" == "all" ]]; then
-	# if [[ "$(getconf LONG_BIT)" != "32" ]]; then
-	#   echo " "
-	#   echo "This environment is not 32 bit.  Can't build the pcsx_rearmed core here."
-	#   echo " "
-	#   exit 1
-	# fi
 	 pcsx_rearmed_rumblepatch="no"
 	 cd $cur_wd
 	  if [ ! -d "pcsx_rearmed/" ]; then
@@ -33,9 +27,9 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd pcsx_rearmed/
-	 
+
 	 pcsx_rearmed_patches=$(find *.patch)
-	 
+
 	 if [[ ! -z "$pcsx_rearmed_patches" ]]; then
 	  for patching in pcsx_rearmed-patch*
 	  do
@@ -55,17 +49,15 @@ bitness="$(getconf LONG_BIT)"
 		 fi
 	  done
 	 fi
-	  make clean
+	  make -f Makefile.libretro clean
 
-      sed -i '/a53/s//a35/g' Makefile.libretro
-      sed -i '/a72/s//a35/g' Makefile.libretro
-	  sed -i '/rpi3/s//rk3326/' Makefile.libretro
-	  sed -i '/rpi3_64/s//rk3326_64/' Makefile.libretro
+	  sed -i '/a53/s//a35/g' Makefile.libretro
+ 	  sed -i '/a72/s//a35/g' Makefile.libretro
 
 	  if [[ "$bitness" == "64" ]]; then
 	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
 	  else
-	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
+	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rk3326 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
@@ -80,7 +72,20 @@ bitness="$(getconf LONG_BIT)"
 		mkdir -v ../cores$bitness
 	  fi
 
-	  cp pcsx_rearmed_libretro.so ../cores$bitness/.
+	  mv pcsx_rearmed_libretro.so ../cores$bitness/.
+
+          if [[ "$bitness" == "32" ]]; then
+            make -f Makefile.libretro clean
+            make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=peops THREAD_RENDERING=1 DYNAREC=ari64 platform=rk3326
+            if [[ $? != "0" ]]; then
+                  echo " "
+                  echo "There was an error while building the newest lr-pcsx_rearmed_peops core.  Stopping here."
+                  exit 1
+            fi
+            mv pcsx_rearmed_libretro.so ../cores$bitness/pcsx_rearmed_peops_libretro.so
+            gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+            echo $gitcommit > ../cores$bitness/pcsx_rearmed_peops_libretro.so.commit
+          fi
 
 	  if [[ $pcsx_rearmed_rumblepatch == "yes" ]]; then
 		for patching in pcsx_rearmed-patch*
@@ -93,10 +98,11 @@ bitness="$(getconf LONG_BIT)"
 		  fi
 		  rm "$patching"
 
+		  make -f Makefile.libretro clean
 		  if [[ "$bitness" == "64" ]]; then
 		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
 		  else
-		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rrk3326 -j$(nproc)
+		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rk3326 -j$(nproc)
 		  fi
 
 		  if [[ $? != "0" ]]; then
@@ -115,8 +121,24 @@ bitness="$(getconf LONG_BIT)"
 		done
 	  fi
 
+	  make -f Makefile.libretro clean
+          if [[ "$bitness" == "32" ]]; then
+            make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=peops THREAD_RENDERING=1 DYNAREC=ari64 platform=rk3326
+            if [[ $? != "0" ]]; then
+                  echo " "
+                  echo "There was an error while building the newest lr-pcsx_rearmed_rumble_peops core.  Stopping here."
+                  exit 1
+            fi
+            mv pcsx_rearmed_libretro.so ../cores$bitness/pcsx_rearmed_rumble_peops_libretro.so
+            gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+            echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
+
+            echo " "
+            echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+          fi
+
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
+	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_rumble_peops_libretro.so.commit
 
 	  echo " "
 	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"

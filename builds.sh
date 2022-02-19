@@ -19,91 +19,47 @@ bitness="$(getconf LONG_BIT)"
 
 for var in $@
 do
-  if [[ "$var" != "all" ]]; then
+  if [[ "$var" != "all" ]] && [[ "$var" != "ALL" ]]; then
       cd $cur_wd
+      bittest=$(head -20 scripts/"$var".sh | grep -i '"$bitness" == ' | tr -dc '0-9')
+      bitresult=${bittest: -2}
+      if [[ ! -z $bitresult ]] && [[ $bitresult != $bitness ]]; then
+        echo "$var cannot be built in this current ${bitness}bit environment."
+        exit 1
+      fi
       source scripts/"$var".sh
   else
-      cd $cur_wd
-      source scripts/atari800.sh
-      cd $cur_wd
-      source scripts/bluemsx.sh
-      cd $cur_wd
-      source scripts/cap32.sh
-      cd $cur_wd
-      source scripts/crocods.sh
-      cd $cur_wd
-      source scripts/desmume2015.sh
-      cd $cur_wd
-      source scripts/dosbox_pure.sh
-      cd $cur_wd
-      source scripts/duckstation.sh
-      cd $cur_wd
-      source scripts/easyrpg.sh
-      cd $cur_wd
-      source scripts/fbneo.sh
-      cd $cur_wd
-      source scripts/fceumm.sh
-      cd $cur_wd
-      source scripts/flycast.sh
-      cd $cur_wd
-      source scripts/fmsx.sh
-      cd $cur_wd
-      source scripts/gambatte.sh
-      cd $cur_wd
-      source scripts/genesis-plus-gx.sh
-      cd $cur_wd
-      source scripts/gpsp.sh
-      cd $cur_wd
-      source scripts/handy.sh
-      cd $cur_wd
-      source scripts/melonds.sh
-      cd $cur_wd
-      source scripts/mgba.sh
-      cd $cur_wd
-      source scripts/mupen64plus-next.sh
-      cd $cur_wd
-      source scripts/nestopia.sh
-      cd $cur_wd
-      source scripts/parallel-n64.sh
-      cd $cur_wd
-      source scripts/pce-fast.sh
-      cd $cur_wd
-      source scripts/pcsx_rearmed.sh
-      cd $cur_wd
-      source scripts/pcfx.sh
-      cd $cur_wd
-      source scripts/picodrive.sh
-      cd $cur_wd
-      source scripts/pokemini.sh
-      cd $cur_wd
-      source scripts/ppsspp-libretro.sh
-      cd $cur_wd
-      source scripts/puae.sh
-      cd $cur_wd
-      source scripts/px68k.sh
-      cd $cur_wd
-      source scripts/quicknes.sh
-      cd $cur_wd
-      source scripts/sameboy.sh
-      cd $cur_wd
-      source scripts/sameduck.sh
-      cd $cur_wd
-      source scripts/scummvm-libretro.sh
-      cd $cur_wd
-      source scripts/snes9x.sh
-      cd $cur_wd
-      source scripts/snes9x2005.sh
-      cd $cur_wd
-      source scripts/supafaust.sh
-      cd $cur_wd
-      source scripts/uae4arm.sh
-      cd $cur_wd
-      source scripts/yabasanshiro.sh
-      #Warning...mess is a very long build.  Could be over 24 hours to complete.  That is why it is towards the end of this script.
-      cd $cur_wd
-      source scripts/mess.sh
-      #Warning...mame is a very long build.  Could be over 24 hours to complete.  That is why it is last in this script.
-      cd $cur_wd
-      source scripts/mame.sh
+       cur_var="$var"
+       var=all
+       for build_this in scripts/*.sh
+       do
+           bittest=$(head -20 $build_this | grep -i '"$bitness" == ' | tr -dc '0-9')
+           bitresult=${bittest: -2}
+           if [[ $build_this == *"mame"* ]] || [[ $build_this == *"mess"* ]]; then
+             echo "Skipping $build_this for now.  We'll build this last if ALL was requested."
+           elif [[ -z "$(grep '"$var" == "all"' $build_this)" ]]; then
+             echo "Skipping $build_this as it's not a libretro core"
+           elif [[ ! -z $bitresult ]] && [[ $bitresult != $bitness ]]; then
+             echo "Skipping $build_this as it's not to be built in this current ${bitness}bit environment"
+           else
+                cd $cur_wd
+                source $build_this
+                if [[ $? != "0" ]]; then
+                     echo " "
+                     echo "There was an error while processing $build_this.  Stopping here."
+                     exit 1
+                fi
+           fi
+       done
+       var="$cur_var"
+       if [[ "$var" == "ALL" ]]; then
+         var=all
+         cd $cur_wd
+         source scripts/mess.sh
+         cd $cur_wd
+         source scripts/mame.sh
+         cd $cur_wd
+         source scripts/mame2003-plus.sh
+       fi
   fi
 done
