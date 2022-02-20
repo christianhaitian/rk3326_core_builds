@@ -15,7 +15,7 @@
 # Clear the screen
 printf "\033c" >> /dev/tty1
 # Process psx games in the root of the psx folder if they exist
-cd /roms2/psx
+cd /roms/psx
 if [ $(ls -1 *.cue 2>/dev/null | wc -l) != 0 ]
 then
   for c in *.cue
@@ -57,7 +57,7 @@ then
 fi
 
 # Process psx games in sub folders of the psx folder if they exist
-for f in /roms2/psx/*/
+for f in /roms/psx/*/
 do
  cd "$f"
 
@@ -103,16 +103,15 @@ do
 done
 
 # Print all m3u files that were created to the screen
-for f in /roms2/psx/*/*.m3u
+for f in /roms/psx/*/*.m3u
 do
   printf "Added $f\n" >> /dev/tty1
 done
 
-for f in /roms2/psx/*.m3u
+for f in /roms/psx/*.m3u
 do
   printf "Added $f\n" >> /dev/tty1
 done
 printf "\nEmulationstation will now be restarted." >> /dev/tty1
 sleep 3
-printf "\033c" >> /dev/tty1
 sudo systemctl restart emulationstation
