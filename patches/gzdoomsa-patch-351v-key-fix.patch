@@ -1,0 +1,34 @@
+diff --git a/src/common/console/keydef.h b/src/common/console/keydef.h
+index 108806774..4f21cd7f1 100644
+--- a/src/common/console/keydef.h
++++ b/src/common/console/keydef.h
+@@ -75,6 +75,9 @@ enum EKeyCodes
+ 	KEY_JOY6,
+ 	KEY_JOY7,
+ 	KEY_JOY8,
++        KEY_JOY11,
++        KEY_JOY12,
++        KEY_JOY13,
+ 	KEY_JOY14			= KEY_FIRSTJOYBUTTON+13,
+ 	KEY_JOY15			= KEY_FIRSTJOYBUTTON+14,
+ 	KEY_LASTJOYBUTTON		= 0x187,
+diff --git a/src/common/menu/menu.cpp b/src/common/menu/menu.cpp
+index 9f19c2c82..89017d67b 100644
+--- a/src/common/menu/menu.cpp
++++ b/src/common/menu/menu.cpp
+@@ -696,13 +696,13 @@ bool M_Responder (event_t *ev)
+ 			case KEY_JOY3:
+ 			case KEY_JOY15:
+ 			case KEY_PAD_A:
+-				mkey = MKEY_Back;
++				mkey = MKEY_Enter;
+ 				break;
+ 
+ 			case KEY_JOY2:
+ 			case KEY_JOY14:
+ 			case KEY_PAD_B:
+-				mkey = MKEY_Enter;
++				mkey = MKEY_Back;
+ 				break;
+ 
+ 			case KEY_JOY4:

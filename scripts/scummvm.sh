@@ -86,7 +86,7 @@ minfluidsynthverneeded="3"
       cd ../..
      fi      
 
-	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release --force-opengl-game-es2
+	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
 	  make clean
 	  make -j$(nproc)
 

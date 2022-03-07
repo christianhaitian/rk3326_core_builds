@@ -14,6 +14,8 @@ bitness="$(getconf LONG_BIT)"
 
 	# gzdoom Standalone build
 	if [[ "$var" == "gzdoom" ]] && [[ "$bitness" == "64" ]]; then
+	 chi_patch="no"
+	 rg351v_patch="no"
 	 cd $cur_wd
 
 	  # Now we'll start the clone and build of gzdoom
@@ -87,6 +89,17 @@ bitness="$(getconf LONG_BIT)"
 	 if [[ ! -z "$gzdoomsa_patches" ]]; then
 	  for patching in gzdoomsa-patch*
 	  do
+		 if [[ $patching == *"chi"* ]]; then
+		   echo " "
+		   echo "Skipping the $patching for now and making a note to apply that later"
+		   sleep 3
+		   chi_patch="yes"
+		 elif [[ $patching == *"351v"* ]]; then
+                   echo " "
+                   echo "Skipping the $patching for now and making a note to apply that later"
+                   sleep 3
+                   rg351v_patch="yes"
+		 else  
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
 			echo " "
@@ -94,6 +107,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		   fi
 		   rm "$patching"
+		 fi
 	  done
 	  fi
 
@@ -127,7 +141,56 @@ bitness="$(getconf LONG_BIT)"
 	       cp gzdoom ../../gzdoom$bitness/gzdoom
 	       cp *.pk3 ../../gzdoom$bitness/
 
-	       echo " "
-	       echo "The gzdoom executable and associated .pk3 files have been created and have been placed in the rk3326_core_builds/gzdoom$bitness subfolder"
+          if [[ $rg351v_patch == "yes" ]]; then
+                cd ..
+                for patching in gzdoomsa-patch-351v*
+                do
+                  patch -Np1 < "$patching"
+                  if [[ $? != "0" ]]; then
+                        echo " "
+                        echo "There was an error while patching in the key fix for the RG351V from $patching.  Stopping here."
+                        exit 1
+                  fi
+                  rm "$patching"
+                done
+                cd build
+                make -j$(nproc)
+                if [[ $? != "0" ]]; then
+                     echo " "
+                     echo "There was an error that occured while making the gzdoom standalone for the RG351V.  Stopping here."
+                     exit 1
+                fi
+                strip gzdoom
+
+                cp gzdoom ../../gzdoom$bitness/gzdoom.351v
+                echo " "
+                echo "The gzdoom.351v executable file haa been created and been placed in the rk3326_core_builds/gzdoom$bitness subfolder"
+          fi
+
+	  if [[ ${chi_patch} == "yes" ]]; then
+                cd ..
+		for patching in gzdoomsa-patch-chi*
+		do
+		  patch -Np1 < "$patching"
+		  if [[ $? != "0" ]]; then
+			echo " "
+			echo "There was an error while patching in the key fix for the Gameforce Chi from $patching.  Stopping here."
+			exit 1
+		  fi
+		  rm "$patching"
+		done
+		cd build
+		make -j$(nproc)
+		if [[ $? != "0" ]]; then
+		     echo " "
+		     echo "There was an error that occured while making the gzdoom standalone for the chi.  Stopping here."
+		     exit 1
+		fi
+		strip gzdoom
+
+		cp gzdoom ../../gzdoom$bitness/gzdoom.chi
+		echo " "
+		echo "The gzdoom.chi executable file haa been created and been placed in the rk3326_core_builds/gzdoom$bitness subfolder"
+	  fi
 
 	fi
