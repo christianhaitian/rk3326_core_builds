@@ -119,6 +119,9 @@ cd rk3326_core_builds
 ### To build just pcfx (64bit Only):
 `./builds.sh pcfx`
 
+### To build just prboom (64bit Only):
+`./builds.sh prboom`
+
 ### To build just puae (64bit Only):
 `./builds.sh puae`
 
