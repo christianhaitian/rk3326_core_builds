@@ -11,7 +11,8 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
+#commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
+commit="b424665e0899769b200231ba943353a5fee1b6b6" # SDL 2.0.20 although it builds as 2.0.18.2 ¯\_(ツ)_/¯
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
@@ -130,9 +131,9 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.16.0
+	     strip build/.libs/libSDL2-2.0.so.0.18.2
 	  else
-	     strip libSDL2-2.0.so.0.16.0
+	     strip libSDL2-2.0.so.0.18.2
 	  fi
 
 	  if [ ! -d "$cur_wd/sdl2-$bitness/" ]; then
@@ -140,9 +141,9 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     cp build/.libs/libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/.
+	     cp build/.libs/libSDL2-2.0.so.0.18.2 $cur_wd/sdl2-$bitness/.
 	  else
-	     cp libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/.
+	     cp libSDL2-2.0.so.0.18.2 $cur_wd/sdl2-$bitness/.
 	  fi
 
 	  echo " "
@@ -179,11 +180,11 @@ commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.16.0
-	     cp build/.libs/libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.16.0.rotated
+	     strip build/.libs/libSDL2-2.0.so.0.18.2
+	     cp build/.libs/libSDL2-2.0.so.0.18.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.18.2.rotated
 	  else
-	     strip libSDL2-2.0.so.0.16.0
-	     cp libSDL2-2.0.so.0.16.0 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.16.0.rotated
+	     strip libSDL2-2.0.so.0.18.2
+	     cp libSDL2-2.0.so.0.18.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.18.2.rotated
       fi
 
 	  echo " "
