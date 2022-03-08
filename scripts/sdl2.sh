@@ -12,7 +12,7 @@
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 #commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
-commit="b424665e0899769b200231ba943353a5fee1b6b6" # SDL 2.0.20 although it builds as 2.0.18.2 ¯\_(ツ)_/¯
+commit="f9b918ff403782986f2a6712e6e2a462767a0457" # SDL 2.0.20 although it builds as 2.0.18.2 ¯\_(ツ)_/¯
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
