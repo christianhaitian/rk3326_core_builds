@@ -60,6 +60,12 @@ bitness="$(getconf LONG_BIT)"
 	 if [[ ! -z "$yabasanshirosa_patches" ]]; then
 	  for patching in yabasanshirosa-patch*
 	  do
+		 if [[ $patching == *"odroidgoa"* ]]; then
+		   echo " "
+		   echo "Skipping the $patching for now and making a note to apply that later"
+		   sleep 3
+		   yaba_menusizepatch="yes"
+		 else
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
 			echo " "
@@ -67,6 +73,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		   fi
 		   rm "$patching"
+         fi
 	  done
 	  fi
 
@@ -112,6 +119,38 @@ bitness="$(getconf LONG_BIT)"
 	       fi
 
 	       cp src/retro_arena/yabasanshiro ../../yabasanshirosa$bitness/yabasanshiro
+
+	       echo " "
+	       echo "The yabasanshiro executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
+
+            if [[ $yaba_menusizepatch == "yes" ]]; then
+              cd ..
+        	  for patching in yabasanshirosa-patch*
+        	  do
+        	    patch -Np1 < "$patching"
+        		if [[ $? != "0" ]]; then
+        		  echo " "
+        		  echo "There was an error while applying $patching.  Stopping here."
+        		  exit 1
+        		fi
+        		rm "$patching"
+        	  done
+        	fi
+
+           cd build
+           make -j$(nproc)
+           if [[ $? != "0" ]]; then
+		     echo " "
+		     echo "There was an error that occured while making the yabasanshiro standalone.  Stopping here."
+             exit 1
+           fi
+           strip src/retro_arena/yabasanshiro
+
+           if [ ! -d "../../yabasanshirosa$bitness/" ]; then
+		     mkdir -v ../../yabasanshirosa$bitness
+	       fi
+
+	       cp src/retro_arena/yabasanshiro ../../yabasanshirosa$bitness/yabasanshiro.oga
 
 	       echo " "
 	       echo "The yabasanshiro executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
