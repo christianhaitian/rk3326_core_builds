@@ -14,4 +14,8 @@ ln -s /$rootdirectory/$romsdirectory ~/.mednafen/sav
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/mcs
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/b
 
-/opt/mednafen/mednafen "$3"
+if [ "$romsdirectory" == "snes" ]; then
+  /opt/mednafen/mednafen -force_module snes_faust "$3"
+else
+  /opt/mednafen/mednafen "$3"
+fi
