@@ -14,7 +14,7 @@ ln -s /$rootdirectory/$romsdirectory ~/.mednafen/sav
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/mcs
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/b
 
-if [ "$romsdirectory" == "snes" ]; then
+if [ "$romsdirectory" == "snes" ] || [ "$romsdirectory" == "sfc" ] || [ "$romsdirectory" == "snes-hacks" ]; then
   /opt/mednafen/mednafen -force_module snes_faust "$3"
 else
   /opt/mednafen/mednafen "$3"
