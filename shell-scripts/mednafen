@@ -1,0 +1,17 @@
+#!/bin/bash
+
+rootdirectory=$(dirname "$3" | cut -d "/" -f2)
+romsdirectory=$(dirname "$3" | cut -d "/" -f3)
+
+rm -rf ~/.mednafen/firmware
+rm -rf ~/.mednafen/sav
+rm -rf ~/.mednafen/mcs
+rm -rf ~/.mednafen/b
+
+
+ln -s /$rootdirectory/bios ~/.mednafen/firmware
+ln -s /$rootdirectory/$romsdirectory ~/.mednafen/sav
+ln -s /$rootdirectory/$romsdirectory ~/.mednafen/mcs
+ln -s /$rootdirectory/$romsdirectory ~/.mednafen/b
+
+/opt/mednafen/mednafen "$3"
