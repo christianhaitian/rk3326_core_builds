@@ -86,6 +86,9 @@ cd rk3326_core_builds
 ### To build just mame2003-plus (64bit only):
 `./builds.sh mame2003-plus`
 
+### To build just mednafen Standalone emulator (64bit only):
+`./builds.sh mednafen`
+
 ### To build just melonds (64bit only):
 `./builds.sh melonds`
 
