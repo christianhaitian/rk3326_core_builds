@@ -15,7 +15,7 @@ ln -s /$rootdirectory/$romsdirectory ~/.mednafen/mcs
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/b
 
 if [[ "$2" != *"norecord"* ]]; then
-  recordingname=$(echo "/$rootdirectory/videos/recordings/$(ls "$3" | cut -d "/" -f4)$RANDOM.mov")
+  recordingname=$(echo "/$rootdirectory/videos/$(ls "$3" | cut -d "/" -f4)$RANDOM.mov")
   reqSpace=500000
   availSpace=$(df "/$rootdirectory" | awk 'NR==2 { print $4 }')
   if (( availSpace < reqSpace )); then
@@ -26,8 +26,8 @@ if [[ "$2" != *"norecord"* ]]; then
     printf "\033c" >> /dev/tty1
     exit 1
   fi
-  if [ ! -d "/$rootdirectory/videos/recordings" ]; then
-   mkdir /$rootdirectory/videos/recordings
+  if [ ! -d "/$rootdirectory/videos" ]; then
+   mkdir /$rootdirectory/videos
   fi
   if [ -f "$recordingname" ]; then
    rm -f "$recordingname"
