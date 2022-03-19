@@ -14,6 +14,12 @@ ln -s /$rootdirectory/$romsdirectory ~/.mednafen/sav
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/mcs
 ln -s /$rootdirectory/$romsdirectory ~/.mednafen/b
 
+if [[ "$2" == *"aspect"* ]]; then
+  sed -i 's/.stretch.*/.stretch aspect/g' ~/.mednafen/mednafen.cfg
+elif [[ "$2" == *"full"* ]]; then
+  sed -i 's/.stretch.*/.stretch full/g' ~/.mednafen/mednafen.cfg
+fi
+
 if [[ "$2" != *"norecord"* ]]; then
   recordingname=$(echo "/$rootdirectory/videos/$(ls "$3" | cut -d "/" -f4).$RANDOM.mov")
   reqSpace=500000
