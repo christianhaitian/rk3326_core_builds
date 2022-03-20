@@ -149,6 +149,9 @@ cd rk3326_core_builds
 ### To build just libretro-ppsspp (64bit only):
 `./builds.sh ppsspp-libretro`
 
+### To build just same_cdi (64bit only):
+`./builds.sh samecdi`
+
 ### To build just sameboy (64bit only):
 `./builds.sh sameboy`
 
