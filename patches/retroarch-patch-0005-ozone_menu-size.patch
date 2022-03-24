@@ -1,17 +1,17 @@
 diff --git a/menu/drivers/ozone.c b/menu/drivers/ozone.c
-index 01f9404769..30e3136d18 100644
+index e0e071954e..d5c7b97770 100644
 --- a/menu/drivers/ozone.c
 +++ b/menu/drivers/ozone.c
-@@ -6982,7 +6982,7 @@ static void *ozone_init(void **userdata, bool video_is_threaded)
+@@ -7173,7 +7173,7 @@ static void *ozone_init(void **userdata, bool video_is_threaded)
     ozone->last_width        = width;
     ozone->last_height       = height;
     ozone->last_scale_factor = gfx_display_get_dpi_scale(p_disp,
 -         settings, width, height, false, false);
 +         settings, width, height, false, false) * 1.2f;
+    ozone->last_thumbnail_scale_factor = settings->floats.ozone_thumbnail_scale_factor;
  
     file_list_initialize(&ozone->selection_buf_old);
- 
-@@ -7370,7 +7370,7 @@ static void ozone_set_layout(
+@@ -7570,7 +7570,7 @@ static void ozone_set_layout(
     if (!ozone)
        return;
  
@@ -20,16 +20,16 @@ index 01f9404769..30e3136d18 100644
  
     /* Calculate dimensions */
     ozone->dimensions.header_height                 = HEADER_HEIGHT * scale_factor;
-@@ -8058,7 +8058,7 @@ static void ozone_render(void *data,
+@@ -8273,7 +8273,7 @@ static void ozone_render(void *data,
     /* Check whether screen dimensions or menu scale
      * factor have changed */
     scale_factor = gfx_display_get_dpi_scale(p_disp, settings,
 -         width, height, false, false);
 +         width, height, false, false) * 1.2f;
+    thumbnail_scale_factor = settings->floats.ozone_thumbnail_scale_factor;
  
     if ((scale_factor != ozone->last_scale_factor) ||
-        (width != ozone->last_width) ||
-@@ -8607,10 +8607,10 @@ static void ozone_draw_header(
+@@ -8825,10 +8825,10 @@ static void ozone_draw_header(
           gfx_display_draw_text(
                 ozone->fonts.time.font,
                 msg,
@@ -42,7 +42,7 @@ index 01f9404769..30e3136d18 100644
                 video_height,
                 ozone->theme->text_rgba,
                 TEXT_ALIGN_RIGHT,
-@@ -8632,12 +8632,12 @@ static void ozone_draw_header(
+@@ -8850,12 +8850,12 @@ static void ozone_draw_header(
                       status_icon_size,
                       status_icon_size,
                       ozone->icons_textures[powerstate.charging? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_CHARGING : (powerstate.percent > 80)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_FULL : (powerstate.percent > 60)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_80 : (powerstate.percent > 40)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_60 : (powerstate.percent > 20)? OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_40 : OZONE_ENTRIES_ICONS_TEXTURE_BATTERY_20],
@@ -57,7 +57,7 @@ index 01f9404769..30e3136d18 100644
                       col,
                       mymat);
              if (dispctx->blend_end)
-@@ -8664,10 +8664,10 @@ static void ozone_draw_header(
+@@ -8882,10 +8882,10 @@ static void ozone_draw_header(
        gfx_display_draw_text(
              ozone->fonts.time.font,
              timedate,
@@ -70,7 +70,7 @@ index 01f9404769..30e3136d18 100644
              video_height,
              ozone->theme->text_rgba,
              TEXT_ALIGN_RIGHT,
-@@ -8689,12 +8689,12 @@ static void ozone_draw_header(
+@@ -8907,12 +8907,12 @@ static void ozone_draw_header(
                    status_icon_size,
                    status_icon_size,
                    ozone->icons_textures[OZONE_ENTRIES_ICONS_TEXTURE_CLOCK],
