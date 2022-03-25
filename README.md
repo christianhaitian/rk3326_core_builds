@@ -20,6 +20,9 @@ cd rk3326_core_builds
 ### To build all libretro core scripts including mame and mess ones (Warning, a very long build.  Maybe even over 24 hours!):
 `./builds.sh ALL`
 
+### To build just a5200 (64bit only):
+`./builds.sh a5200`
+
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
 
