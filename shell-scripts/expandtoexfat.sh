@@ -1,14 +1,18 @@
 #!/bin/bash
-# Auto launched during the first boot of ArkOS after initial flash then deleted upon completion
-
 sudo umount /roms
-sudo ln -s /dev/mmcblk0 /dev/hda
 sudo ln -s /dev/mmcblk0p3 /dev/hda3
-[ ! -f /boot/doneit ] && { sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0; sudo touch "/boot/doneit"; msgbox "EASYROMS partition expansion and conversion to exfat in process.  Please be patient as the system will reboot 2 to 3 times to complete this.  Hit A to continue."; reboot; }
-sudo ntfsfix -d /dev/hda3
-sudo ntfsresize -ff -x /dev/hda3
-sudo ntfsfix -d /dev/hda3
-sudo mkfs.exfat -s 8K -n EASYROMS /dev/hda3
+sudo chmod 666 /dev/tty1
+export TERM=linux
+height="15"
+width="55"
+if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dtb" ] || [ -f "/boot/rk3326-gameforce-linux.dtb" ]; then
+  sudo setfont /usr/share/consolefonts/Lat7-Terminus20x10.psf.gz
+  height="20"
+  width="60"
+fi
+[ ! -f /boot/doneit ] && { sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  Please be patient as the system will reboot 2 times to complete this." $height $width 2>&1 > /dev/tty1 | sleep 10; reboot; }
+sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
+exitcode=$?
 sync
 sleep 2
 sudo fsck.exfat -a /dev/hda3
@@ -21,7 +25,7 @@ sync
 reqSpace=1000000
 availSpace=$(df "/roms" | awk 'NR==2 { print $4 }')
 if (( availSpace < reqSpace )); then
-  sudo rm -rf -v /tempthemes/es-theme-epic-cody-RG351P-M/
+  sudo rm -rf -v /tempthemes/es-theme-epic-cody*/
 fi
 sudo rm -rf -v /roms/themes/es-theme-nes-box/
 # Setup swapfile
@@ -41,17 +45,17 @@ sync
 sudo rm -f /boot/doneit
 sudo rm -f /roms.tar
 sudo rm -f /boot/fstab.exfat
-exitcode=$?
 # Disable and delete swapfile
 sudo swapoff /swapfile
 sudo rm -f -v /swapfile
-if [ $exitcode -eq 0 ]; then msgbox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation now after you hit the A button."
+if [ $exitcode -eq 0 ]; then
+dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation in a few seconds." $height $width 2>&1 > /dev/tty1 | sleep 10
 systemctl disable firstboot.service
 sudo rm -v /boot/firstboot.sh
 sudo rm -v -- "$0"
 reboot
 else
-msgbox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now after you hit the A button."
+dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
 systemctl disable firstboot.service
 sudo rm -v /boot/firstboot.sh
 sudo rm -v -- "$0"
