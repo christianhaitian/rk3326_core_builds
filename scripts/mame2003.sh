@@ -1,0 +1,67 @@
+#!/bin/bash
+
+##################################################################
+# Created by Christian Haitian for use to easily update          #
+# various standalone emulators, libretro cores, and other        #
+# various programs for the RK3326 platform for various Linux     #
+# based distributions.                                           #
+# See the LICENSE.md file at the top-level directory of this     #
+# repository.                                                    #
+##################################################################
+
+cur_wd="$PWD"
+bitness="$(getconf LONG_BIT)"
+
+	# Libretro mame2003 build
+	if [[ "$var" == "mame2003" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	 cd $cur_wd
+	  if [ ! -d "mame2003-libretro/" ]; then
+		git clone https://github.com/libretro/mame2003-libretro.git
+		if [[ $? != "0" ]]; then
+		  echo " "
+		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
+		  exit 1
+		 fi
+		cp patches/mame2003-patch* mame2003-libretro/.
+	  fi
+
+	 cd mame2003-libretro/
+	 
+	 mame2003_patches=$(find *.patch)
+	 
+	 if [[ ! -z "$mame2003_patches" ]]; then
+	  for patching in mame2003-patch*
+	  do
+		   patch -Np1 < "$patching"
+		   if [[ $? != "0" ]]; then
+			echo " "
+			echo "There was an error while applying $patching.  Stopping here."
+			exit 1
+		   fi
+		   rm "$patching" 
+	  done
+	 fi
+
+	  make clean
+      make -j3
+
+	  if [[ $? != "0" ]]; then
+		echo " "
+		echo "There was an error while building the newest lr-mame2003 core.  Stopping here."
+		exit 1
+	  fi
+
+	  strip mame2003_libretro.so
+
+	  if [ ! -d "../cores$(getconf LONG_BIT)/" ]; then
+		mkdir -v ../cores$(getconf LONG_BIT)
+	  fi
+
+	  cp mame2003_libretro.so ../cores$(getconf LONG_BIT)/mame2003_libretro.so
+
+	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mame2003_libretro.so.commit
+
+	  echo " "
+	  echo "mame2003_libretro.so has been created and has been placed in the rk3326_core_builds/cores$(getconf LONG_BIT) subfolder"
+	fi
