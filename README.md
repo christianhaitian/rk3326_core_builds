@@ -68,6 +68,9 @@ cd rk3326_core_builds
 ### To build just gzdoom standalone (64bit only):
 `./build.sh gzdoom`
 
+### To build just handy (64bit only):
+`./builds.sh handy`
+
 ### To build just fceumm (64bit only):
 `./builds.sh fceumm`
 
@@ -83,11 +86,23 @@ cd rk3326_core_builds
 ### To build just hypseus-singe (64bit only):
 `./builds.sh hypseus-singe`
 
+### To build just lynx (64bit only):
+`./builds.sh lynx`
+
 ##To build just mame (64bit only); <--Very long build.  Could be 24 hours or more to complete.
 `./builds.sh mame`
 
+### To build just mame2000 (64bit only):
+`./builds.sh mame2000`
+
+### To build just mame2003 (64bit only):
+`./builds.sh mame2003`
+
 ### To build just mame2003-plus (64bit only):
 `./builds.sh mame2003-plus`
+
+### To build just mame2010 (64bit only):
+`./builds.sh mame2010`
 
 ### To build just mednafen Standalone emulator (64bit only):
 `./builds.sh mednafen`
@@ -112,6 +127,9 @@ cd rk3326_core_builds
 
 ### To build just nestopia (64bit only):
 `./builds.sh nestopia`
+
+### To build just ngp (64bit only):
+`./builds.sh ngp`
 
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
