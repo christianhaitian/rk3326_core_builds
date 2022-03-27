@@ -49,15 +49,15 @@ sudo rm -f /boot/fstab.exfat
 sudo swapoff /swapfile
 sudo rm -f -v /swapfile
 if [ $exitcode -eq 0 ]; then
-dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation in a few seconds." $height $width 2>&1 > /dev/tty1 | sleep 10
-systemctl disable firstboot.service
-sudo rm -v /boot/firstboot.sh
-sudo rm -v -- "$0"
-reboot
+  dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation in a few seconds." $height $width 2>&1 > /dev/tty1 | sleep 10
+  systemctl disable firstboot.service
+  sudo rm -v /boot/firstboot.sh
+  sudo rm -v -- "$0"
+  reboot
 else
-dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
-systemctl disable firstboot.service
-sudo rm -v /boot/firstboot.sh
-sudo rm -v -- "$0"
-reboot
+  dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
+  systemctl disable firstboot.service
+  sudo rm -v /boot/firstboot.sh
+  sudo rm -v -- "$0"
+  reboot
 fi
