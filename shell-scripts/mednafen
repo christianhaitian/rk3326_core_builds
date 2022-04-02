@@ -47,7 +47,7 @@ if [[ "$2" != *"norecord"* ]]; then
   printf "\033c" >> /dev/tty1
   if [ "$romsdirectory" == "snes" ] || [ "$romsdirectory" == "sfc" ] || [ "$romsdirectory" == "snes-hacks" ]; then
     /opt/mednafen/mednafen -force_module snes_faust -qtrecord "$recordingname" "$3"
-  elif [ "$romsdirectory" == "pcengine" ] || [ "$romsdirectory" == "pcenginecd" ]; then
+  elif [ "$romsdirectory" == "pcengine" ] || [ "$romsdirectory" == "pcenginecd" ] || [ "$romsdirectory" == "supergrafx" ]; then
     /opt/mednafen/mednafen -force_module pce_fast -qtrecord "$recordingname" "$3"
   else
     /opt/mednafen/mednafen -qtrecord "$recordingname" "$3"
@@ -63,7 +63,7 @@ if [[ "$2" != *"norecord"* ]]; then
 else
   if [ "$romsdirectory" == "snes" ] || [ "$romsdirectory" == "sfc" ] || [ "$romsdirectory" == "snes-hacks" ]; then
     /opt/mednafen/mednafen -force_module snes_faust "$3"
-  elif [ "$romsdirectory" == "pcengine" ] || [ "$romsdirectory" == "pcenginecd" ]; then
+  elif [ "$romsdirectory" == "pcengine" ] || [ "$romsdirectory" == "pcenginecd" ] || [ "$romsdirectory" == "supergrafx" ]; then
     /opt/mednafen/mednafen -force_module pce_fast "$3"
   else
     /opt/mednafen/mednafen "$3"
