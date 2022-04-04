@@ -43,7 +43,9 @@ sudo umount /roms
 sudo cp /boot/fstab.exfat /etc/fstab
 sync
 sudo rm -f /boot/doneit
-sudo rm -f /roms.tar
+if [ ! -f "/boot/rk3326-rg351v-linux.dtb" ] && [ ! -f "/boot/rk3326-rg351mp-linux.dtb" ]; then
+  sudo rm -f /roms.tar
+fi
 sudo rm -f /boot/fstab.exfat
 # Disable and delete swapfile
 sudo swapoff /swapfile
