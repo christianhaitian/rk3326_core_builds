@@ -59,7 +59,7 @@ bitness="$(getconf LONG_BIT)"
 	  cp mednafen_ngp_libretro.so ../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
+	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mednafen_ngp_libretro.so.commit
 
 	  echo " "
 	  echo "beetle-ngp-libretro_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
