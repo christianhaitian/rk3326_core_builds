@@ -77,6 +77,9 @@ cd rk3326_core_builds
 ### To build just flycast:
 `./builds.sh flycast`
 
+### To build just flyinghead's flycast core:
+`./builds.sh fly_flycast`
+
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
