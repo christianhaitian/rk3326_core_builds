@@ -24,7 +24,7 @@ fi
 isitroot=$(id -u)
 if [ "$isitroot" == "0" ]; then
   msgbox "Don't run me with sudo or as root! \
-  Run me with ./install_headers.sh"
+  Run me with ./Enable Developer Mode.sh"
   exit
 fi
 
@@ -163,7 +163,7 @@ sudo dpkg -i --force-all ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
 cd /usr/src/linux-headers-4.4.189/include/linux/
 wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/module.patch -O - | sudo patch
 if [ $? != 0 ]; then
-  msgbox "There was an error downloading and applying module.patch.  Please run ./install.sh again."
+  msgbox "There was an error downloading and applying module.patch.  Please run Enable Developer Mode again."
   if [ ! -z $(pidof rg351p-js2xbox) ]; then
     sudo kill -9 $(pidof rg351p-js2xbox)
     sudo rm /dev/input/by-path/platform-odroidgo2-joypad-event-joystick
@@ -172,7 +172,7 @@ if [ $? != 0 ]; then
 fi
 wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/compiler.patch -O - | sudo patch
 if [ $? != 0 ]; then
-  msgbox "There was an error downloading and applying compiler.patch.  Please run ./install.sh again."
+  msgbox "There was an error downloading and applying compiler.patch.  Please run Enable Developer Mode again."
   if [ ! -z $(pidof rg351p-js2xbox) ]; then
     sudo kill -9 $(pidof rg351p-js2xbox)
     sudo rm /dev/input/by-path/platform-odroidgo2-joypad-event-joystick
@@ -184,11 +184,12 @@ fi
 sudo sed -i "/#define UTS_RELEASE/c\#define UTS_RELEASE \"4.4.189\"" /usr/src/linux-headers-4.4.189/include/generated/utsrelease.h
 
 # Install some typically important and handy build tools
-sudo apt update -y && sudo apt-get --reinstall install -y build-essential bc bison flex libssl-dev python linux-libc-dev libc6-dev
+sudo apt update -y && sudo apt-get --reinstall install -y build-essential bc bison \
+flex libssl-dev python linux-libc-dev libc6-dev python3-pip python3-setuptools python3-wheel
 if [ $? != 0 ]; then
   msgbox "There was an updating and installing some build tools.  \
   Please make sure your internet is active and stable then run \
-  ./install.sh again."
+  Enable Developer Mode again."
   if [ ! -z $(pidof rg351p-js2xbox) ]; then
     sudo kill -9 $(pidof rg351p-js2xbox)
     sudo rm /dev/input/by-path/platform-odroidgo2-joypad-event-joystick
@@ -202,7 +203,7 @@ cd /usr/src/linux-headers-4.4.189/
 # Credit to loverpi (https://forum.loverpi.com/discussion/555/how-to-fix-dkms-error-bin-sh-1-scripts-basic-fixdep-exec-format-error)
 wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/headers-debian-byteshift.patch -O - | sudo patch -p1
 if [ $? != 0 ]; then
-  msgbox "There was an error downloading and applying headers-debian-byteshift.patch.  Please run ./install.sh again."
+  msgbox "There was an error downloading and applying headers-debian-byteshift.patch.  Please run Enable Developer Mode again."
   if [ ! -z $(pidof rg351p-js2xbox) ]; then
     sudo kill -9 $(pidof rg351p-js2xbox)
     sudo rm /dev/input/by-path/platform-odroidgo2-joypad-event-joystick
