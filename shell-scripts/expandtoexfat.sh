@@ -16,6 +16,7 @@ sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
 exitcode=$?
 sudo rm -f /dev/hda3
 newuuid=$(sudo blkid | grep EASYROMS | cut -c 40-48)
+sudo ln -s /dev/disk/by-uuid/${newuuid} /dev/hda3
 sync
 sleep 2
 sudo fsck.exfat -a /dev/hda3
