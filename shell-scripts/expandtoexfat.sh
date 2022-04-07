@@ -14,12 +14,13 @@ fi
 [ ! -f /boot/doneit ] && { sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  Please be patient as the system will reboot 2 times to complete this." $height $width 2>&1 > /dev/tty1 | sleep 10; reboot; }
 sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
 exitcode=$?
+sudo rm -f /dev/hda3
+newuuid=$(sudo blkid | grep EASYROMS | cut -c 40-48)
 sync
 sleep 2
 sudo fsck.exfat -a /dev/hda3
 sync
 sleep 2
-newuuid=$(sudo blkid | grep EASYROMS | cut -c 40-48)
 sudo mount -t exfat -w UUID=${newuuid} /roms
 sleep 2
 sudo tar -xvf /roms.tar -C /
