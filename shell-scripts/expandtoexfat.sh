@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo umount /roms
-olduuid=$(sudo blkid | grep EASYROMS | cut -c 40-48)
+olduuid=$(sudo blkid | grep EASYROMS | awk '{print $4}' | cut -c 7-15)
 sudo ln -s /dev/disk/by-uuid/${olduuid} /dev/hda3
 sudo chmod 666 /dev/tty1
 export TERM=linux
