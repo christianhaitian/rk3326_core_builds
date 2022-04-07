@@ -36,8 +36,8 @@ sudo rm -rf -v /roms/themes/es-theme-nes-box/
 printf "\n\n\e[32mSetting up swapfile.  Please wait...\n"
 printf "\033[0m"
 sudo dd if=/dev/zero of=/swapfile bs=1024 count=262144
-sudo mkswap /swapfile
 sudo chmod 600 /swapfile
+sudo mkswap /swapfile
 sudo swapon /swapfile
 sudo mv -f -v /tempthemes/* /roms/themes
 sync
