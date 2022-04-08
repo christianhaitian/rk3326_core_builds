@@ -6,7 +6,7 @@ sudo chmod 666 /dev/tty1
 export TERM=linux
 height="15"
 width="55"
-if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dtb" ] || [ -f "/boot/rk3326-gameforce-linux.dtb" ]; then
+if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dtb" ] || [ -f "/boot/rk3326-gameforce-linux.dtb" ] || [ -f "/boot/rk3326-odroidgo3-linux.dtb" ]; then
   sudo setfont /usr/share/consolefonts/Lat7-Terminus20x10.psf.gz
   height="20"
   width="60"
