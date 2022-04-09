@@ -18,9 +18,9 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "es_build" ]] && [[ "$bitness" == "64" ]]; then
 
 	 echo "What branch of emulationstation-fcamod are you wanting to build?"
-	 echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for all"
+	 echo "1 for master, 2 for fullscreen, 3 for 351v, 4 for rgb10max, 5 for all"
 	 read branch_build
-	 if [ "$branch_build" -lt 1 ] || [ "$branch_build" -gt 4 ]; then
+	 if [ "$branch_build" -lt 1 ] || [ "$branch_build" -gt 5 ]; then
 	   echo "$branch_build is not a valid option.  Exiting."
 	   exit 1
 	 fi
@@ -237,6 +237,61 @@ bitness="$(getconf LONG_BIT)"
 			;;
 		 "4")
 			cd $cur_wd
+			branch="rgb10max"
+			if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+			  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
+			  if [[ $? != "0" ]]; then
+				echo " "
+				echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+				exit 1
+			  fi
+			fi 
+
+			cd emulationstation-fcamod-$branch 
+
+			if [[ "$es_git" == "https://github.com/JuanMiguelBG/EmulationStation-fcamod-ogs.git" ]]; then
+			  cp ../patches/es-fcamod-patch-build.patch .
+			  patch -Np1 < es-fcamod-patch-build.patch
+			  if [[ $? != "0" ]]; then
+				echo " "
+				echo "There was an error while applying es-fcamod-patch-build.patch.  Stopping here."
+				exit 1
+			  fi
+			  rm es-fcamod-patch-build.patch
+			fi
+
+			 if [[ -z "$softname" ]]; then
+			   softname=$(printenv SOFTNAME)
+			   echo "The software name has been set to $softname since one was not provided at start."
+			 fi
+			cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+
+			if [[ $? != "0" ]]; then
+			  echo " "
+			  echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+			  exit 1
+			fi
+
+			make -j$(nproc)
+			if [[ $? != "0" ]]; then
+			  echo " "
+			  echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+			  exit 1
+			fi
+
+			strip emulationstation
+
+			if [ ! -d "../es-fcamod/" ]; then
+			  mkdir -v ../es-fcamod
+			fi
+
+			cp emulationstation ../es-fcamod/emulationstation.$branch
+			echo " "
+			echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+			exit 0
+		 ;;
+		 "5")
+			cd $cur_wd
 			branch="master"
 			if [ ! -d "emulationstation-fcamod-$branch/" ]; then
 			  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
@@ -280,6 +335,43 @@ bitness="$(getconf LONG_BIT)"
 
 			cd $cur_wd
 			branch="fullscreen"
+			if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+			  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
+			  if [[ $? != "0" ]]; then
+				echo " "
+				echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+				exit 1
+			  fi
+			fi 
+
+			cd emulationstation-fcamod-$branch 
+
+			cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+			if [[ $? != "0" ]]; then
+			  echo " "
+			  echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+			  exit 1
+			fi
+
+			make -j$(nproc)
+			if [[ $? != "0" ]]; then
+			  echo " "
+			  echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+			  exit 1
+			fi
+
+			strip emulationstation
+
+			if [ ! -d "../es-fcamod/" ]; then
+			  mkdir -v ../es-fcamod
+			fi
+
+			cp emulationstation ../es-fcamod/emulationstation.$branch
+			echo " "
+			echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+
+			cd $cur_wd
+			branch="rgb10max"
 			if [ ! -d "emulationstation-fcamod-$branch/" ]; then
 			  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
 			  if [[ $? != "0" ]]; then
