@@ -1,0 +1,74 @@
+diff --git a/src/common/console/keydef.h b/src/common/console/keydef.h
+index 108806774..971ab398f 100644
+--- a/src/common/console/keydef.h
++++ b/src/common/console/keydef.h
+@@ -75,8 +75,13 @@ enum EKeyCodes
+ 	KEY_JOY6,
+ 	KEY_JOY7,
+ 	KEY_JOY8,
+-	KEY_JOY14			= KEY_FIRSTJOYBUTTON+13,
+-	KEY_JOY15			= KEY_FIRSTJOYBUTTON+14,
++	KEY_JOY9,
++	KEY_JOY10,
++	KEY_JOY11,
++	KEY_JOY12,
++	KEY_JOY13,
++	KEY_JOY14,
++	KEY_JOY15,
+ 	KEY_LASTJOYBUTTON		= 0x187,
+ 	KEY_JOYPOV1_UP			= 0x188,
+ 	KEY_JOYPOV1_RIGHT		= 0x189,
+diff --git a/src/common/menu/menu.cpp b/src/common/menu/menu.cpp
+index 89017d67b..4532dae1d 100644
+--- a/src/common/menu/menu.cpp
++++ b/src/common/menu/menu.cpp
+@@ -692,15 +692,12 @@ bool M_Responder (event_t *ev)
+ 			ch = ev->data1;
+ 			switch (ch)
+ 			{
+-			case KEY_JOY1:
+-			case KEY_JOY3:
+-			case KEY_JOY15:
++			case KEY_JOY2:
+ 			case KEY_PAD_A:
+ 				mkey = MKEY_Enter;
+ 				break;
+ 
+-			case KEY_JOY2:
+-			case KEY_JOY14:
++			case KEY_JOY1:
+ 			case KEY_PAD_B:
+ 				mkey = MKEY_Back;
+ 				break;
+@@ -724,6 +721,7 @@ bool M_Responder (event_t *ev)
+ 			case KEY_PAD_LTHUMB_UP:
+ 			case KEY_JOYAXIS2MINUS:
+ 			case KEY_JOYPOV1_UP:
++			case KEY_JOY9:
+ 				mkey = MKEY_Up;
+ 				break;
+ 
+@@ -731,6 +729,7 @@ bool M_Responder (event_t *ev)
+ 			case KEY_PAD_LTHUMB_DOWN:
+ 			case KEY_JOYAXIS2PLUS:
+ 			case KEY_JOYPOV1_DOWN:
++			case KEY_JOY10:
+ 				mkey = MKEY_Down;
+ 				break;
+ 
+@@ -738,6 +737,7 @@ bool M_Responder (event_t *ev)
+ 			case KEY_PAD_LTHUMB_LEFT:
+ 			case KEY_JOYAXIS1MINUS:
+ 			case KEY_JOYPOV1_LEFT:
++			case KEY_JOY11:
+ 				mkey = MKEY_Left;
+ 				break;
+ 
+@@ -745,6 +745,7 @@ bool M_Responder (event_t *ev)
+ 			case KEY_PAD_LTHUMB_RIGHT:
+ 			case KEY_JOYAXIS1PLUS:
+ 			case KEY_JOYPOV1_RIGHT:
++			case KEY_JOY12:
+ 				mkey = MKEY_Right;
+ 				break;
+ 			}
