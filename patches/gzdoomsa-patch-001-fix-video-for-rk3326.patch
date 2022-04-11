@@ -1,13 +1,26 @@
-diff --git a/src/common/rendering/gles/gles_hwtexture.cpp b/src/common/rendering/gles/gles_hwtexture.cpp
-index 43425ce7d..1fe9a60ce 100644
---- a/src/common/rendering/gles/gles_hwtexture.cpp
-+++ b/src/common/rendering/gles/gles_hwtexture.cpp
-@@ -153,7 +153,7 @@ unsigned int FHardwareTexture::CreateTexture(unsigned char * buffer, int w, int
- 	else
- 	{
- 		sourcetype = GL_BGRA;
--		texformat = GL_RGBA;
-+		texformat = GL_BGRA;
- 	}
- #endif
+diff --git a/src/common/rendering/gles/gles_system.cpp b/src/common/rendering/gles/gles_system.cpp
+index cd0acaf65..e856e8118 100644
+--- a/src/common/rendering/gles/gles_system.cpp
++++ b/src/common/rendering/gles/gles_system.cpp
+@@ -10,7 +10,7 @@ CVAR(Bool, gles_force_glsl_v100, false, 0);
+ CVAR(Int, gles_max_lights_per_surface, 32, 0);
+ EXTERN_CVAR(Bool, gl_customshader);
  
+-
++#define __ANDROID__
+ #if USE_GLES2
+ 
+ PFNGLMAPBUFFERRANGEEXTPROC glMapBufferRange = NULL;
+diff --git a/src/common/rendering/gles/gles_system.h b/src/common/rendering/gles/gles_system.h
+index d7f6ed139..a43e4e52f 100644
+--- a/src/common/rendering/gles/gles_system.h
++++ b/src/common/rendering/gles/gles_system.h
+@@ -23,7 +23,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ 
+-#define USE_GLES2 0
++#define USE_GLES2 1
+ 
+ #if (USE_GLES2)
+ 	#include "glad/glad.h"

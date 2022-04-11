@@ -1,0 +1,13 @@
+diff --git a/src/common/platform/posix/sdl/i_gui.cpp b/src/common/platform/posix/sdl/i_gui.cpp
+index 9290f063f..62df74a35 100644
+--- a/src/common/platform/posix/sdl/i_gui.cpp
++++ b/src/common/platform/posix/sdl/i_gui.cpp
+@@ -68,7 +68,7 @@ bool I_SetCursor(FGameTexture *cursorpic)
+ 			SDL_FreeCursor (cursor);
+ 		cursor = SDL_CreateColorCursor (cursorSurface, 0, 0);
+ 		SDL_SetCursor (cursor);
+-		SDL_ShowCursor(SDL_ENABLE);
++		SDL_ShowCursor(SDL_DISABLE);
+ 	}
+ 	else
+ 	{
