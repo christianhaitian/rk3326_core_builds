@@ -1,7 +1,6 @@
 #!/bin/bash
 sudo umount /roms
-olduuid=$(sudo blkid | grep EASYROMS | awk '{print $4}' | cut -c 7-15)
-sudo ln -s /dev/disk/by-uuid/${olduuid} /dev/hda3
+sudo ln -s /dev/mmcblk0p3 /dev/hda3
 sudo chmod 666 /dev/tty1
 export TERM=linux
 height="15"
@@ -14,15 +13,12 @@ fi
 [ ! -f /boot/doneit ] && { sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  Please be patient as the system will reboot 2 times to complete this." $height $width 2>&1 > /dev/tty1 | sleep 10; reboot; }
 sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
 exitcode=$?
-sudo rm -f /dev/hda3
-newuuid=$(sudo blkid | grep EASYROMS | cut -c 40-48)
-sudo ln -s /dev/disk/by-uuid/${newuuid} /dev/hda3
 sync
 sleep 2
 sudo fsck.exfat -a /dev/hda3
 sync
 sleep 2
-sudo mount -t exfat -w UUID=${newuuid} /roms
+sudo mount -t exfat -w /dev/mmcblk0p3 /roms
 sleep 2
 sudo tar -xvf /roms.tar -C /
 sync
@@ -46,7 +42,6 @@ sudo rm -rf -v /tempthemes
 sleep 2
 sudo umount /roms
 sudo cp /boot/fstab.exfat /etc/fstab
-sudo sed -i "s/UUID=914A-954D/UUID=${newuuid}/" /etc/fstab
 sync
 sudo rm -f /boot/doneit
 if [ ! -f "/boot/rk3326-rg351v-linux.dtb" ] && [ ! -f "/boot/rk3326-rg351mp-linux.dtb" ]; then
@@ -57,15 +52,15 @@ sudo rm -f /boot/fstab.exfat
 sudo swapoff /swapfile
 sudo rm -f -v /swapfile
 if [ $exitcode -eq 0 ]; then
-dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation in a few seconds." $height $width 2>&1 > /dev/tty1 | sleep 10
-systemctl disable firstboot.service
-sudo rm -v /boot/firstboot.sh
-sudo rm -v -- "$0"
-reboot
+  dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. System will reboot and load Emulationstation in a few seconds." $height $width 2>&1 > /dev/tty1 | sleep 10
+  systemctl disable firstboot.service
+  sudo rm -v /boot/firstboot.sh
+  sudo rm -v -- "$0"
+  reboot
 else
-dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
-systemctl disable firstboot.service
-sudo rm -v /boot/firstboot.sh
-sudo rm -v -- "$0"
-reboot
+  dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
+  systemctl disable firstboot.service
+  sudo rm -v /boot/firstboot.sh
+  sudo rm -v -- "$0"
+  reboot
 fi
