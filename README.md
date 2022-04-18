@@ -212,6 +212,15 @@ cd rk3326_core_builds
 ### To build just uae4arm:
 `./builds.sh uae4arm`
 
+### To build just uzem:
+`./builds.sh uzem`
+
+### To build just vemulator:
+`./builds.sh vemulator`
+
+### To build just virtualjaguar:
+`./builds.sh virtualjaguar`
+
 ### To build just yabasanshiro (32bit only):
 `./builds.sh yabasanshiro`
 
