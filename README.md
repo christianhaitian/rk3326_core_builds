@@ -23,6 +23,9 @@ cd rk3326_core_builds
 ### To build just a5200 (64bit only):
 `./builds.sh a5200`
 
+### To build just arduous (64bit only):
+`./builds.sh arduous`
+
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
 
@@ -217,6 +220,9 @@ cd rk3326_core_builds
 
 ### To build just vemulator:
 `./builds.sh vemulator`
+
+### To build just vice cores:
+`./builds.sh vice`
 
 ### To build just virtualjaguar:
 `./builds.sh virtualjaguar`
