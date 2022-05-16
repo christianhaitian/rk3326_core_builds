@@ -116,7 +116,7 @@ minfluidsynthverneeded="3"
 	  fi
 
 	  cp scummvm ../scummvm$bitness/.
-	  tar -zchvf ../scummvm$bitness/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ scummvm AUTHORS COPYING COPYING.* NEWS.md README.md
+	  tar -zchvf ../scummvm$bitness/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ scummvm AUTHORS COPYING NEWS.md README.md
 
 	  echo " "
 	  echo "scummvm has been created and has been placed in the rk3326_core_builds/scummvm$bitness subfolder"
