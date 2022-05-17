@@ -59,7 +59,11 @@ elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; the
 	  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RK2020.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 	fi
 elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
+  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RGB10MAX.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
+elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG351MP.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
+elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
+  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG503.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 else
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-CHI.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 fi
