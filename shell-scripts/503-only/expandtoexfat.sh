@@ -10,7 +10,7 @@ if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dt
   height="20"
   width="60"
 fi
-[ ! -f /boot/doneit ] && { sudo growpart /dev/mmcblk1 5; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  The device will not reboot to continue the process..." $height $width 2>&1 > /dev/tty1 | sleep 10; reboot; }
+[ ! -f /boot/doneit ] && { sudo growpart /dev/mmcblk1 5; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  The device will now reboot to continue the process..." $height $width 2>&1 > /dev/tty1 | sleep 10; reboot; }
 
 #[ ! -f /boot/doneit ] && { sudo echo ", +" | sudo sfdisk -N 5 --force /dev/mmcblk1; sudo touch "/boot/doneit"; dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  Please press the reset button now to reboot the device so this process can continue." $height $width 2>&1 > /dev/tty1 | sleep 10; }
 
@@ -58,10 +58,10 @@ if [ $exitcode -eq 0 ]; then
   systemctl disable firstboot.service
   sudo rm -v /boot/firstboot.sh
   sudo rm -v -- "$0"
-  dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. Please press the reset button now to reboot the system." $height $width 2>&1 > /dev/tty1 | sleep 10
+  dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. The system will now reboot and load ArkOS." $height $width 2>&1 > /dev/tty1 | sleep 10
   reboot
 else
-  dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load Emulationstation now." $height $width 2>&1 > /dev/tty1 | sleep 10
+  dialog --infobox "EASYROMS partition expansion and conversion to exfat failed for an unknown reason.  Please expand the partition using an alternative tool such as Minitool Partition Wizard.  System will reboot and load ArkOS now." $height $width 2>&1 > /dev/tty1 | sleep 10
   systemctl disable firstboot.service
   sudo rm -v /boot/firstboot.sh
   sudo rm -v -- "$0"
