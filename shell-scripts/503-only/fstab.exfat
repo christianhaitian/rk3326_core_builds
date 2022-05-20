@@ -1,5 +1,5 @@
 UUID=e139ce78-9841-40fe-8823-96a304a09859  /  ext4  defaults  0 1
 
-/dev/mmcblk1p3 /boot ext4 defaults,noatime 0 2
+/dev/mmcblk1p3 /boot vfat defaults,noatime 0 2
 /dev/mmcblk1p5 /roms exfat defaults,auto,umask=000,noatime 0 0
 /roms/tools /opt/system/Tools none bind
