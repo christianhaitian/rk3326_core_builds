@@ -1,8 +1,8 @@
 diff --git a/core/libretro/libretro.cpp b/core/libretro/libretro.cpp
-index 35e8516b..e36fa6c0 100644
+index 2efca4b0..56a55077 100644
 --- a/core/libretro/libretro.cpp
 +++ b/core/libretro/libretro.cpp
-@@ -3118,10 +3118,23 @@ void UpdateVibration(u32 port, u32 value, u32 max_duration)
+@@ -3133,10 +3133,29 @@ void UpdateVibration(u32 port, u32 value, u32 max_duration)
     u8 POW_NEG = (value >> 12) & 0x7;
     u8 FREQ = (value >> 16) & 0xFF;
     s16 INC = (value >> 24) & 0xFF;
@@ -10,7 +10,6 @@ index 35e8516b..e36fa6c0 100644
 -	  INC = -INC;
 -   else if (!(value & 0x0800))	// EXH
 -	  INC = 0;
-+
 +   FILE *file;
 +   if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
 +     if (value <= 1000000){                    // INH
@@ -20,13 +19,20 @@ index 35e8516b..e36fa6c0 100644
 +           system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.4 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
 +           INC = 0;}
 +     fclose(file);
++   } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r"))) {
++     if (value <= 1000000){                    // INH
++           system("echo 1 | sudo tee /sys/class/pwm/pwmchip1/pwm0/enable");
++           INC = -INC;}
++     else {    // EXH
++           system("echo 0 | sudo tee /sys/class/pwm/pwmchip1/pwm0/enable && sleep 0.4 && echo 1 | sudo tee /sys/class/pwm/pwmchip1/pwm0/enable &");
++           INC = 0;}
++     fclose(file);
 +   } else {
 +     if (value & 0x8000)                       // INH
 +           INC = -INC;
 +     else if (!(value & 0x0800))       // EXH
 +           INC = 0;
 +   }
-+
     bool CNT = value & 1;
  
     double pow         = std::min((POW_POS + POW_NEG) / 7.0, 1.0);
