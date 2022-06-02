@@ -1,8 +1,8 @@
 diff --git a/frontend/libretro.c b/frontend/libretro.c
-index 6fee42a..c9e8b87 100644
+index 97323f4..dc75efe 100644
 --- a/frontend/libretro.c
 +++ b/frontend/libretro.c
-@@ -495,8 +495,22 @@ void plat_trigger_vibrate(int pad, int low, int high)
+@@ -516,8 +516,33 @@ void plat_trigger_vibrate(int pad, int low, int high)
  
     if (in_enable_vibration)
     {
@@ -18,6 +18,17 @@ index 6fee42a..c9e8b87 100644
 +            else
 +            {
 +              fputs("10", file);
++              fclose(file);
++            }
++      } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
++            if(high <= 0x80)
++            {
++              fputs("1", file);
++              fclose(file);
++            }
++            else
++            {
++              fputs("0", file);
 +              fclose(file);
 +            }
 +      } else {
