@@ -94,11 +94,11 @@ fi
 sudo umount /opt/system/Tools
 sudo umount /roms
 
-dev="/dev/mmcblk0"
-ext="/dev/mmcblk0p2"
+dev="/dev/mmcblk1"
+ext="/dev/mmcblk1p4"
 
 # Let's delete the existing exfat partition if it exists
-if test ! -z "$(sudo fdisk -l | grep mmcblk0p3 | tr -d '\0')"
+if test ! -z "$(sudo fdisk -l | grep mmcblk1p5 | tr -d '\0')"
 then
   printf "d\n3\nw\nq\n" | sudo fdisk $dev
 fi
@@ -116,7 +116,7 @@ sudo growpart -v $dev 2
 sudo resize2fs $ext
 
 # We'll update /etc/fstab to not try to mount a exfat partition on the main system sd card
-sudo sed -i "/\/dev\/mmcblk0p3/d" /etc/fstab
+sudo sed -i "/\/dev\/mmcblk1p5/d" /etc/fstab
 
 # Let's recreate the default roms directory structure
 mkdir /roms
@@ -131,14 +131,21 @@ if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dt
   unit="rg351"
 elif [ -f "/boot/rk3326-gameforce-linux.dtb" ]; then
   unit="chi"
+elif [ -f "/boot/rk3566.dtb" ]; then
+  unit="rg503"
 else
   unit="goa"
 fi
 
-wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb \
+if [ "$unit" != "rg503" ]; then
+  wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb \
 -O ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb || rm -f ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
+else
+  wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb \
+-O ${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb || rm -f ${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb
+fi
 
-if [ ! -f "${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb" ]; then
+if [ ! -f "${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb" ] && [ ! -f "${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb" ]; then
 	msgbox "The ${unit} linux header deb file did not download correctly or is missing. \
 	Either rerun this script or manually download it from the git and place \
 	it in this current folder then run this script again."
@@ -156,11 +163,26 @@ if [ "$?" == "0" ]; then
   sudo rm -rf /usr/src/linux-headers-4.4.189
 fi
 
+dpkg -s "linux-headers-4.19.172"
+if [ "$?" == "0" ]; then
+  sudo dpkg -P linux-headers-4.19.172
+  sudo rm -rf /usr/src/linux-headers-4.19.172
+fi
+
 # Now we install the header files
-sudo dpkg -i --force-all ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
+if [ "$unit" != "rg503" ]; then
+  sudo dpkg -i --force-all ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
+else
+  sudo dpkg -i --force-all ${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb
+fi
 
 # Apply some patches to fix some possible compile issues with gcc 9
-cd /usr/src/linux-headers-4.4.189/include/linux/
+if [ "$unit" != "rg503" ]; then
+  cd /usr/src/linux-headers-4.4.189/include/linux/
+else
+  cd /usr/src/linux-headers-4.19.172/include/linux/
+fi
+
 wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/arkos/raw/main/Headers/module.patch -O - | sudo patch
 if [ $? != 0 ]; then
   msgbox "There was an error downloading and applying module.patch.  Please run Enable Developer Mode again."
@@ -180,8 +202,10 @@ if [ $? != 0 ]; then
   exit
 fi
 
-# Fix vermagic description so it properly matches
-sudo sed -i "/#define UTS_RELEASE/c\#define UTS_RELEASE \"4.4.189\"" /usr/src/linux-headers-4.4.189/include/generated/utsrelease.h
+if [ "$unit" != "rg503" ]; then
+  # Fix vermagic description so it properly matches
+  sudo sed -i "/#define UTS_RELEASE/c\#define UTS_RELEASE \"4.4.189\"" /usr/src/linux-headers-4.4.189/include/generated/utsrelease.h
+fi
 
 # Install some typically important and handy build tools
 sudo apt update -y && sudo apt-get --reinstall install -y build-essential bc bison \
@@ -196,7 +220,12 @@ if [ $? != 0 ]; then
   fi
   exit
 fi
-cd /usr/src/linux-headers-4.4.189/
+
+if [ "$unit" != "rg503" ]; then
+  cd /usr/src/linux-headers-4.4.189/
+else
+  cd /usr/src/linux-headers-4.19.172/
+fi
 
 # This fixes dkms Exec format errors due to deb-pkg packing the
 # build host executables instead of the target executables
@@ -224,7 +253,11 @@ fi
 
 cd ~
 
-rm -f ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
+if [ "$unit" != "rg503" ]; then
+  rm -f ${unit}-linux-headers-4.4.189_4.4.189-2_arm64.deb
+else
+  rm -f ${unit}-linux-headers-4.19.172_4.19.172-17_arm64.deb
+fi
 
 touch /home/ark/.config/.devenabled
 
