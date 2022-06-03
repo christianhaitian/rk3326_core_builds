@@ -1,8 +1,8 @@
 diff --git a/libretro/libretro.c b/libretro/libretro.c
-index b7e9a6e..b26e93e 100644
+index 1f8b3c2..7005ce3 100644
 --- a/libretro/libretro.c
 +++ b/libretro/libretro.c
-@@ -136,29 +136,41 @@ static void InitialiseRumbleInterface(void)
+@@ -164,29 +164,47 @@ static void InitialiseRumbleInterface(void)
  }
  
  ///////////////////////////////////////////////////////////
@@ -21,6 +21,9 @@ index b7e9a6e..b26e93e 100644
 +	if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
 +	    fputs("10", file);
 +	    fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
++        fputs("0", file);
++        fclose(file);
 +	} else {
 +	    rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK,   rumble_strength);
 +	    rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, rumble_strength);
@@ -46,6 +49,9 @@ index b7e9a6e..b26e93e 100644
 +    if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
 +	    fputs("1000000", file);
 +	    fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
++        fputs("1", file);
++        fclose(file);
 +    } else {
 +	    rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK,   0);
 +	    rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, 0);
