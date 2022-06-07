@@ -1,9 +1,10 @@
 #!/bin/sh
 sudo systemctl start openborhotkey.service
-cp "$1" /opt/OpenBor/Paks
+#cp "$1" /opt/OpenBor/Paks
 file="$1"
 basefile=$(basename -- "$file")
 basefilename=${basefile%.*}
+ln -s "$1" /opt/OpenBor/Paks/"$basefile"
 if [ ! -f "/opt/OpenBor/Saves/${basefilename}.cfg" ]; then
   cp "/opt/OpenBor/Saves/master.cfg" "/opt/OpenBor/Saves/${basefilename}.cfg"
 fi
