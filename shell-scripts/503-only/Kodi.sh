@@ -19,6 +19,7 @@ fi
 
 # Change owner of volume keys or Kodi will grab them
 sudo chown root:root /dev/input/event2
+sudo chown root:root /dev/input/event0
 
 # Allow for quick kill of Kodi pressing and holding Select buttong 
 # then press the Start button.
