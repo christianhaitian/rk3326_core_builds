@@ -123,9 +123,12 @@ Select() {
 ConnectExisting() {
   cur_ap=`iw dev wlan0 info | grep ssid | cut -c 7-30`
 
-  #nmcli con down "$cur_ap"
-  
-  output=`nmcli con down "$cur_ap" && nmcli con up "$1"`
+  dialog --infobox "\nConnecting to Wi-Fi $1 ..." 5 55 > /dev/tty1
+
+  nmcli con down "$cur_ap" >> /dev/null
+  sleep 1
+
+  output=`nmcli con up "$1"`
 
   success=`echo "$output" | grep successfully`
 
