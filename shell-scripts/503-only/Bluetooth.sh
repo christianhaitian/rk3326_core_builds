@@ -167,26 +167,29 @@ ConnectExisting() {
 }
 
 Select() {
-  KEYBOARD="osk"
-
   dialog --infobox "\nPairing and Connecting to Bluetooth device $1 ..." 5 55 > /dev/tty1
   # try to connect
 
   alreadypaired=`bluetoothctl paired-devices | grep "$1"`
   if [ ! -z "$alreadypaired" ]; then
-    output=`bluetoothctl remove "$1"`
-    bluetoothctl --timeout 5 scan on >> /dev/null
+    bluetoothctl remove "$1"
+    output=`bluetoothctl pair "$1"`
   else
-    bluetoothctl --timeout 5 scan on >> /dev/null
+    output=`bluetoothctl pair "$1"`
   fi
   
-  output=`bluetoothctl pair "$1"`
-  success=`echo "$output" | grep "Connected: yes"`
+  success=`echo "$output" | grep "Paired: yes"`
 
   if [ -z "$success" ]; then
     output="Activation failed"
   else
-    output="Device successfully paired and connected via Bluetooth ..."
+    bluetoothctl trust "$1"
+	success=`bluetoothctl connect "$1"`
+	if [ -z "$success" ]; then
+      output="Controller paired successfully but failed to connect."
+	else
+      output="Device successfully paired and connected via Bluetooth ..."
+	fi
   fi
   
   dialog --infobox "\n$output" 6 55 > /dev/tty1
@@ -196,39 +199,34 @@ Select() {
 
 Connect() {
   dialog --infobox "\nScanning for available bluetooth devices ..." 5 55 > /dev/tty1
+
   sudo systemctl stop bluetooth
   sleep 1
   sudo hciconfig hci0 down
   sleep 1
   sudo hciconfig hci0 up
   sleep 1
-  clist=`sudo hcitool lescan & sleep 5 && sudo pkill --signal SIGINT hcito`
+  sudo systemctl start bluetooth
+  sleep 2
+
+  clist=`bluetoothctl --timeout 10 scan on`
 
   # Set space as the delimiter
   IFS=' '
   unset coptions
+  unset coptions2
   while IFS= read -r clist; do
     # Read the split words into an array based on space delimiter
     read -a strarr <<< "$clist"
 
-    MACADD=`printf '%-5s' "${strarr[0]}"`
-    NAME1="${strarr[1]}"
-    NAME2="${strarr[2]}"
-    NAME3="${strarr[3]}"
+    NEWDEVICE="${strarr[0]}"
+    MACADD=`printf '%-5s' "${strarr[2]}"`
+    NAME1="${strarr[3]}"
 
-    coptions+=("$MACADD" "$NAME1")
+    if [[ "$NEWDEVICE" == *"NEW"* ]]; then
+      coptions+=("$MACADD" "$NAME1")
+	fi
   done <<< "$clist"
-  unset 'coptions[0]'
-  unset 'coptions[1]'
-  declare -a coptions2=()
-  i=0
-  for element in ${coptions[@]}
-  do
-      coptions2[$i]=$element
-	  ((++i))
-  done
-
-  sudo systemctl start bluetooth
 
   while true; do
     cselection=(dialog \
@@ -239,7 +237,7 @@ Connect() {
 	--cancel-label "Back" \
     --menu "" 15 55 15)
 
-    cchoices=$("${cselection[@]}" "${coptions2[@]}" 2>&1 > /dev/tty1) || MainMenu
+    cchoices=$("${cselection[@]}" "${coptions[@]}" 2>&1 > /dev/tty1) || MainMenu
 
     for cchoice in $cchoices; do
       case $cchoice in
@@ -256,6 +254,7 @@ DeleteConnect() {
 
   case $? in
      0) dialog --infobox "\nUnpairing Bluetooth device $1 ..." 5 55 > /dev/tty1 
+	    bluetoothctl untrust "$1" >> /dev/null
 	    bluetoothctl remove "$1" >> /dev/null
 	    if [ $? != 0 ]; then
 	      output="Unpairing failed"
