@@ -18,15 +18,21 @@ else
   controller="${1}"
 fi
 
+printf "\033c" >> /dev/tty1
+
 if [[ -f "${ra_config_paths[0]}/autoconfig/udev/${controller}.cfg" ]]; then
-  echo "\"${controller}\" controller configuration already exists for retroarch!"
+  if [[ "$(cat "${ra_config_paths[0]}/autoconfig/udev/${controller}.cfg" | grep vendor_id | grep -o -P -w '= "\K[^"]+')" != "0" ]]; then
+  #echo "\"${controller}\" controller configuration already exists for retroarch!" >> /dev/tty1
   exit 0
+  fi
 fi
+
+echo "Adding retroarch controller configuration for \"${controller}\"" >> /dev/tty1
 
 button_list=( left right up down a b x y leftshoulder rightshoulder \
               lefttrigger righttrigger leftthumb rightthumb select \
-			        start leftanalogdown leftanalogup leftanalogleft leftanalogright \
-			        rightanalogdown rightanalogup rightanalogleft rightanalogright )
+			  start leftanalogdown leftanalogup leftanalogleft leftanalogright \
+			  rightanalogdown rightanalogup rightanalogleft rightanalogright )
 
 printf "\nController name: $controller\n"
 
@@ -40,7 +46,7 @@ do
     if [[ "$isitahatoranalog" == "hat" ]]; then
       value="hat found"
     elif [[ "$isitahatoranalog" == "axis" ]]; then
-	    axis="$(cat ${es_input_file_location} | sed -n "/${controller}/, /inputConfig/p" | grep "name=\"${button}\"" | grep -o -P -w "value=.{0,5}" | cut -c5- | cut -d '"' -f2)"
+	  axis="$(cat ${es_input_file_location} | sed -n "/${controller}/, /inputConfig/p" | grep "name=\"${button}\"" | grep -o -P -w "value=.{0,5}" | cut -c5- | cut -d '"' -f2)"
       if [[ "${axis}" == *"-"* ]]; then
 	    axis="-"
 	  else
@@ -54,46 +60,52 @@ do
     #test_button="$(timeout 0.1s sdljoytest | grep 'retrogame_joypad,')"
     #test_buttons="$(echo ${test_button}_button | tr , '\n' | grep -o -P -w "${button}:.{0,4}" | cut -c${a}-)"
 
-  if test -z "$axis"
+    if test -z "$axis"
 	then
-    if test ! -z "$value"
+      if test ! -z "$value"
 	  then
         [ ! -z $get_button ] && echo "$button = h${get_button}${button}"
-		    retropad+=("h${get_button}${button}")
+		retropad+=("h${get_button}${button}")
 	  else
         [ ! -z $get_button ] && echo "$button = $get_button"
         retropad+=("${get_button}")
 	  fi
 	else
 	  [ ! -z $get_button ] && echo "$button = $axis$get_button"
-    retropad+=("${axis}${get_button}")
+      retropad+=("${axis}${get_button}")
 	fi
 done
 
 printf "\n"
 
-let i=0
+vendor="$(cat /proc/bus/input/devices | grep -B1 -m 1 "${controller}" | grep -o -P -w 'Vendor=\K[^ ]+')"
+vendor="$((0x${vendor}))"
+product="$(cat /proc/bus/input/devices | grep -B1 -m 1 "${controller}" | grep -o -P -w 'Product=\K[^ ]+')"
+product="$((0x${product}))"
 
+let i=0
 for raconfigcreate in "${ra_config_paths[@]}"
 do
     echo "input_driver = \"udev\"" > "${raconfigcreate}/autoconfig/udev/${controller}".cfg
     echo "input_device = \"${controller}\"" >> "${raconfigcreate}/autoconfig/udev/${controller}".cfg
+    echo "input_vendor_id = \"${vendor}\"" >> "${raconfigcreate}/autoconfig/udev/${controller}".cfg
+    echo "input_product_id = \"${product}\"" >> "${raconfigcreate}/autoconfig/udev/${controller}".cfg
 done
 
 for retroA in "${retropad[@]}"
 do
     retropad_list=( input_left_btn input_right_btn input_up_btn input_down_btn \
 	                input_a_btn input_b_btn input_x_btn input_y_btn input_l_btn \
-					        input_r_btn input_l2_btn input_r2_btn input_l3_btn input_r3_btn \
-					        input_select_btn input_start_btn input_l_y_plus_axis input_l_y_minus_axis \
-					        input_l_x_minus_axis input_l_x_plus_axis input_r_y_plus_axis \
-					        input_r_y_minus_axis input_r_x_minus_axis input_r_x_plus_axis )
+					input_r_btn input_l2_btn input_r2_btn input_l3_btn input_r3_btn \
+					input_select_btn input_start_btn input_l_y_plus_axis input_l_y_minus_axis \
+					input_l_x_minus_axis input_l_x_plus_axis input_r_y_plus_axis \
+					input_r_y_minus_axis input_r_x_minus_axis input_r_x_plus_axis )
 					 
     for raconfig in "${ra_config_paths[@]}"
     do
         [ ! -z "${retroA}" ] && echo "${retropad_list[$i]} = \"${retroA}\"" >> "${raconfig}/autoconfig/udev/${controller}.cfg"
     done
-	  let i++
+	let i++
 done
 
 printf "\n"
