@@ -11,10 +11,18 @@ index 910d99fae..8177ad15f 100644
      void set_default_keyboard_controls();
      void set_default_joypad_controls();
 diff --git a/src/core/Savegame.cpp b/src/core/Savegame.cpp
-index 4b20a4384..d3593218b 100644
+index 4b20a4384..51e77f85a 100644
 --- a/src/core/Savegame.cpp
 +++ b/src/core/Savegame.cpp
-@@ -96,6 +96,47 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
+@@ -25,6 +25,7 @@
+ #include "solarus/lua/LuaTools.h"
+ #include <lua.hpp>
+ #include <sstream>
++#include <cstring>
+ 
+ namespace Solarus {
+ 
+@@ -96,6 +97,47 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
    // at this point, but is needed by initialize() when calling item scripts.
  }
  
@@ -62,7 +70,7 @@ index 4b20a4384..d3593218b 100644
  /**
   * \brief Initializes the data from the file or from initial values if the file
   * does not exist.
-@@ -121,6 +162,8 @@ void Savegame::initialize() {
+@@ -121,6 +163,8 @@ void Savegame::initialize() {
      import_from_file();
    }
  
