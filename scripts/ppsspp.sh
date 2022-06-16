@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of PPSSPP
 	  if [ ! -d "ppsspp/" ]; then
-		git clone https://github.com/hrydgard/ppsspp.git --recursive
+		git clone --recursive https://github.com/hrydgard/ppsspp.git
 
 		if [[ $? != "0" ]]; then
 		  echo " "
@@ -55,6 +55,8 @@ bitness="$(getconf LONG_BIT)"
 
 	 cd ppsspp/ffmpeg
 	 ./linux_arm64.sh
+     rm -rf linux/x86_64/*
+	 cp -R linux/aarch64/. linux/x86_64/
 	 cd ..
 	 
 	 ppsspp_patches=$(find *.patch)
@@ -74,7 +76,25 @@ bitness="$(getconf LONG_BIT)"
 
 	  mkdir build
 	  cd build
-	  cmake -DUSING_EGL=OFF -DUSING_GLES2=ON -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -fpermissive ../.
+	  cmake -DUSE_SYSTEM_FFMPEG=OFF \
+			-DUSE_WAYLAND_WSI=OFF \
+			-DUSE_VULKAN_DISPLAY_KHR=OFF \
+			-DUSING_FBDEV=ON \
+			-DCMAKE_BUILD_TYPE=Release \
+			-DCMAKE_SYSTEM_NAME=Linux \
+			-DUSING_EGL=OFF \
+			-DUSING_GLES2=ON \
+			-DVULKAN=OFF \
+			-DARM_NO_VULKAN=ON \
+			-DUSING_X11_VULKAN=OFF \
+			-DANDROID=OFF \
+			-DWIN32=OFF \
+			-DAPPLE=OFF \
+			-DUSING_QT_UI=OFF \
+			-DUNITTEST=OFF \
+			-DSIMULATOR=OFF \
+			-DHEADLESS=OFF \
+			-DUSE_DISCORD=OFF -fpermissive ../.
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
