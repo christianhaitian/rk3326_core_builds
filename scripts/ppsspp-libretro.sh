@@ -54,6 +54,8 @@ bitness="$(getconf LONG_BIT)"
 
 	 cd ppsspp/ffmpeg
 	 ./linux_arm64.sh
+     rm -rf linux/x86_64/*
+	 cp -R linux/aarch64/. linux/x86_64/
 	 cd ..
 	 
 	 ppsspp_patches=$(find *.patch)
