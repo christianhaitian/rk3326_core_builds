@@ -1,11 +1,11 @@
 diff --git a/Makefile b/Makefile
-index 1a8ba6e..760ca42 100644
+index 7fa7b96..f96461a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -137,6 +137,18 @@ else ifeq ($(platform), gcw0)
-   LDFLAGS := -Wl,--gc-sections -fno-ident
+@@ -139,6 +139,18 @@ else ifeq ($(platform),gcw0)
    CPUFLAGS := -ffast-math -march=mips32r2 -mtune=mips32r2 -mhard-float -fexpensive-optimizations -frename-registers
    COMMONFLAGS += -pthread
+   STRIPCMD := /opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/bin/strip --strip-all
 +else ifeq ($(platform), goadvance)
 +  OUTNAME  := dosbox_pure_libretro.so
 +  CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
