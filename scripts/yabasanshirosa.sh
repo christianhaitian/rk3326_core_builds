@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of yabasanshiro
 	  if [ ! -d "yabasanshiro/" ]; then
-		git clone --recursive https://github.com/devmiyax/yabause -b pi4 yabasanshiro
+		git clone --recursive https://github.com/devmiyax/yabause -b pi4-1-9-0 yabasanshiro
 
 		if [[ $? != "0" ]]; then
 		  echo " "
