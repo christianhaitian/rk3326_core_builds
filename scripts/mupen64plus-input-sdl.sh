@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -70,5 +70,5 @@
 	  cp projects/unix/mupen64plus-input-sdl.so ../mupen64plussa-$bitness/.
 	  
 	  echo " "
-	  echo "mupen64plus-input-sdl executable has been placed in the rk3326_core_builds/mupen64plussa-$bitness subfolder"
+	  echo "mupen64plus-input-sdl executable has been placed in the mupen64plussa-$bitness subfolder"
 

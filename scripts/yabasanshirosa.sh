@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -121,7 +121,7 @@ bitness="$(getconf LONG_BIT)"
 	       cp src/retro_arena/yabasanshiro ../../yabasanshirosa$bitness/yabasanshiro
 
 	       echo " "
-	       echo "The yabasanshiro executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
+	       echo "The yabasanshiro executable has been created and has been placed in the yabasanshirosa$bitness subfolder"
 
             if [[ $yaba_menusizepatch == "yes" ]]; then
               cd ..
@@ -153,6 +153,6 @@ bitness="$(getconf LONG_BIT)"
 	       cp src/retro_arena/yabasanshiro ../../yabasanshirosa$bitness/yabasanshiro.oga
 
 	       echo " "
-	       echo "The yabasanshiro executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
+	       echo "The yabasanshiro executable has been created and has been placed in the yabasanshirosa$bitness subfolder"
 
 	fi

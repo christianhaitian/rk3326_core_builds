@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -75,5 +75,5 @@ bitness="$(getconf LONG_BIT)"
 
 
 	  echo " "
-	  echo "128 x64sc xscpu64 xplus4 xvic xcbm5x0 xcbm2 xpet and x64 vice_libretro cores have been created and has been placed in the rk3326_core_builds/cores$(getconf LONG_BIT) subfolder"
+	  echo "128 x64sc xscpu64 xplus4 xvic xcbm5x0 xcbm2 xpet and x64 vice_libretro cores have been created and has been placed in the cores$(getconf LONG_BIT) subfolder"
 	fi
