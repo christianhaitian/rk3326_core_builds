@@ -43,7 +43,10 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make -f Makefile.libretro -j$(nproc)
+
+      sed -i '/a53/s//a55/g' Makefile.libretro
+      sed -i '/rpi3_64/s//rk3566_64/g' Makefile.libretro
+	  make -f Makefile.libretro platform=rk3566_64 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
