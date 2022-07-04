@@ -19,7 +19,7 @@ index 9f10e29..bd181f1 100644
 +	-falign-functions=1 -falign-jumps=1 -falign-loops=1 \
 +	-fno-unwind-tables -fno-asynchronous-unwind-tables -fno-unroll-loops \
 +	-fmerge-all-constants -fno-math-errno \
-+	#-marm -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++	#-marm -mtune=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 +	CXXFLAGS += $(CFLAGS)
 +	CPPFLAGS += $(CFLAGS)
 +	ASFLAGS += $(CFLAGS)

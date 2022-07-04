@@ -42,11 +42,12 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+	  sed -i '/a35/s//a55/g' Makefile
 	  make clean
 	  if [[ "$bitness" == "64" ]]; then
 	    make -j$(nproc)
 	  else
-	    make platform=classic_armv8_a35 -j$(nproc)
+	    make platform=classic_armv8_a55 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then

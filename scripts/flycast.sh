@@ -51,10 +51,11 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  make clean
 
+	  sed -i '/a35/s//a55/g' Makefile
 	  if [[ "$bitness" == "64" ]]; then
 		make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
 	  else 
-		make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+		make FORCE_GLES=1 platform=classic_armv8_a55 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
@@ -85,7 +86,7 @@ bitness="$(getconf LONG_BIT)"
 		  if [[ "$bitness" == "64" ]]; then
 			make WITH_DYNAREC=arm64 FORCE_GLES=1 platform=goadvance -j$(nproc)
 		  else 
-			make FORCE_GLES=1 platform=classic_armv8_a35 -j$(nproc)
+			make FORCE_GLES=1 platform=classic_armv8_a55 -j$(nproc)
 		  fi
 
 		  if [[ $? != "0" ]]; then

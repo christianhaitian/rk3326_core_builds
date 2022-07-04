@@ -26,7 +26,7 @@ index 0ee72599..69402efb 100644
 -	LDFLAGS += -marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -Ofast -flto -fuse-linker-plugin
 +	ASFLAGS += $(CFLAGS) -c -DHOST_CPU=0x20000002 -mfpu=neon-fp-armv8 -mfloat-abi=hard -DARM_HARDFP
 +	CC_AS = $(CC)
-+	LDFLAGS += -marm -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -Ofast
++	LDFLAGS += -marm -mcpu=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard -Ofast
  	PLATFORM_EXT := unix
  	WITH_DYNAREC = arm
  	HAVE_GENERIC_JIT = 0

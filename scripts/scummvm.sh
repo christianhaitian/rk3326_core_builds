@@ -19,7 +19,7 @@ minfluidsynthverneeded="3"
 
 	  # Now we'll start the clone and build process of scummvm
 	  if [ ! -d "scummvm/" ]; then
-		git clone https://github.com/scummvm/scummvm.git
+		git clone --recursive https://github.com/scummvm/scummvm.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the scummvm standalone git.  Is Internet active or did the git location change?  Stopping here."
@@ -99,6 +99,7 @@ minfluidsynthverneeded="3"
 	  strip scummvm
 	  
 	  mkdir extra
+	  mkdir extra/shaders
 	  mkdir themes
 	  cp backends/vkeybd/packs/*.zip extra/.
 	  cp dists/pred.dic extra.
@@ -109,6 +110,10 @@ minfluidsynthverneeded="3"
 	  cp dists/engine-data/sky.cpt extra/.
 	  cp dists/engine-data/wintermute.zip extra/.
 	  cp dists/engine-data/xeen.ccs extra/.
+      cp /engines/myst3/shaders/* extra/shaders/.
+      cp /engines/wintermute/base/gfx/opengl/shaders/* extra/shaders/.
+      cp /engines/grim/shaders/* extra/shaders/.
+      cp /engines/stark/shaders/* extra/shaders/.
 	  cp gui/themes/*.zip themes/.
 	  cp gui/themes/translations.dat themes/. 
 	  echo "19000000030000000300000002030000,gameforce_gamepad,leftstick:b14,rightx:a3,leftshoulder:b4,start:b9,lefty:a0,dpup:b10,righty:a2,a:b1,b:b0,guide:b16,dpdown:b11,rightshoulder:b5,righttrigger:b7,rightstick:b15,dpright:b13,x:b2,back:b8,leftx:a1,y:b3,dpleft:b12,lefttrigger:b6,platform:Linux,

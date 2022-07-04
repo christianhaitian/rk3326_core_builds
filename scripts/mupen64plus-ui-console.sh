@@ -48,7 +48,7 @@
         _opts='USE_GLES=1 NEW_DYNAREC=1 OPTFLAGS="-O3" V=1 PIE=1'
       fi
       
-      export CFLAGS="-mtune=cortex-a35 -flto=$(nproc) -fuse-linker-plugin"
+      export CFLAGS="-mtune=cortex-a55 -flto=$(nproc) -fuse-linker-plugin"
       export CXXFLAGS="$CXXFLAGS $CFLAGS"
       export LDFLAGS="$CFLAGS"
       

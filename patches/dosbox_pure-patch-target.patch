@@ -8,7 +8,7 @@ index 1a8ba6e..760ca42 100644
    COMMONFLAGS += -pthread
 +else ifeq ($(platform), goadvance)
 +  OUTNAME  := dosbox_pure_libretro.so
-+  CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++  CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a55 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
 +  CXX      := g++
 +  BUILD    := RELEASE
 +  BUILDDIR := release

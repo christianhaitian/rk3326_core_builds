@@ -17,7 +17,7 @@ index 16bc2e85..9675b7ff 100644
 +   PLATFORM_EXT := unix
 +   WITH_DYNAREC=arm
 +   HAVE_NEON=1
-+   ASFLAGS += -D__ARM_NEON__ -marm -mcpu=cortex-a35 -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++   ASFLAGS += -D__ARM_NEON__ -marm -mcpu=cortex-a55 -mtune=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 +
 +   CPUFLAGS += -O2 \
 +      -fno-lto -fuse-linker-plugin -fno-semantic-interposition -fno-trapping-math \

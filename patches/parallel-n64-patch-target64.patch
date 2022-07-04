@@ -66,7 +66,7 @@ diff -rupN parallel-n64.orig/Makefile parallel-n64.new/Makefile
     PLATFORM_EXT := unix
     WITH_DYNAREC=arm
     HAVE_NEON=1
-+   ASFLAGS += -D__ARM_NEON__ -marm -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++   ASFLAGS += -D__ARM_NEON__ -marm -mtune=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard
 +   CPUFLAGS += -O2 \
 +      -fno-lto -fuse-linker-plugin -fno-semantic-interposition -fno-trapping-math \
 +      -fdata-sections -ffunction-sections -Wl,--gc-sections \
@@ -74,7 +74,7 @@ diff -rupN parallel-n64.orig/Makefile parallel-n64.new/Makefile
 +      -falign-functions=32 -falign-jumps=1 -falign-loops=1 \
 +      -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-unroll-loops \
 +      -fno-strict-aliasing -fmerge-all-constants -fno-math-errno \
-+      -marm -mtune=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++      -marm -mtune=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard
  
  # OS X
  else ifneq (,$(findstring osx,$(platform)))

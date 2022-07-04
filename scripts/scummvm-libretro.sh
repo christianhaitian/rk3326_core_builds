@@ -16,7 +16,7 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "scummvm-libretro" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "scummvm/" ]; then
-		git clone https://github.com/libretro/scummvm.git
+		git clone --recursive https://github.com/libretro/scummvm.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
@@ -42,9 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 	  make clean
-	  sed -i '/a53/s//a35/' backends/platform/libretro/build/Makefile
-	  sed -i '/rpi3_64/s//rk3326/' backends/platform/libretro/build/Makefile
-	  make -C backends/platform/libretro/build platform=rk3326 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
+	  sed -i '/a53/s//a55/' backends/platform/libretro/build/Makefile
+	  sed -i '/rpi3_64/s//rk3566/' backends/platform/libretro/build/Makefile
+	  make -C backends/platform/libretro/build platform=rk3566 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

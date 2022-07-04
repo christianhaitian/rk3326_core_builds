@@ -8,7 +8,7 @@ index 0ee72599..69402efb 100644
 +        TARGET := $(TARGET_NAME)_libretro.so
 +        fpic := -fPIC
 +        SHARED := -shared -Wl,-no-undefined -Wl,--version-script=$(VERSION_SCRIPT)
-+        PLATFORM_FLAGS = -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -Ofast -frename-registers -ftree-vectorize
++        PLATFORM_FLAGS = -march=armv8-a+crc+fp+simd -mcpu=cortex-a55 -Ofast -frename-registers -ftree-vectorize
 +        USE_EXPERIMENTAL_FLAGS = 1
 +        USE_CYCLONE = 1
 +        ARCH = arm64

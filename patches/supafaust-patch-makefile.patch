@@ -18,8 +18,8 @@ index 5a20bbf..c797a78 100644
 +   FLAGS += $(PTHREAD_FLAGS)
 +   FLAGS += -fomit-frame-pointer
 +   IS_X86 = 0
-+   FLAGS += -DARM -march=armv8-a+crc+simd -mtune=cortex-a35
-+   ASFLAGS += -mtune=cortex-a35
++   FLAGS += -DARM -march=armv8-a+crc+simd -mtune=cortex-a55
++   ASFLAGS += -mtune=cortex-a55
 +   HAVE_NEON = 1
  else ifeq ($(platform), wii)
     TARGET := $(TARGET_NAME)_libretro_$(platform).a

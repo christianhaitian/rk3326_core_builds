@@ -8,7 +8,7 @@ index 65796cf..9a7d68a 100644
  
 +# Go-Advance
 +else ifeq ($(platform), goadvance)
-+	CPUFLAGS := -marm -march=armv8-a+crc+simd -mtune=cortex-a35 -mcpu=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -flto
++	CPUFLAGS := -marm -march=armv8-a+crc+simd -mtune=cortex-a55 -mcpu=cortex-a55 -mfpu=neon-fp-armv8 -mfloat-abi=hard -flto
 +	CFLAGS  := $(CPUFLAGS) -fpic -ffast-math -fno-rtti -fno-exceptions
 +	TARGET := $(TARGET_NAME)_libretro.so
 +	fpic := -fPIC

@@ -41,11 +41,11 @@ bitness="$(getconf LONG_BIT)"
 		   rm "$patching" 
 	  done
 	 fi
-	  sed -i '/a53/s//a35/g' Makefile
-	  sed -i '/rpi3/s//rk3326/' Makefile
-	  sed -i '/rpi3_64/s//rk3326_64/' Makefile
+	  sed -i '/a53/s//a55/g' Makefile
+	  sed -i '/rpi3/s//rk3566/' Makefile
+	  sed -i '/rpi3_64/s//rk3566_64/' Makefile
 	  make clean
-	  make platform=rk3326_64 -j$(nproc)
+	  make platform=rk3566_64 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "

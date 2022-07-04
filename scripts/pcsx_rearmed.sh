@@ -51,8 +51,8 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  make -f Makefile.libretro clean
 
-	  sed -i '/a53/s//a35/g' Makefile.libretro
- 	  sed -i '/a72/s//a35/g' Makefile.libretro
+	  sed -i '/a53/s//a55/g' Makefile.libretro
+ 	  sed -i '/a72/s//a55/g' Makefile.libretro
 
 	  if [[ "$bitness" == "64" ]]; then
 	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)

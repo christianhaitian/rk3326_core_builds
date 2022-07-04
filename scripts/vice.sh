@@ -48,11 +48,12 @@ bitness="$(getconf LONG_BIT)"
 
      gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 
+     sed -i '/a35/s//a55/g' Makefile
      for EMUTYPE in x128 x64sc xscpu64 xplus4 xvic xcbm5x0 xcbm2 xpet x64
      do
        make clean
        if [[ "$bitness" == "32" ]]; then
-         make EMUTYPE=${EMUTYPE} platform=classic_armv8_a35 -j$(nproc)       
+         make EMUTYPE=${EMUTYPE} platform=classic_armv8_a55 -j$(nproc)       
        else
          make EMUTYPE=${EMUTYPE} -j$(nproc)
        fi

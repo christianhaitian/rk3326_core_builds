@@ -24,7 +24,7 @@ index 50e3466..b542510 100644
 +
 +# RK3326 
 +else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a35 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
++   CPUFLAGS := -Ofast -march=armv8-a+crc+fp+simd -mcpu=cortex-a55 -flto -DUSE_RENDER_THREAD -DNO_ASM -DARM_ASM -frename-registers -ftree-vectorize
 +   CFLAGS   := -DNDEBUG -Ofast -fno-ident
 +   LDFLAGS  += -Ofast -fno-ident
 +   CFLAGS  += $(CPUFLAGS) -fpic -fomit-frame-pointer -fno-exceptions -fno-non-call-exceptions -Wno-psabi -Wno-format
