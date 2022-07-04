@@ -1,5 +1,7 @@
 # Script to automate the build of various Libretro cores, Nxengine-evo, Retroarch, PPSSPP, ScummVM, Emulationstation-fcamod for use with RK3566 devices (such as the RG503)
 
+## For the rk3326 chipset, use the rk3326 branch
+
 ### Assumptions:
 This script was designed to work with 32bit and 64bit chroot Linux environments for the RK3566 chipset. \
 See [this document](https://github.com/christianhaitian/rk3326_core_builds/blob/main/docs/chroot.md) for instructions on how to create them yourself. \
