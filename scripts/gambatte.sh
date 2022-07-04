@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -43,7 +43,10 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-	  make -f Makefile.libretro -j$(nproc)
+
+      sed -i '/a53/s//a35/g' Makefile.libretro
+      sed -i '/rpi3_64/s//rk3326_64/g' Makefile.libretro
+	  make -f Makefile.libretro platform=rk3326_64 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -63,5 +66,5 @@ bitness="$(getconf LONG_BIT)"
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/gambatte_libretro.so.commit
 
 	  echo " "
-	  echo "gambatte_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "gambatte_libretro.so has been created and has been placed in the cores64 subfolder"
 	fi
