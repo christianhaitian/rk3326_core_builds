@@ -50,7 +50,9 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  cmake .
 	  make clean
-	  make -f Makefile.libretro platform=goadvance -j$(nproc)
+	  sed -i '/a35/s//a55/g' Makefile.libretro
+	  sed -i '/goadvance/s//rk3566/g' Makefile.libretro
+	  make -f Makefile.libretro platform=rk3566 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
