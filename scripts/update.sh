@@ -42,10 +42,14 @@ if [[ "$var" == "update" ]]; then
     folder="arm7hf"
   fi
   if [ ! -d "retroarch-cores/" ]; then
-    git clone $ra_cores_git
+    git clone $ra_cores_git -b master
     cd retroarch-cores
   else
     cd retroarch-cores
+	branch=$(git rev-parse --abbrev-ref HEAD)
+	if [ "$branch" != "master" ]; then
+	  git checkout master
+	fi
     git pull
   fi
   if [ -d "../cores$bitness/" ]; then
