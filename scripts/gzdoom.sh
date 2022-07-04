@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -164,7 +164,7 @@ bitness="$(getconf LONG_BIT)"
 
                 cp gzdoom ../../gzdoom$bitness/gzdoom.351v
                 echo " "
-                echo "The gzdoom.351v executable file haa been created and been placed in the rk3326_core_builds/gzdoom$bitness subfolder"
+                echo "The gzdoom.351v executable file haa been created and been placed in the gzdoom$bitness subfolder"
           fi
 
 	  if [[ ${chi_patch} == "yes" ]]; then
@@ -190,7 +190,7 @@ bitness="$(getconf LONG_BIT)"
 
 		cp gzdoom ../../gzdoom$bitness/gzdoom.chi
 		echo " "
-		echo "The gzdoom.chi executable file haa been created and been placed in the rk3326_core_builds/gzdoom$bitness subfolder"
+		echo "The gzdoom.chi executable file haa been created and been placed in the gzdoom$bitness subfolder"
 	  fi
 
 	fi

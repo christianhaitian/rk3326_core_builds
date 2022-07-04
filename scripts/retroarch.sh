@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -116,9 +116,9 @@ bitness="$(getconf LONG_BIT)"
 
 	  echo " "
 	  if [[ "$bitness" == "32" ]]; then
-		echo "retroarch32 has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		echo "retroarch32 has been created and has been placed in the retroarch$bitness subfolder"
 	  else
-		echo "retroarch has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		echo "retroarch has been created and has been placed in the retroarch$bitness subfolder"
 	  fi
 
 	  cd gfx/video_filters
@@ -133,5 +133,5 @@ bitness="$(getconf LONG_BIT)"
 	  cp *.so ../../../retroarch$bitness/filters/video
 	  cp *.filt ../../../retroarch$bitness/filters/video
 	  echo " "
-	  echo "Video filters have been built and copied to the rk3326_core_builds/retroarch$bitness/filters/video subfolder"
+	  echo "Video filters have been built and copied to the retroarch$bitness/filters/video subfolder"
 	fi

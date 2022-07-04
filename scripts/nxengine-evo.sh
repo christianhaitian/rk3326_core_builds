@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -70,5 +70,5 @@ bitness="$(getconf LONG_BIT)"
 	  unzip -o all.zip -d ../../nxengine-evo-$bitness/
 
 	  echo " "
-	  echo "nxengine-evo has been created and has been placed in the rk3326_core_builds/nxengine-evo-$bitness subfolder"
+	  echo "nxengine-evo has been created and has been placed in the nxengine-evo-$bitness subfolder"
 	fi

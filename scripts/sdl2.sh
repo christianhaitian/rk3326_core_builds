@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -147,7 +147,7 @@ commit="f9b918ff403782986f2a6712e6e2a462767a0457" # SDL 2.0.20 although it build
 	  fi
 
 	  echo " "
-	  echo "sdl $(git describe --tags | cut -c 9-) has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
+	  echo "sdl $(git describe --tags | cut -c 9-) has been created and has been placed in the sdl2-$bitness subfolder"
 	fi
 
     if [[ $bitness == "64" ]]; then
@@ -188,5 +188,5 @@ commit="f9b918ff403782986f2a6712e6e2a462767a0457" # SDL 2.0.20 although it build
       fi
 
 	  echo " "
-	  echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
+	  echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the sdl2-$bitness subfolder"
 

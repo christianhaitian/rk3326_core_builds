@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -91,7 +91,7 @@ bitness="$(getconf LONG_BIT)"
 		  mv mgba_libretro.so mgba_rumble_libretro.so
 		  cp mgba_rumble_libretro.so ../cores64/.
 		  echo " "
-		  echo "mgba_libretro.so and mgba_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores64 subfolder"
+		  echo "mgba_libretro.so and mgba_rumble_libretro.so have been created and have been placed in the cores64 subfolder"
 		done
 	  fi
 
@@ -99,5 +99,5 @@ bitness="$(getconf LONG_BIT)"
 	  echo $gitcommit > ../cores$bitness/mgba_rumble_libretro.so.commit
 
 	  echo " "
-	  echo "mgba_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "mgba_libretro.so has been created and has been placed in the cores64 subfolder"
 	fi

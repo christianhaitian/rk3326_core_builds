@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -115,7 +115,7 @@ bitness="$(getconf LONG_BIT)"
 		  mv pcsx_rearmed_libretro.so pcsx_rearmed_rumble_libretro.so
 		  cp pcsx_rearmed_rumble_libretro.so ../cores$bitness/.
 		  echo " "
-		  echo "pcsx_rearmed_libretro.so and pcsx_rearmed_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores32 subfolder"
+		  echo "pcsx_rearmed_libretro.so and pcsx_rearmed_rumble_libretro.so have been created and have been placed in the cores32 subfolder"
 	      gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	      echo $gitcommit > ../cores$bitness/pcsx_rearmed_rumble_libretro.so.commit
 		done
@@ -134,12 +134,12 @@ bitness="$(getconf LONG_BIT)"
             echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
 
             echo " "
-            echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+            echo "pcsx_rearmed_libretro.so has been created and has been placed in the cores32 subfolder"
           fi
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_rumble_peops_libretro.so.commit
 
 	  echo " "
-	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the cores32 subfolder"
 	fi

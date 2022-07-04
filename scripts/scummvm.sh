@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -131,5 +131,5 @@ minfluidsynthverneeded="3"
 	  tar -zchvf ../scummvm$bitness/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ LICENSES/ scummvm AUTHORS COPYING NEWS.md README.md
 
 	  echo " "
-	  echo "scummvm has been created and has been placed in the rk3326_core_builds/scummvm$bitness subfolder"
+	  echo "scummvm has been created and has been placed in the scummvm$bitness subfolder"
 	fi

@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -49,5 +49,5 @@ tarname="mednafen-1.29.0.tar.xz"
       cp src/mednafen ../mednafen64/.
 
 	  echo " "
-	  echo "mednafen has been created and has been placed in the rk3326_core_builds/mednafen64 subfolder"
+	  echo "mednafen has been created and has been placed in the mednafen64 subfolder"
 	fi

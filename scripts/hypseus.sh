@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -93,7 +93,7 @@ bitness="$(getconf LONG_BIT)"
 	       cp hypseus ../../hypseus$bitness/hypseus.$(echo $patching | cut -d '-' -f 4 | cut -d '.' -f 1)
 
 	       echo " "
-	       echo "The hypseus.$(echo $patching | cut -d '-' -f 4 | cut -d '.' -f 1) executable has been created and has been placed in the rk3326_core_builds/hypseus$bitness subfolder"
+	       echo "The hypseus.$(echo $patching | cut -d '-' -f 4 | cut -d '.' -f 1) executable has been created and has been placed in the hypseus$bitness subfolder"
 
 		   cd ..
 		   rm "$patching"
