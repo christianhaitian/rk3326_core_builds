@@ -27,9 +27,9 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd mgba/
-	 
+
 	 mgba_patches=$(find *.patch)
-	 
+
 	 if [[ ! -z "$mgba_patches" ]]; then
 	  for patching in mgba-patch*
 	  do
@@ -48,10 +48,11 @@ bitness="$(getconf LONG_BIT)"
 		 fi
 	  done
 	 fi
-	  cmake .
-	  make clean
+
 	  sed -i '/a35/s//a55/g' Makefile.libretro
 	  sed -i '/goadvance/s//rk3566/g' Makefile.libretro
+	  cmake .
+	  make clean
 	  make -f Makefile.libretro platform=rk3566 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
@@ -81,7 +82,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		  fi
 		  rm "$patching"
-		  make -f Makefile.libretro platform=goadvance -j$(nproc)
+		  make -f Makefile.libretro platform=rk3566 -j$(nproc)
 
 		  if [[ $? != "0" ]]; then
 			echo " "
