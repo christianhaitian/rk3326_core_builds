@@ -50,13 +50,11 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  sed -i '/a53/s//a55/g' Makefile
-	  sed -i '/rpi3/s//rk3566/' Makefile
-	  sed -i '/rpi3_64/s//rk3566_64/' Makefile
 
 	  if [[ "$bitness" == "64" ]]; then
-	    make FORCE_GLES3=1 platform=rk3566_64 -j$(nproc)
+	    make FORCE_GLES3=1 -j$(nproc)
 	  else
-	    make FORCE_GLES3=1 HAVE_NEON=1 platform=rk3566 -j$(nproc)
+	    make FORCE_GLES3=1 HAVE_NEON=1 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
