@@ -14,7 +14,7 @@ bitness="$(getconf LONG_BIT)"
 
 	# Clean up the directory and remove other lr gits and created cores
 	if [ "$var" == "clean" ]; then
-	  find -maxdepth 1 ! -name scripts ! -name patches ! -name .git ! -name docs ! -name shell-scripts -type d -not -path '.' -exec rm -rf {} +
+	  find -maxdepth 1 ! -name scripts ! -name patches ! -name .git ! -name docs ! -name shell-scripts ! -name mali -type d -not -path '.' -exec rm -rf {} +
 	  mkdir cores$(getconf LONG_BIT)
 	  echo " "
 	  echo "Directory has been cleaned!"
