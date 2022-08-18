@@ -79,6 +79,9 @@ bitness="$(getconf LONG_BIT)"
 
              mkdir build
              cd build
+             export CFLAGS="-O2 -march=armv8-a+crc -mtune=cortex-a35 -ftree-vectorize -funsafe-math-optimizations"
+             export CXXFLAGS="$CXXFLAGS $CFLAGS"
+             export LDFLAGS="$CFLAGS"
              if [[ "$bitness" == "64" ]]; then
                cmake ../yabause \
                      -DYAB_PORTS=retro_arena \
