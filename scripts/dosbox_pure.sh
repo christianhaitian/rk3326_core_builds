@@ -42,7 +42,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi 
 	 
-	  make platform=goadvance -j$(nproc)
+	  make platform=RG351x -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
