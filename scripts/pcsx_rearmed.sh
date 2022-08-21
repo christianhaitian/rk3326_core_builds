@@ -51,13 +51,10 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 	  make -f Makefile.libretro clean
 
-	  sed -i '/a53/s//a35/g' Makefile.libretro
- 	  sed -i '/a72/s//a35/g' Makefile.libretro
-
 	  if [[ "$bitness" == "64" ]]; then
-	    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
+	    make -f Makefile.libretro platform=rk3326_64 -j$(nproc)
 	  else
-	    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rk3326 -j$(nproc)
+	    make -f Makefile.libretro platform=rk3326 -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
@@ -100,9 +97,9 @@ bitness="$(getconf LONG_BIT)"
 
 		  make -f Makefile.libretro clean
 		  if [[ "$bitness" == "64" ]]; then
-		    make -f Makefile.libretro ARCH=arm64 BUILTIN_GPU=unai DYNAREC=ari64 platform=rk3326_64 -j$(nproc)
+		    make -f Makefile.libretro platform=rk3326_64 -j$(nproc)
 		  else
-		    make -f Makefile.libretro HAVE_NEON=1 ARCH=arm BUILTIN_GPU=neon DYNAREC=ari64 platform=rk3326 -j$(nproc)
+		    make -f Makefile.libretro platform=rk3326 -j$(nproc)
 		  fi
 
 		  if [[ $? != "0" ]]; then
@@ -115,7 +112,7 @@ bitness="$(getconf LONG_BIT)"
 		  mv pcsx_rearmed_libretro.so pcsx_rearmed_rumble_libretro.so
 		  cp pcsx_rearmed_rumble_libretro.so ../cores$bitness/.
 		  echo " "
-		  echo "pcsx_rearmed_libretro.so and pcsx_rearmed_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores32 subfolder"
+		  echo "pcsx_rearmed_libretro.so and pcsx_rearmed_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores$bitness subfolder"
 	      gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	      echo $gitcommit > ../cores$bitness/pcsx_rearmed_rumble_libretro.so.commit
 		done
@@ -134,12 +131,12 @@ bitness="$(getconf LONG_BIT)"
             echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
 
             echo " "
-            echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+            echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores$bitness subfolder"
           fi
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/$(basename $PWD)_rumble_peops_libretro.so.commit
 
 	  echo " "
-	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+	  echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores$bitness subfolder"
 	fi
