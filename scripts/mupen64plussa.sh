@@ -27,7 +27,9 @@ bitness="$(getconf LONG_BIT)"
    source scripts/mupen64plus-video-rice.sh
    cd $cur_wd
    source scripts/mupen64plus-video-glide64mk2.sh
-
+   cd $cur_wd
+   source scripts/mupen64plus-video-gliden64.sh
+   
    cd $cur_wd
    gitcommit=$(git --git-dir mupen64plus-core/.git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
    tar --exclude='*.gz' -zchvf mupen64plussa-$bitness/mupen64plus-${gitcommit}.tar.gz -C mupen64plussa-$bitness .

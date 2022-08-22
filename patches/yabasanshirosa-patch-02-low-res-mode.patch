@@ -1,8 +1,8 @@
 diff --git a/yabause/src/nx/main.cpp b/yabause/src/nx/main.cpp
-index 7d7ee2a30..51f5c12ed 100644
+index c19474f0..62efa651 100644
 --- a/yabause/src/nx/main.cpp
 +++ b/yabause/src/nx/main.cpp
-@@ -190,7 +190,7 @@ OSD_struct *OSDCoreList[] = {
+@@ -188,7 +188,7 @@ OSD_struct *OSDCoreList[] = {
  static SDL_Window* wnd;
  static SDL_GLContext glc;
  int g_EnagleFPS = 1;
@@ -12,7 +12,7 @@ index 7d7ee2a30..51f5c12ed 100644
  int g_scsp_sync = 1;
  int g_frame_skip = 0;
 diff --git a/yabause/src/sdl/main.c b/yabause/src/sdl/main.c
-index b990c1df5..8577c5546 100644
+index b9214bf6..52f539d6 100644
 --- a/yabause/src/sdl/main.c
 +++ b/yabause/src/sdl/main.c
 @@ -141,7 +141,7 @@ NULL
@@ -23,4 +23,4 @@ index b990c1df5..8577c5546 100644
 +static int lowres_mode = 1;
  
  static char biospath[256] = "\0";
- static char strgsyslangeid[256] = "english";
+ static char cdpath[256] = "\0";
