@@ -61,6 +61,12 @@ bitness="$(getconf LONG_BIT)"
 	 if [[ ! -z "$duckstationsa_patches" ]]; then
 	  for patching in duckstationsa-patch*
 	  do
+		 if [[ $patching == *"chirgb10"* ]]; then
+		   echo " "
+		   echo "Skipping the $patching for now and making a note to apply that later"
+		   sleep 3
+		   chikey_patch="yes"
+		 else
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
 			echo " "
@@ -68,6 +74,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 1
 		   fi
 		   rm "$patching"
+		 fi
 	  done
 	  fi
 
@@ -114,4 +121,36 @@ bitness="$(getconf LONG_BIT)"
 	       echo " "
 	       echo "The duckstation standalone executable has been created and has been placed in the rk3326_core_builds/duckstationsa-$bitness subfolder"
 
+            if [[ $chikey_patch == "yes" ]]; then
+              cd ..
+        	  for patching in duckstationsa-patch*
+        	  do
+                git checkout src/frontend-common/sdl_controller_interface.cpp
+        	    patch -Np1 < "$patching"
+        		if [[ $? != "0" ]]; then
+        		  echo " "
+        		  echo "There was an error while applying $patching.  Stopping here."
+        		  exit 1
+        		fi
+        		rm "$patching"
+        	  done
+        	fi
+
+           cd build
+           make -j$(nproc)
+           if [[ $? != "0" ]]; then
+		     echo " "
+		     echo "There was an error that occured while making the duckstation standalone.  Stopping here."
+             exit 1
+           fi
+           strip bin/duckstation-nogui
+
+           if [ ! -d "../../duckstationsa-$bitness/" ]; then
+		     mkdir -v ../../duckstationsa-$bitness
+	       fi
+
+	       cp bin/duckstation-nogui ../../duckstationsa-$bitness/duckstation-nogui.chirgb10
+	       
+	       echo " "
+	       echo "The duckstation standalone executable for the chi and rgb10 has been created and has been placed in the rk3326_core_builds/duckstationsa-$bitness subfolder"
 	fi
