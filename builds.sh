@@ -27,6 +27,9 @@ do
         echo "$var cannot be built in this current ${bitness}bit environment."
         exit 1
       fi
+    if test -z "$(ls -l /usr/lib/aarch64-linux-gnu/libMali.so | grep g31-rxp0-gbm | tr -d '\0')"
+    then
+      printf "\nUpdating libMali to properly link to ibmali-bifrost-g31-rxp0-gbm.so in the dev environment, please wait...\n"
       if [[ ${bitness} == "32" ]]; then
         cp mali/armhf/libmali-bifrost-g31-rxp0-gbm.so /usr/lib/arm-linux-gnueabihf/.
         cp mali/armhf/libmali-bifrost-g31-rxp0-gbm.so /usr/local/lib/arm-linux-gnueabihf/.
@@ -105,6 +108,7 @@ do
       ln -sf libMali.so libwayland-egl.so.1
       ln -sf libMali.so libwayland-egl.so.1.0.0
       ldconfig > /dev/null 2>&1
+    fi
       cd "${cur_wd}"
       source scripts/"$var".sh
   else
