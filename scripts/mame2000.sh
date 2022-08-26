@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -43,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make clean
-      make -j3
+      make WANT_LIBCO=0 -j3
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -63,5 +63,5 @@ bitness="$(getconf LONG_BIT)"
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mame2000_libretro.so.commit
 
 	  echo " "
-	  echo "mame2000_libretro.so has been created and has been placed in the rk3326_core_builds/cores$(getconf LONG_BIT) subfolder"
+	  echo "mame2000_libretro.so has been created and has been placed in the rk3566_core_builds/cores$(getconf LONG_BIT) subfolder"
 	fi
