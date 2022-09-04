@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the RK3566 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro yabasanshiro build
-	if [[ "$var" == "yabasanshiro" || "$var" == "all" ]] && [[ "$bitness" == "32" ]]; then
+	if [[ "$var" == "yabasanshiro" || "$var" == "all" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "yabasanshiro/" ]; then
 		git clone https://github.com/libretro/yabause.git -b yabasanshiro
@@ -26,7 +26,7 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd yabause/
-	 git reset --hard 7ae0de7abc378f6077aff0fd365ab25cff58b055
+	 #git reset --hard 7ae0de7abc378f6077aff0fd365ab25cff58b055
 	 
 	 yabasanshiro_patches=$(find *.patch)
 	 
@@ -44,7 +44,11 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	  make -C yabause/src/libretro clean
-	  make -C yabause/src/libretro platform=goadvance -j$(nproc)
+	  if [[ "$bitness" == "32" ]]; then
+	    make -C yabause/src/libretro platform=goadvance -j$(nproc)
+	  else
+	    make -C yabause/src/libretro platform=rockpro64 HAVE_NEON=0 -j$(nproc)
+	  fi
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -54,15 +58,15 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip yabause/src/libretro/yabasanshiro_libretro.so
 
-	  if [ ! -d "../cores32/" ]; then
-		mkdir -v ../cores32
+	  if [ ! -d "../cores$bitness/" ]; then
+		mkdir -v ../cores$bitness
 	  fi
 
-	  cp yabause/src/libretro/yabasanshiro_libretro.so ../cores32/.
+	  cp yabause/src/libretro/yabasanshiro_libretro.so ../cores$bitness/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/yabasanshiro_libretro.so.commit
 
 	  echo " "
-	  echo "yabasanshiro_libretro.so has been created and has been placed in the rk3326_core_builds/cores32 subfolder"
+	  echo "yabasanshiro_libretro.so has been created and has been placed in the rk3566_core_builds/cores$bitness subfolder"
 	fi
