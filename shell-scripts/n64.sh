@@ -34,5 +34,5 @@ elif [[ $1 == "standalone-GlideN64" ]]; then
     /opt/mupen64plus/mupen64plus --set Video-GLideN64[AspectRatio]=1 --resolution "${xres}x${yres}" --plugindir /opt/mupen64plus --gfx mupen64plus-video-GLideN64.so --corelib /opt/mupen64plus/libmupen64plus.so.2 --datadir /opt/mupen64plus "$game"
   fi
 else
-  /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$game"
+  /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$3"
 fi
