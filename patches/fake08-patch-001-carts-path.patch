@@ -1,0 +1,15 @@
+diff --git a/platform/SDL2Desktop/source/SDL2Host.cpp b/platform/SDL2Desktop/source/SDL2Host.cpp
+index 906602c..e2e6fc4 100644
+--- a/platform/SDL2Desktop/source/SDL2Host.cpp
++++ b/platform/SDL2Desktop/source/SDL2Host.cpp
+@@ -62,8 +62,8 @@ Host::Host()
+ 	#endif 
+ 
+     std::string home = getenv("FAKE08_HOME");
+-    
+-    std::string fullCartDir = home + "/p8carts";
++    std::string pico8dir = getenv("FAKE08_PICO8DIR");
++    std::string fullCartDir = pico8dir + "/carts";
+ 
+     setPlatformParams(
+         WINDOW_SIZE_X,
