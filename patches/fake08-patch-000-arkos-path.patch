@@ -1,0 +1,22 @@
+diff --git a/platform/SDL2Desktop/source/SDL2Host.cpp b/platform/SDL2Desktop/source/SDL2Host.cpp
+index 3fc3b29..906602c 100644
+--- a/platform/SDL2Desktop/source/SDL2Host.cpp
++++ b/platform/SDL2Desktop/source/SDL2Host.cpp
+@@ -47,7 +47,7 @@ Host::Host()
+ {
+     struct stat st = {0};
+ 
+-    int res = chdir(getenv("HOME"));
++    int res = chdir(getenv("FAKE08_HOME"));
+     if (res == 0 && stat(_desktopSdl2SettingsDir.c_str(), &st) == -1) {
+         res = mkdir(_desktopSdl2SettingsDir.c_str(), 0777);
+     }
+@@ -61,7 +61,7 @@ Host::Host()
+ 	SDL_StartTextInput();
+ 	#endif 
+ 
+-    std::string home = getenv("HOME");
++    std::string home = getenv("FAKE08_HOME");
+     
+     std::string fullCartDir = home + "/p8carts";
+ 
