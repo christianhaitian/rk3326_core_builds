@@ -166,6 +166,9 @@ cd rk3326_core_builds
 ### To build just prboom (64bit Only):
 `./builds.sh prboom`
 
+### To build just prosystem (64bit Only):
+`./builds.sh prosystem`
+
 ### To build just puae (64bit Only):
 `./builds.sh puae`
 
