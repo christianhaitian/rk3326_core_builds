@@ -97,6 +97,12 @@ cd rk3326_core_builds
 ### To build just fmsx (64bit only):
 `./builds.sh fmsx`
 
+### To build just freeintv core (64bit only):
+`./builds.sh freeintv`
+
+### To build just freechaf core (64bit only):
+`./builds.sh freechaf`
+
 ### To build just hypseus (64bit only):
 `./builds.sh hypseus`
 
@@ -234,6 +240,9 @@ cd rk3326_core_builds
 
 ### To build just uzem:
 `./builds.sh uzem`
+
+### To build just virtualboy (64bit only):
+`./builds.sh vb`
 
 ### To build just vemulator:
 `./builds.sh vemulator`
