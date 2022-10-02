@@ -1,5 +1,5 @@
 diff --git a/gfx/gfx_widgets.c b/gfx/gfx_widgets.c
-index 6cb43406e5..41f77e4f5f 100644
+index 29e956763e..3caec1f48d 100644
 --- a/gfx/gfx_widgets.c
 +++ b/gfx/gfx_widgets.c
 @@ -931,6 +931,9 @@ void gfx_widgets_iterate(
