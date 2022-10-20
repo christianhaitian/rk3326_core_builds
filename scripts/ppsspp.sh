@@ -94,7 +94,9 @@ bitness="$(getconf LONG_BIT)"
 			-DUNITTEST=OFF \
 			-DSIMULATOR=OFF \
 			-DHEADLESS=OFF \
-			-DUSE_DISCORD=OFF -fpermissive ../.
+			-DUSE_DISCORD=OFF \
+			-DCMAKE_C_COMPILER=/usr/bin/clang \
+			-DCMAKE_CXX_COMPILER=/usr/bin/clang++ ../.
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then

@@ -1,8 +1,8 @@
 diff --git a/SDL/SDLMain.cpp b/SDL/SDLMain.cpp
-index 07570d9d2..24ad57050 100644
+index f91926fd4..962ccf967 100644
 --- a/SDL/SDLMain.cpp
 +++ b/SDL/SDLMain.cpp
-@@ -648,13 +648,13 @@ int main(int argc, char *argv[]) {
+@@ -651,13 +651,13 @@ int main(int argc, char *argv[]) {
  #endif
  
  	if (mode & SDL_WINDOW_FULLSCREEN_DESKTOP) {
