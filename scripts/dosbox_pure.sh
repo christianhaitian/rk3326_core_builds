@@ -16,7 +16,7 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "dosbox_pure" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "dosbox_pure/" ]; then
-		git clone https://github.com/libretro/dosbox-pure.git
+		git clone https://github.com/schellingb/dosbox-pure.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
