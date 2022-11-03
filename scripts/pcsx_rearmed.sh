@@ -70,6 +70,8 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	  mv pcsx_rearmed_libretro.so ../cores$bitness/.
+      gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+      echo $gitcommit > ../cores$bitness/pcsx_rearmed_libretro.so.commit
 
           if [[ "$bitness" == "32" ]]; then
             make -f Makefile.libretro clean
@@ -128,7 +130,7 @@ bitness="$(getconf LONG_BIT)"
             fi
             mv pcsx_rearmed_libretro.so ../cores$bitness/pcsx_rearmed_rumble_peops_libretro.so
             gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-            echo $gitcommit > ../cores$bitness/$(basename $PWD)_libretro.so.commit
+            echo $gitcommit > ../cores$bitness/pcsx_rearmed_rumble_peops_libretro.so.commit
 
             echo " "
             echo "pcsx_rearmed_libretro.so has been created and has been placed in the rk3326_core_builds/cores$bitness subfolder"
