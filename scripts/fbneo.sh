@@ -41,8 +41,9 @@ bitness="$(getconf LONG_BIT)"
 		   rm "$patching" 
 	  done
 	 fi 
-
-	  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance platform=goadvance
+	 
+	  make -C ./src/burner/libretro clean
+	  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance
 
 	  if [[ $? != "0" ]]; then
 		echo " "
