@@ -26,7 +26,6 @@
 	  fi
 
 	 cd mupen64plus-video-GlideN64
-     git reset --hard 3d74542d24eb9c559bbeb633781ad43fb0eb1f37
 
 	 mupen64plus_core_patches=$(find *.patch)
 	 
@@ -46,7 +45,7 @@
       if [[ "$bitness" == "32" ]]; then
         _opts='USE_GLES=1 NEON=1 VFP_HARD=1 OPTFLAGS="-O3" V=1 VC=0 PIE=1'
       else
-        _opts='USE_GLES=1 OPTFLAGS="-O3" V=1 VC=0 PIE=1'
+        _opts='USE_GLES=1 V=1 VC=0 -Wno-unused-variable'
       fi
       
       export CFLAGS="-mtune=cortex-a35 -fuse-linker-plugin"
@@ -54,7 +53,7 @@
       export LDFLAGS="$CFLAGS"
       
       ./src/getRevision.sh
-      cmake -DNOHQ=On -DCRC_ARMV8=On -DEGL=On -DNEON_OPT=On -DMUPENPLUSAPI=On -DCMAKE_CXX_FLAGS:STRING=" -march=armv8-a+crc -mtune=cortex-a35 -fuse-linker-plugin" -S src -B projects/cmake
+      cmake -DNOHQ=On -DCRC_ARMV8=On -DEGL=0n -DNEON_OPT=On -DMUPENPLUSAPI=On -DCMAKE_CXX_FLAGS:STRING=" -march=armv8-a+crc -mtune=cortex-a35 -fuse-linker-plugin" -S src -B projects/cmake
       make -C "projects/cmake" clean
 	  make -j$(nproc) -C "projects/cmake" $_opts all
 
