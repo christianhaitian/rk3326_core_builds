@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro freeintv build
-	if [[ "$var" == "freeintv" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "freeintv" || "$var" == "all" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "freeintv/" ]; then
 		git clone https://github.com/libretro/freeintv.git
@@ -53,15 +53,15 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip freeintv_libretro.so
 
-	  if [ ! -d "../cores64/" ]; then
-		mkdir -v ../cores64
-	  fi
+          if [ ! -d "../cores${bitness}/" ]; then
+                mkdir -v ../cores${bitness}
+          fi
 
-	  cp freeintv_libretro.so ../cores64/.
+          cp freeintv_libretro.so ../cores${bitness}/.
 
-	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$(getconf LONG_BIT)/freeintv_libretro.so.commit
+          gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
+          echo $gitcommit > ../cores${bitness}/freeintv_libretro.so.commit
 
-	  echo " "
-	  echo "freeintv_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
-	fi
+          echo " "
+          echo "freeintv_libretro.so has been created and has been placed in the rk3326_core_builds/cores${bitness} subfolder"
+        fi
