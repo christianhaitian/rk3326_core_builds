@@ -42,15 +42,26 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+      fallocate -l 4G /swapfile1
+      chmod 600 /swapfile1
+      mkswap /swapfile1
+      swapon /swapfile1
+
 	  make -f Makefile.libretro clean
-	  make SUBTARGET=arcade -f Makefile.libretro -j2
+      params=(OSD=retro RETRO=1 NOWERROR=1 OS=linux TARGETOS=linux CONFIG=libretro NO_USE_MIDI=1 TARGET=mame SUBTARGET=arcade PYTHON_EXECUTABLE=python3 PTR64=1)
+	  make ${params[@]} -f Makefile.libretro -j5
 
 	  if [[ $? != "0" ]]; then
+        swapoff -v /swapfile1
+        rm /swapfile1
 		echo " "
 		echo "There was an error while building the newest lr-mame core.  Stopping here."
 		exit 1
 	  fi
 
+      swapoff -v /swapfile1
+      rm /swapfile1
+      
 	  strip mamearcade_libretro.so
 
 	  if [ ! -d "../cores$(getconf LONG_BIT)/" ]; then
