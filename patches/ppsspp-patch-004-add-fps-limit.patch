@@ -11,10 +11,18 @@ index ad93c3aef..e34c16f1b 100644
  	// Most low-performance (and many high performance) mobile GPUs do not support aniso anyway so defaulting to 4 is fine.
  	ConfigSetting("AnisotropyLevel", &g_Config.iAnisotropyLevel, 4, true, true),
 diff --git a/Core/Config.h b/Core/Config.h
-index 64d17da3a..487ed8d0f 100644
+index 64d17da3a..21c32969f 100644
 --- a/Core/Config.h
 +++ b/Core/Config.h
-@@ -222,6 +222,7 @@ struct Config {
+@@ -185,6 +185,7 @@ struct Config {
+ 
+ 	int iFrameSkip;
+ 	int iFrameSkipType;
++	int iForceMaxFPS;
+ 	int iFastForwardMode; // See FastForwardMode in ConfigValues.h.
+ 	bool bAutoFrameSkip;
+ 
+@@ -222,6 +223,7 @@ struct Config {
  	bool bTexHardwareScaling;
  	int iFpsLimit1;
  	int iFpsLimit2;
@@ -118,6 +126,12 @@ index 86d5881f5..191a35677 100644
  	int iAlternateSpeedPercent1_;
  	int iAlternateSpeedPercent2_;
  	int iAlternateSpeedPercentAnalog_;
+diff --git a/ffmpeg b/ffmpeg
+--- a/ffmpeg
++++ b/ffmpeg
+@@ -1 +1 @@
+-Subproject commit cea6dd17be4ea045946dc991ef0bca91f9005345
++Subproject commit cea6dd17be4ea045946dc991ef0bca91f9005345-dirty
 diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
 index 40c737399..8a40af0e7 100644
 --- a/libretro/libretro.cpp
