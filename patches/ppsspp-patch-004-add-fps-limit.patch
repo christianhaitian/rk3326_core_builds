@@ -126,12 +126,6 @@ index 86d5881f5..191a35677 100644
  	int iAlternateSpeedPercent1_;
  	int iAlternateSpeedPercent2_;
  	int iAlternateSpeedPercentAnalog_;
-diff --git a/ffmpeg b/ffmpeg
---- a/ffmpeg
-+++ b/ffmpeg
-@@ -1 +1 @@
--Subproject commit cea6dd17be4ea045946dc991ef0bca91f9005345
-+Subproject commit cea6dd17be4ea045946dc991ef0bca91f9005345-dirty
 diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
 index 40c737399..8a40af0e7 100644
 --- a/libretro/libretro.cpp
