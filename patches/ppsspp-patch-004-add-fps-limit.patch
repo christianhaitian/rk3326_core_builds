@@ -1,8 +1,8 @@
 diff --git a/Core/Config.cpp b/Core/Config.cpp
-index 4eeca428a..5e5b004e2 100644
+index ad93c3aef..e34c16f1b 100644
 --- a/Core/Config.cpp
 +++ b/Core/Config.cpp
-@@ -896,6 +896,7 @@ static ConfigSetting graphicsSettings[] = {
+@@ -901,6 +901,7 @@ static ConfigSetting graphicsSettings[] = {
  #if defined(USING_WIN_UI)
  	ConfigSetting("RestartRequired", &g_Config.bRestartRequired, false, false),
  #endif
@@ -11,10 +11,10 @@ index 4eeca428a..5e5b004e2 100644
  	// Most low-performance (and many high performance) mobile GPUs do not support aniso anyway so defaulting to 4 is fine.
  	ConfigSetting("AnisotropyLevel", &g_Config.iAnisotropyLevel, 4, true, true),
 diff --git a/Core/Config.h b/Core/Config.h
-index 65eaf7409..02b18d39d 100644
+index 64d17da3a..487ed8d0f 100644
 --- a/Core/Config.h
 +++ b/Core/Config.h
-@@ -217,6 +217,7 @@ struct Config {
+@@ -222,6 +222,7 @@ struct Config {
  	bool bTexHardwareScaling;
  	int iFpsLimit1;
  	int iFpsLimit2;
@@ -23,7 +23,7 @@ index 65eaf7409..02b18d39d 100644
  	int iAnalogFpsMode; // 0 = auto, 1 = single direction, 2 = mapped to opposite
  	int iMaxRecent;
 diff --git a/Core/HLE/sceDisplay.cpp b/Core/HLE/sceDisplay.cpp
-index d0577d46f..fd4969ba4 100644
+index 342d52262..9cf1e7e5e 100644
 --- a/Core/HLE/sceDisplay.cpp
 +++ b/Core/HLE/sceDisplay.cpp
 @@ -822,6 +822,12 @@ u32 sceDisplaySetFramebuf(u32 topaddr, int linesize, int pixelformat, int sync)
@@ -49,10 +49,10 @@ index d0577d46f..fd4969ba4 100644
  		nextFlipCycles = std::max(lastFlipCycles, nextFlipCycles) + expected;
  	}
 diff --git a/UI/GameSettingsScreen.cpp b/UI/GameSettingsScreen.cpp
-index 4d1d6c679..4da8601d3 100644
+index 32c71aedf..dd7b57b20 100644
 --- a/UI/GameSettingsScreen.cpp
 +++ b/UI/GameSettingsScreen.cpp
-@@ -201,6 +201,8 @@ void GameSettingsScreen::CreateViews() {
+@@ -196,6 +196,8 @@ void GameSettingsScreen::CreateViews() {
  		g_Config.loadGameConfig(gameID_, info->GetTitle());
  	}
  
@@ -61,7 +61,7 @@ index 4d1d6c679..4da8601d3 100644
  	iAlternateSpeedPercent1_ = g_Config.iFpsLimit1 < 0 ? -1 : (g_Config.iFpsLimit1 * 100) / 60;
  	iAlternateSpeedPercent2_ = g_Config.iFpsLimit2 < 0 ? -1 : (g_Config.iFpsLimit2 * 100) / 60;
  	iAlternateSpeedPercentAnalog_ = (g_Config.iAnalogFpsLimit * 100) / 60;
-@@ -332,7 +334,10 @@ void GameSettingsScreen::CreateViews() {
+@@ -388,7 +390,10 @@ void GameSettingsScreen::CreateViews() {
  	graphicsSettings->Add(new PopupMultiChoice(&g_Config.iFrameSkipType, gr->T("Frame Skipping Type"), frameSkipType, 0, ARRAY_SIZE(frameSkipType), gr->GetName(), screenManager()));
  	frameSkipAuto_ = graphicsSettings->Add(new CheckBox(&g_Config.bAutoFrameSkip, gr->T("Auto FrameSkip")));
  	frameSkipAuto_->OnClick.Handle(this, &GameSettingsScreen::OnAutoFrameskip);
@@ -73,9 +73,9 @@ index 4d1d6c679..4da8601d3 100644
  	PopupSliderChoice *altSpeed1 = graphicsSettings->Add(new PopupSliderChoice(&iAlternateSpeedPercent1_, 0, 1000, gr->T("Alternative Speed", "Alternative speed"), 5, screenManager(), gr->T("%, 0:unlimited")));
  	altSpeed1->SetFormat("%i%%");
  	altSpeed1->SetZeroLabel(gr->T("Unlimited"));
-@@ -1331,6 +1336,16 @@ UI::EventReturn GameSettingsScreen::OnDisplayLayoutEditor(UI::EventParams &e) {
+@@ -1281,6 +1286,16 @@ UI::EventReturn GameSettingsScreen::OnFullscreenMultiChange(UI::EventParams &e)
  	return UI::EVENT_DONE;
- };
+ }
  
 +UI::EventReturn GameSettingsScreen::OnForceMaxEmulatedFPS(UI::EventParams &e) {
 +	if (maxFpsChoice > 0) {
@@ -91,10 +91,10 @@ index 4d1d6c679..4da8601d3 100644
  	if (g_Config.iAndroidHwScale == 1) {
  		RecreateActivity();
 diff --git a/UI/GameSettingsScreen.h b/UI/GameSettingsScreen.h
-index 82b4cd859..b85c069ca 100644
+index 86d5881f5..191a35677 100644
 --- a/UI/GameSettingsScreen.h
 +++ b/UI/GameSettingsScreen.h
-@@ -59,6 +59,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
+@@ -55,6 +55,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
  	UI::Choice *displayEditor_;
  	UI::Choice *backgroundChoice_ = nullptr;
  	UI::PopupMultiChoice *resolutionChoice_;
@@ -102,15 +102,15 @@ index 82b4cd859..b85c069ca 100644
  	UI::CheckBox *frameSkipAuto_;
  	SettingInfoMessage *settingInfo_;
  	UI::Choice *clearSearchChoice_;
-@@ -107,6 +108,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
+@@ -98,6 +99,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
+ 	UI::EventReturn OnFullscreenChange(UI::EventParams &e);
  	UI::EventReturn OnFullscreenMultiChange(UI::EventParams &e);
- 	UI::EventReturn OnDisplayLayoutEditor(UI::EventParams &e);
  	UI::EventReturn OnResolutionChange(UI::EventParams &e);
 +	UI::EventReturn OnForceMaxEmulatedFPS(UI::EventParams &e);
  	UI::EventReturn OnHwScaleChange(UI::EventParams &e);
  	UI::EventReturn OnRestoreDefaultSettings(UI::EventParams &e);
  	UI::EventReturn OnRenderingMode(UI::EventParams &e);
-@@ -135,6 +137,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
+@@ -126,6 +128,7 @@ class GameSettingsScreen : public UIDialogScreenWithGameBackground {
  	UI::EventReturn OnClearSearchFilter(UI::EventParams &e);
  
  	// Temporaries to convert setting types, cache enabled, etc.
@@ -119,30 +119,36 @@ index 82b4cd859..b85c069ca 100644
  	int iAlternateSpeedPercent2_;
  	int iAlternateSpeedPercentAnalog_;
 diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
-index 9b4a20bd9..6d2dabc0e 100644
+index 40c737399..8a40af0e7 100644
 --- a/libretro/libretro.cpp
 +++ b/libretro/libretro.cpp
-@@ -538,6 +538,7 @@ static RetroOption<int> ppsspp_rendering_mode("ppsspp_rendering_mode", "Renderin
- static RetroOption<bool> ppsspp_auto_frameskip("ppsspp_auto_frameskip", "Auto Frameskip", false);
- static RetroOption<int> ppsspp_frameskip("ppsspp_frameskip", "Frameskip", { "Off", "1", "2", "3", "4", "5", "6", "7", "8" });
- static RetroOption<int> ppsspp_frameskiptype("ppsspp_frameskiptype", "Frameskip Type", { {"Number of frames", 0}, {"Percent of FPS", 1} });
-+static RetroOption<int> ppsspp_force_max_fps("ppsspp_force_max_fps", "Force Max FPS", { {"Auto", 0}, {"10", 10}, {"20", 20}, {"30", 30}, {"40", 40}, {"50", 50}, {"60", 60}, {"70", 70}, {"80", 80} });
- static RetroOption<int> ppsspp_internal_resolution("ppsspp_internal_resolution", "Internal Resolution (Restart)", 1, { "480x272", "960x544", "1440x816", "1920x1088", "2400x1360", "2880x1632", "3360x1904", "3840x2176", "4320x2448", "4800x2720" });
- static RetroOption<int> ppsspp_button_preference("ppsspp_button_preference", "Confirmation Button", { { "Cross", PSP_SYSTEMPARAM_BUTTON_CROSS }, { "Circle", PSP_SYSTEMPARAM_BUTTON_CIRCLE } });
- static RetroOption<bool> ppsspp_fast_memory("ppsspp_fast_memory", "Fast Memory (Speedhack)", true);
-@@ -688,6 +689,7 @@ void retro_set_environment(retro_environment_t cb)
-    vars.push_back(ppsspp_auto_frameskip.GetOptions());
-    vars.push_back(ppsspp_frameskip.GetOptions());
-    vars.push_back(ppsspp_frameskiptype.GetOptions());
-+   vars.push_back(ppsspp_force_max_fps.GetOptions());
-    vars.push_back(ppsspp_frame_duplication.GetOptions());
-    vars.push_back(ppsspp_detect_vsync_swap_interval.GetOptions());
-    vars.push_back(ppsspp_vertex_cache.GetOptions());
-@@ -818,6 +820,7 @@ static void check_variables(CoreParameter &coreParam)
-    ppsspp_cheats.Update(&g_Config.bEnableCheats);
-    ppsspp_locked_cpu_speed.Update(&g_Config.iLockedCPUSpeed);
-    ppsspp_rendering_mode.Update(&g_Config.iRenderingMode);
-+   ppsspp_force_max_fps.Update(&g_Config.iForceMaxEmulatedFPS);
-    ppsspp_cpu_core.Update((CPUCore *)&g_Config.iCpuCore);
-    ppsspp_io_timing_method.Update((IOTimingMethods *)&g_Config.iIOTimingMethod);
-    ppsspp_lower_resolution_for_effects.Update(&g_Config.iBloomHack);
+@@ -795,6 +795,29 @@ static void check_variables(CoreParameter &coreParam)
+          g_Config.iFrameSkipType = 1;
+    }
+ 
++   var.key = "ppsspp_force_max_fps";
++   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
++   {
++      if (!strcmp(var.value, "Auto"))
++         g_Config.iForceMaxFPS = 0;
++      else if (!strcmp(var.value, "10"))
++         g_Config.iForceMaxFPS = 10;
++      else if (!strcmp(var.value, "20"))
++         g_Config.iForceMaxFPS = 20;
++      else if (!strcmp(var.value, "30"))
++         g_Config.iForceMaxFPS = 30;
++      else if (!strcmp(var.value, "40"))
++         g_Config.iForceMaxFPS = 40;
++      else if (!strcmp(var.value, "50"))
++         g_Config.iForceMaxFPS = 50;
++      else if (!strcmp(var.value, "60"))
++         g_Config.iForceMaxFPS = 60;
++      else if (!strcmp(var.value, "70"))
++         g_Config.iForceMaxFPS = 70;
++      else if (!strcmp(var.value, "80"))
++         g_Config.iForceMaxFPS = 80;
++   }
++
+    var.key = "ppsspp_auto_frameskip";
+    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+    {

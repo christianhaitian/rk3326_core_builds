@@ -1,8 +1,8 @@
 diff --git a/SDL/SDLMain.cpp b/SDL/SDLMain.cpp
-index f91926fd4..962ccf967 100644
+index 415860069..69c25e1d1 100644
 --- a/SDL/SDLMain.cpp
 +++ b/SDL/SDLMain.cpp
-@@ -651,13 +651,13 @@ int main(int argc, char *argv[]) {
+@@ -656,14 +656,14 @@ int main(int argc, char *argv[]) {
  #endif
  
  	if (mode & SDL_WINDOW_FULLSCREEN_DESKTOP) {
@@ -10,7 +10,8 @@ index f91926fd4..962ccf967 100644
 -		pixel_yres = g_DesktopHeight;
 +		pixel_xres = 320;
 +		pixel_yres = 240;
- 		g_Config.iForceFullScreen = 1;
+ 		if (g_Config.iForceFullScreen == -1)
+ 			g_Config.bFullScreen = true;
  	} else {
  		// set a sensible default resolution (2x)
 -		pixel_xres = 480 * 2 * set_scale;
