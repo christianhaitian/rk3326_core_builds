@@ -49,14 +49,17 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+      CFLAGS="-flto -fuse-linker-plugin"
+      CXXFLAGS="${CFLAGS}"
+      LDFLAGS="${CFLAGS}"
 	  sed -i '/a53/s//a35/g' Makefile
-	  sed -i '/rpi3/s//rk3326/' Makefile
-	  sed -i '/rpi3_64/s//rk3326_64/' Makefile
+	  #sed -i '/rpi3/s//rk3566/' Makefile
+	  #sed -i '/rpi3_64/s//rk3566_64/' Makefile
 
 	  if [[ "$bitness" == "64" ]]; then
-	    make FORCE_GLES3=1 -j$(nproc)
+	    make platform=arkos BOARD=NGRK -j$(nproc)
 	  else
-	    make FORCE_GLES3=1 HAVE_NEON=1 -j$(nproc)
+	    make platform=arkos BOARD=NGRK32BIT -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
