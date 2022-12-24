@@ -40,6 +40,9 @@ cd rk3326_core_builds
 ### To build just crocods (64bit only):
 `./builds.sh crocods`
 
+### To build DevilutionX (64bit only)
+`./builds.sh devilutionx
+
 ### To build just dosbox_pure (64bit only):
 `./builds.sh dosbox_pure`
 
