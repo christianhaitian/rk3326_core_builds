@@ -51,13 +51,13 @@ bitness="$(getconf LONG_BIT)"
 		exit 1
 	  fi
 
-	  strip mess_libretro.so
+	  strip mamemess_libretro.so
 
 	  if [ ! -d "../cores$(getconf LONG_BIT)/" ]; then
 		mkdir -v ../cores$(getconf LONG_BIT)
 	  fi
 
-	  cp mess_libretro.so ../cores$(getconf LONG_BIT)/.
+	  cp mamemess_libretro.so ../cores$(getconf LONG_BIT)/mess_libretro.so
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mess_libretro.so.commit
