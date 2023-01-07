@@ -163,6 +163,9 @@ cd rk3326_core_builds
 ### To build just ngp (64bit only):
 `./builds.sh ngp`
 
+### To build just np2kai (64bit only):
+`./builds.sh np2kai`
+
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
 
