@@ -42,8 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+      sed -i '/a55/s//a35/g' Makefile
 	  make clean
-	  make -j$(nproc)
+	  make platform=SM1 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
