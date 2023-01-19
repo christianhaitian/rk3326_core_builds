@@ -43,35 +43,36 @@ if [ ! -f /boot/doneit2 ]; then
   fi
 fi
 
-sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
-exitcode=$?
-sync
-sleep 2
-sudo fsck.exfat -a /dev/hda3
-sync
-sleep 2
+if [ ! -f /boot/doneit3 ]; then
+  sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
+  sync
+  sleep 2
+  sudo fsck.exfat -a /dev/hda3
+  sudo touch "/boot/doneit3"
+  sync
+  dialog --infobox "Rebooting again to finish building the EASYROMS partition..." $height $width 2>&1 > /dev/tty1
+  sleep 5
+  sudo reboot
+fi
+
 sudo mount -t exfat -w /dev/mmcblk0p3 /roms
+exitcode=$?
 sleep 2
 sudo tar -xvf /roms.tar -C /
 sync
-reqSpace=1000000
-availSpace=$(df "/roms" | awk 'NR==2 { print $4 }')
-if (( availSpace < reqSpace )); then
-  sudo rm -rf -v /tempthemes/es-theme-epic-cody-RG351V/
-fi
 sudo rm -rf -v /roms/themes/es-theme-nes-box/
 # Setup swapfile
-printf "\n\n\e[32mSetting up swapfile.  Please wait...\n"
-printf "\033[0m"
-sudo dd if=/dev/zero of=/swapfile bs=1024 count=262144
-sudo mkswap /swapfile
-sudo swapon /swapfile
+#printf "\n\n\e[32mSetting up swapfile.  Please wait...\n"
+#printf "\033[0m"
+#sudo dd if=/dev/zero of=/swapfile bs=1024 count=262144
+#sudo mkswap /swapfile
+#sudo swapon /swapfile
 sudo mv -f -v /tempthemes/* /roms/themes
 sync
 sleep 1
 sudo rm -rf -v /tempthemes
 sleep 2
-sudo umount /roms
+#sudo umount /roms
 sudo cp /boot/fstab.exfat /etc/fstab
 sync
 sudo rm -f /boot/doneit*
@@ -80,8 +81,8 @@ if [ ! -f "/boot/rk3326-rg351v-linux.dtb" ] && [ ! -f "/boot/rk3326-rg351mp-linu
 fi
 sudo rm -f /boot/fstab.exfat
 # Disable and delete swapfile
-sudo swapoff /swapfile
-sudo rm -f -v /swapfile
+#sudo swapoff /swapfile
+#sudo rm -f -v /swapfile
 if [ $exitcode -eq 0 ]; then
   dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. The system will now reboot and load ArkOS." $height $width 2>&1 > /dev/tty1 | sleep 10
   systemctl disable firstboot.service
