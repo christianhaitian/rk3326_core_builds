@@ -13,26 +13,34 @@ if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dt
 fi
 
 if [ ! -f /boot/doneit ]; then
+  sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0
   sudo touch "/boot/doneit"
   dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  The device will now reboot to continue the process..." $height $width 2>&1 > /dev/tty1
   sleep 5
   sudo reboot
 fi
 
-maxSize=$(lsblk -b --output SIZE -n -d /dev/mmcblk0)
+if [ ! -f /boot/doneit2 ]; then
+  maxSize=$(lsblk -b --output SIZE -n -d /dev/mmcblk0)
 
-newExtSizePct=$(printf %.2f "$((10**4 * 9589934592/$maxSize))e-4")
-newExtSizePct=$(echo print 1-$newExtSizePct | perl)
-ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
+  newExtSizePct=$(printf %.2f "$((10**4 * 9589934592/$maxSize))e-4")
+  newExtSizePct=$(echo print 1-$newExtSizePct | perl)
+  ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
 
-#echo "$ExfatPctToRemain" > /home/ark/growpercentage.log
+  #echo "$ExfatPctToRemain" > /home/ark/growpercentage.log
 
-# Expand the ext4 partition if possible to make room for future update needs
-if [ $ExfatPctToRemain -lt "100" ]; then
-  printf "d\n3\nw\nq\n" | sudo fdisk /dev/mmcblk0
-  sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk0 2
-  sudo resize2fs /dev/mmcblk0p2
-  printf "n\n3\n\n\ny\nw\n" | sudo fdisk /dev/mmcblk0
+  # Expand the ext4 partition if possible to make room for future update needs
+  if [ $ExfatPctToRemain -lt "100" ]; then
+    printf "d\n3\nw\n" | sudo fdisk /dev/mmcblk0
+    sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk0 2
+    sudo resize2fs /dev/mmcblk0p2
+    printf "n\np\n3\n\n\ny\nw\n" | sudo fdisk /dev/mmcblk0
+    sed -i "/dev\/mmcblk0p3/c\ " /etc/fstab
+    sudo touch "/boot/doneit2"
+    dialog --infobox "Rebooting again to finish the exfat partition expansion..." $height $width 2>&1 > /dev/tty1
+    sleep 5
+	sudo reboot
+  fi
 fi
 
 sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
