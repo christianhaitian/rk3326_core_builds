@@ -13,9 +13,9 @@ if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dt
 fi
 
 if [ ! -f /boot/doneit ]; then
-  sudo echo ", +" | sudo sfdisk -N 3 --force /dev/mmcblk0
   sudo touch "/boot/doneit"
   dialog --infobox "EASYROMS partition expansion and conversion to exfat in process.  The device will now reboot to continue the process..." $height $width 2>&1 > /dev/tty1
+  sleep 5
   sudo reboot
 fi
 
@@ -30,7 +30,7 @@ ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
 # Expand the ext4 partition if possible to make room for future update needs
 if [ $ExfatPctToRemain -lt "100" ]; then
   printf "d\n3\nw\nq\n" | sudo fdisk /dev/mmcblk0
-  sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk1 2
+  sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk0 2
   sudo resize2fs /dev/mmcblk0p2
   printf "n\n3\n\n\ny\nw\n" | sudo fdisk /dev/mmcblk0
 fi
