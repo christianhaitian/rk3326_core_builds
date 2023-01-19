@@ -61,11 +61,11 @@ if (( availSpace < reqSpace )); then
 fi
 sudo rm -rf -v /roms/themes/es-theme-nes-box/
 # Setup swapfile
-#printf "\n\n\e[32mSetting up swapfile.  Please wait...\n"
-#printf "\033[0m"
-#sudo dd if=/dev/zero of=/swapfile bs=1024 count=262144
-#sudo mkswap /swapfile
-#sudo swapon /swapfile
+printf "\n\n\e[32mSetting up swapfile.  Please wait...\n"
+printf "\033[0m"
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=262144
+sudo mkswap /swapfile
+sudo swapon /swapfile
 sudo mv -f -v /tempthemes/* /roms/themes
 sync
 sleep 1
@@ -80,8 +80,8 @@ if [ ! -f "/boot/rk3326-rg351v-linux.dtb" ] && [ ! -f "/boot/rk3326-rg351mp-linu
 fi
 sudo rm -f /boot/fstab.exfat
 # Disable and delete swapfile
-#sudo swapoff /swapfile
-#sudo rm -f -v /swapfile
+sudo swapoff /swapfile
+sudo rm -f -v /swapfile
 if [ $exitcode -eq 0 ]; then
   dialog --infobox "Completed expansion of EASYROMS partition and conversion to exfat. The system will now reboot and load ArkOS." $height $width 2>&1 > /dev/tty1 | sleep 10
   systemctl disable firstboot.service
