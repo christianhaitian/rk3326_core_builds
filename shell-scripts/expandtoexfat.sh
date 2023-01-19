@@ -74,7 +74,7 @@ sleep 2
 sudo umount /roms
 sudo cp /boot/fstab.exfat /etc/fstab
 sync
-sudo rm -f /boot/doneit
+sudo rm -f /boot/doneit*
 if [ ! -f "/boot/rk3326-rg351v-linux.dtb" ] && [ ! -f "/boot/rk3326-rg351mp-linux.dtb" ]; then
   sudo rm -f /roms.tar
 fi
