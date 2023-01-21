@@ -1,7 +1,7 @@
 #!/bin/bash
 sudo umount /roms
-sudo ln -s /dev/mmcblk0 /dev/hda
-sudo ln -s /dev/mmcblk0p3 /dev/hda3
+#sudo ln -s /dev/mmcblk0 /dev/hda
+#sudo ln -s /dev/mmcblk0p3 /dev/hda3
 sudo chmod 666 /dev/tty1
 export TERM=linux
 height="15"
@@ -20,40 +20,29 @@ if [ ! -f /boot/doneit ]; then
   sudo reboot
 fi
 
-if [ ! -f /boot/doneit2 ]; then
-  maxSize=$(lsblk -b --output SIZE -n -d /dev/mmcblk0)
+maxSize=$(lsblk -b --output SIZE -n -d /dev/mmcblk0)
 
-  newExtSizePct=$(printf %.2f "$((10**4 * 9589934592/$maxSize))e-4")
-  newExtSizePct=$(echo print 1-$newExtSizePct | perl)
-  ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
+newExtSizePct=$(printf %.2f "$((10**4 * 9589934592/$maxSize))e-4")
+newExtSizePct=$(echo print 1-$newExtSizePct | perl)
+ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
 
-  #echo "$ExfatPctToRemain" > /home/ark/growpercentage.log
+#echo "$ExfatPctToRemain" > /home/ark/growpercentage.log
 
-  # Expand the ext4 partition if possible to make room for future update needs
-  if [ $ExfatPctToRemain -lt "100" ]; then
-    printf "d\n3\nw\n" | sudo fdisk /dev/mmcblk0
-    sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk0 2
-    sudo resize2fs /dev/mmcblk0p2
-    printf "n\np\n3\n\n\ny\nw\n" | sudo fdisk /dev/mmcblk0
-    sed -i "/dev\/mmcblk0p3/c\ " /etc/fstab
-    sudo touch "/boot/doneit2"
-    dialog --infobox "Rebooting again to finish the exfat partition expansion..." $height $width 2>&1 > /dev/tty1
-    sleep 5
-	sudo reboot
-  fi
+# Expand the ext4 partition if possible to make room for future update needs
+if [ $ExfatPctToRemain -lt "100" ]; then
+  printf "d\n3\nw\n" | sudo fdisk /dev/mmcblk0
+  sudo growpart --free-percent=$ExfatPctToRemain -v /dev/mmcblk0 2
+  sudo resize2fs /dev/mmcblk0p2
+  ext4endSector=$(sudo sfdisk -l /dev/mmcblk0 | grep mmcblk0p2 | awk '{print $3}')
+  exfatstartSector=$(echo print 1+$ext4endSector | perl)
+  printf "n\np\n3\n$exfatstartSector\n\nw\n" | sudo fdisk /dev/mmcblk0
 fi
 
-if [ ! -f /boot/doneit3 ]; then
-  sudo mkfs.exfat -s 16K -n EASYROMS /dev/hda3
-  sync
-  sleep 2
-  sudo fsck.exfat -a /dev/hda3
-  sudo touch "/boot/doneit3"
-  sync
-  dialog --infobox "Rebooting again to finish building the EASYROMS partition..." $height $width 2>&1 > /dev/tty1
-  sleep 5
-  sudo reboot
-fi
+sudo mkfs.exfat -s 16K -n EASYROMS /dev/mmcblk0p3
+sync
+sleep 2
+sudo fsck.exfat -a /dev/mmcblk0p3
+sync
 
 sudo mount -t exfat -w /dev/mmcblk0p3 /roms
 exitcode=$?
