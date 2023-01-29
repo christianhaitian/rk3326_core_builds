@@ -33,10 +33,21 @@ if [[ -f $(find /opt/system/Tools -maxdepth 1 -iname wifikeyfile.txt) ]]; then
 	  width="60"
 	fi
 
-    if [[ ! -z $(cat /etc/modprobe.d/blacklist.conf | grep 8821cs | tr -d '\0') ]]; then
+	if [[ ! -z $(cat /etc/modprobe.d/blacklist.conf | grep 8821cs | tr -d '\0') ]]; then
 	  dialog --infobox "Your wifi connection is off.  Please enable it in options>advanced then reboot so importing of your wifi credentials can be completed." 5 $width > /dev/tty1
 	  sleep 10
 	  exit 0
+	fi
+
+	if [[ -z $(ifconfig | grep wlan0 | tr -d '\0') ]]; then
+	  dialog --infobox "Waiting for wifi adapter to be enabled.  Please wait..." 5 $width > /dev/tty1
+	  printf "Waiting for wifi adapter to be enabled.  Please wait..."
+	  sleep 10
+	  if [[ -z $(ifconfig | grep wlan0 | tr -d '\0') ]]; then
+	    dialog --infobox "There isn't a compatible wifi adapter connected.  Please plug in a compatible wifi adapter then reboot so importing of your wifi credentials can be completed." 5 $width > /dev/tty1
+	    sleep 10
+	    exit 0
+	  fi
 	fi
 
 	dialog --infobox "Starting Wifi importer.  Please wait..." 5 $width > /dev/tty1
@@ -81,6 +92,7 @@ if [[ -f $(find /opt/system/Tools -maxdepth 1 -iname wifikeyfile.txt) ]]; then
 	fi
 	sudo systemctl stop NetworkManager
 	sudo systemctl start networkwatchdaemon
+	dialog --clear
 	printf "\033c" > /dev/tty1
 	exit 0
 fi
