@@ -35,7 +35,7 @@ if [ $ExfatPctToRemain -lt "100" ]; then
   sudo resize2fs /dev/mmcblk0p2
   ext4endSector=$(sudo sfdisk -l /dev/mmcblk0 | grep mmcblk0p2 | awk '{print $3}')
   exfatstartSector=$(echo print 1+$ext4endSector | perl)
-  printf "n\np\n3\n$exfatstartSector\n\nw\n" | sudo fdisk /dev/mmcblk0
+  printf "n\np\n3\n$exfatstartSector\n\nt\n3\n11\nw\n" | sudo fdisk /dev/mmcblk0
 fi
 
 sudo mkfs.exfat -s 16K -n EASYROMS /dev/mmcblk0p3
