@@ -1,16 +1,17 @@
 diff --git a/menu/menu_setting.c b/menu/menu_setting.c
-index 423ebec87e..b14ff31426 100644
+index 3389534192..071b72ec54 100644
 --- a/menu/menu_setting.c
 +++ b/menu/menu_setting.c
-@@ -9174,6 +9174,7 @@ static bool setting_append_list(
+@@ -9877,7 +9877,7 @@ static bool setting_append_list(
                 parent_group);
+          MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_SAVE_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
- 
+-
 +         /*
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
-@@ -9183,6 +9184,7 @@ static bool setting_append_list(
+@@ -9887,6 +9887,7 @@ static bool setting_append_list(
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_RESET_TO_DEFAULT_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
@@ -18,7 +19,7 @@ index 423ebec87e..b14ff31426 100644
  
           CONFIG_ACTION(
                 list, list_info,
-@@ -9284,7 +9286,7 @@ static bool setting_append_list(
+@@ -9998,7 +9999,7 @@ static bool setting_append_list(
                parent_group);
  #endif
  
