@@ -1,10 +1,8 @@
-Thanks to sydarn2 for this patch to fix rga scaling for non-rotated screened rk devices
-
 diff --git a/gfx/drivers_context/drm_go2_ctx.c b/gfx/drivers_context/drm_go2_ctx.c
-index b758137703..a6de933027 100644
+index b6e50073f4..f2d3917126 100644
 --- a/gfx/drivers_context/drm_go2_ctx.c
 +++ b/gfx/drivers_context/drm_go2_ctx.c
-@@ -120,20 +120,11 @@ static void *gfx_ctx_go2_drm_init(void *video_driver)
+@@ -118,20 +118,11 @@ static void *gfx_ctx_go2_drm_init(void *video_driver)
  
     drm->display       = go2_display_create();
  
@@ -28,14 +26,14 @@ index b758137703..a6de933027 100644
  
     return drm;
  }
-@@ -336,8 +327,8 @@ static void gfx_ctx_go2_drm_swap_buffers(void *data)
+@@ -347,8 +338,8 @@ static void gfx_ctx_go2_drm_swap_buffers(void *data)
     go2_presenter_post(drm->presenter,
-          surface,
+          surf,
           src_x, src_y, src_w, src_h,
 -         out_y, out_x, out_h, out_w,
 -         GO2_ROTATION_DEGREES_270, 2);
 +         out_x, out_y, out_w, out_h,
 +         GO2_ROTATION_DEGREES_0, 2);
-    go2_context_surface_unlock(drm->context, surface);
+    go2_context_surface_unlock(drm->context, surf);
  #endif
  }
