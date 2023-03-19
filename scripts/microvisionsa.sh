@@ -13,32 +13,32 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# fake08 Standalone build
-	if [[ "$var" == "fake08sa" ]]  && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "microvisionsa" ]]  && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 
 	  # Now we'll start the clone and build of fake08
-	  if [ ! -d "fake-08sa/" ]; then
-		git clone --recursive https://github.com/jtothebell/fake-08.git fake-08sa
+	  if [ ! -d "microvisionsa/" ]; then
+		git clone --recursive https://github.com/christianhaitian/Paul-Robson-s-Microvision-Emulation.git microvisionsa
 
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the fake08 standalone git.  Is Internet active or did the git location change?  Stopping here."
 		  exit 1
 		fi
-		cp patches/fake08sa-patch* fake-08sa/.
+		cp patches/microvisionsa-patch* microvisionsa/.
 	  else
 		echo " "
-		echo "A fake-08sa subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the fake-08 folder and rerun this script."
+		echo "A microvisionsa subfolder already exists.  Stopping here to not impact anything in the folder that may be needed.  If not needed, please remove the microvisionsa folder and rerun this script."
 		echo " "
 		exit 1
 	  fi
 
-	 cd fake-08sa
+	 cd microvisionsa
 
-	 fake08sa_patches=$(find *.patch)
+	 microvisionsa_patches=$(find *.patch)
 
-	 if [[ ! -z "$fake08sa_patches" ]]; then
-	  for patching in fake08sa-patch*
+	 if [[ ! -z "$microvisionsa_patches" ]]; then
+	  for patching in microvisionsa-patch*
 	  do
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
@@ -50,22 +50,22 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
-           make clean-sdl2
-           make sdl2 -j$(nproc)
+           make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
 		     echo "There was an error that occured while making the fake08 standalone.  Stopping here."
              exit 1
            fi
-           strip platform/SDL2Desktop/FAKE08
+           strip mvem
 
-           if [ ! -d "../fake08sa-$bitness/" ]; then
-	         mkdir -v ../fake08sa-$bitness
+           if [ ! -d "../microvisionsa-$bitness/" ]; then
+	         mkdir -v ../microvisionsa-$bitness
            fi
 
-	   cp platform/SDL2Desktop/FAKE08 ../fake08sa-$bitness/fake08
+	   cp mvem ../microvisionsa-$bitness/.
+	   cp *.bmp ../microvisionsa-$bitness/.
 
 	   echo " "
-	   echo "The fake08 executable has been created and has been placed in the rk3326_core_builds/fake08sa-$bitness subfolder"
+	   echo "The microvisionsa executable has been created and has been placed in the rk3326_core_builds/microvisionsa-$bitness subfolder"
 
 	fi
