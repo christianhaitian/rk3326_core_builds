@@ -58,6 +58,9 @@ cd rk3326_core_builds
 ### To build just easyrpg (64bit only):
 `./builds.sh easyrpg`
 
+### To build just ecwolf standalone emulator (64bit only):
+`./builds.sh ecwolfsa
+
 ### To build just fake08 standalone emulator (64bit only):
 `./builds.sh fake08sa`
 
