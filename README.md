@@ -22,6 +22,9 @@ cd rk3326_core_builds
 ### To build all libretro core scripts including mame and mess ones (Warning, a very long build.  Maybe even over 24 hours!):
 `./builds.sh ALL`
 
+### To build just 81 (64bit only):
+`./builds.sh 81`
+
 ### To build just a5200 (64bit only):
 `./builds.sh a5200`
 
@@ -160,6 +163,9 @@ cd rk3326_core_builds
 ### To build just mupen64plus Standalone emulator:
 `./builds.sh mupen64plussa`
 
+### To build just nekop2 (64bit only):
+`./builds.sh nekop2`
+
 ### To build just neocd (64bit only):
 `./builds.sh neocd`
 
@@ -172,11 +178,17 @@ cd rk3326_core_builds
 ### To build just np2kai (64bit only):
 `./builds.sh np2kai`
 
+### To build just o2em (64bit only):
+`./builds.sh o2em`
+
 ### To build just openmsx standalone emulator (64bit only):
 `./builds.sh openmsx`
 
 ### To build just opera (64bit only):
 `./builds.sh opera`
+
+### To build just potator (64bit only):
+`./builds.sh potator`
 
 ### To build just pce_fast (64bit Only):
 `./builds.sh pce_fast`
@@ -216,6 +228,12 @@ cd rk3326_core_builds
 
 ### To build just libretro-ppsspp (64bit only):
 `./builds.sh ppsspp-libretro`
+
+### To build just quasi88 (64bit only):
+`./builds.sh quasi88
+
+### To build just race (64bit only):
+`./builds.sh race
 
 ### To build just same_cdi (64bit only):
 `./builds.sh samecdi`
@@ -262,6 +280,12 @@ cd rk3326_core_builds
 ### To build just uzem:
 `./builds.sh uzem`
 
+### To build just vbam (64bit only):
+`./builds.sh vbam`
+
+### To build just vba-next (64bit only):
+`./builds.sh vba-next`
+
 ### To build just vectrex (64bit only):
 `./builds.sh vectrex`
 
@@ -285,6 +309,9 @@ cd rk3326_core_builds
 
 ### To build just yabause:
 `./builds.sh yabause`
+
+### To build just x1 (64bit only):
+`./builds.sh x1`
 
 ### To build just retroarch:
 `./builds.sh retroarch`
