@@ -1,40 +1,38 @@
 diff --git a/frontend/libretro.c b/frontend/libretro.c
-index 97323f4..dc75efe 100644
+index 3e74b23..0c4f1f2 100644
 --- a/frontend/libretro.c
 +++ b/frontend/libretro.c
-@@ -516,8 +516,33 @@ void plat_trigger_vibrate(int pad, int low, int high)
+@@ -516,6 +516,33 @@ void plat_trigger_vibrate(int pad, int low, int high)
  
     if (in_enable_vibration)
     {
--      rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
--      rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
-+      FILE *file;
-+      if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+            if(high <= 0x80)
-+            {
-+              fputs("1000000", file);
-+              fclose(file);
-+            }
-+            else
-+            {
-+              fputs("10", file);
-+              fclose(file);
-+            }
-+      } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+            if(high <= 0x80)
-+            {
-+              fputs("1", file);
-+              fclose(file);
-+            }
-+            else
-+            {
-+              fputs("0", file);
-+              fclose(file);
-+            }
-+      } else {
-+         rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
-+         rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
-+      }
++    FILE *file;
++
++    if (high > 0){
++       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++          fputs("10", file);
++          fclose(file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("10", file);
++          fclose(file);
++       }
++    } else if (low > 0){
++       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++          fputs("500000", file);
++          fclose(file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("500000", file);
++          fclose(file);
++       }
++    } else {
++       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++          fputs("1000000", file);
++          fclose(file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("1000000", file);
++          fclose(file);
++       }
++    }
+       rumble_cb(pad, RETRO_RUMBLE_STRONG, high << 8);
+       rumble_cb(pad, RETRO_RUMBLE_WEAK, low ? 0xffff : 0x0);
     }
- }
- 

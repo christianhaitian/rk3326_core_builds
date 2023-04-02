@@ -1,32 +1,39 @@
 diff --git a/src/libretro/libretro_host_interface.cpp b/src/libretro/libretro_host_interface.cpp
-index c2e314a6..6e218930 100644
+index c2e314a6..fd32024a 100644
 --- a/src/libretro/libretro_host_interface.cpp
 +++ b/src/libretro/libretro_host_interface.cpp
-@@ -1309,6 +1309,27 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
+@@ -1309,6 +1309,34 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
    {
      const u16 strong = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(0) * 65535.0f));
      const u16 weak = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(1) * 65535.0f));
 +    FILE *file;
 +
-+    if (strong == 0 || weak == 0){
-+       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+          fputs("1000000", file);
-+          fclose(file);
-+       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+          fputs("1", file);
-+          fclose(file);
-+       }
-+    }
-+
-+    if (strong != 0 || weak != 0){
++    if (strong > 0){
 +       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
 +          fputs("10", file);
 +          fclose(file);
-+       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+          fputs("0", file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("10", file);
++          fclose(file);
++       }
++    } else if (weak > 0){
++       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++          fputs("500000", file);
++          fclose(file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("500000", file);
++          fclose(file);
++       }
++    } else {
++       if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++          fputs("1000000", file);
++          fclose(file);
++       } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++          fputs("1000000", file);
 +          fclose(file);
 +       }
 +    }
++    
      m_rumble_interface.set_rumble_state(index, RETRO_RUMBLE_STRONG, strong);
      m_rumble_interface.set_rumble_state(index, RETRO_RUMBLE_WEAK, weak);
    }
