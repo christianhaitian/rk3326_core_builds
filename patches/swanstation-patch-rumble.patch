@@ -1,8 +1,34 @@
 diff --git a/src/libretro/libretro_host_interface.cpp b/src/libretro/libretro_host_interface.cpp
-index c2e314a6..fd32024a 100644
+index c2e314a6..41ab2dab 100644
 --- a/src/libretro/libretro_host_interface.cpp
 +++ b/src/libretro/libretro_host_interface.cpp
-@@ -1309,6 +1309,34 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
+@@ -27,6 +27,9 @@
+ #include <cstring>
+ #include <tuple>
+ #include <utility>
++#include <stdio.h>
++#include <unistd.h>
++#include <errno.h>
+ Log_SetChannel(LibretroHostInterface);
+ 
+ #ifdef WIN32
+@@ -1177,6 +1180,15 @@ void LibretroHostInterface::OnRunningGameChanged(const std::string& path, CDImag
+ void LibretroHostInterface::InitRumbleInterface()
+ {
+   m_rumble_interface_valid = g_retro_environment_callback(RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE, &m_rumble_interface);
++  // Check write access for duty cycle for rk3566
++  char* filepath = "/sys/class/pwm/pwmchip1/pwm0/duty_cycle";
++  int returnval;
++  returnval = access (filepath, F_OK);
++  if (returnval == 0){
++    returnval = access (filepath, W_OK);
++    if (errno == EACCES)
++      system("sudo chmod 777 /sys/class/pwm/pwmchip1/pwm0/duty_cycle &");
++  }
+ }
+ 
+ void LibretroHostInterface::UpdateControllers()
+@@ -1309,6 +1321,34 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
    {
      const u16 strong = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(0) * 65535.0f));
      const u16 weak = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(1) * 65535.0f));
