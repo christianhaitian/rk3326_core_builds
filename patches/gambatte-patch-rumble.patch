@@ -1,40 +1,108 @@
 diff --git a/libgambatte/libretro/libretro.cpp b/libgambatte/libretro/libretro.cpp
-index 5a12edd..8264fe9 100644
+index 74b2b1d..6e79882 100644
 --- a/libgambatte/libretro/libretro.cpp
 +++ b/libgambatte/libretro/libretro.cpp
-@@ -1107,6 +1107,7 @@ static uint16_t rumble_strength_up          = 0;
- static uint16_t rumble_strength_down        = 0;
- static uint16_t rumble_level                = 0;
- static bool rumble_active                   = false;
-+FILE *file;
+@@ -39,6 +39,9 @@
+ #include <cstring>
+ #include <algorithm>
+ #include <cmath>
++#include <stdio.h>
++#include <unistd.h>
++#include <errno.h>
  
- void cartridge_set_rumble(unsigned active)
- {
-@@ -1115,9 +1116,25 @@ void cartridge_set_rumble(unsigned active)
+ #ifdef _3DS
+ extern "C" void* linearMemAlign(size_t size, size_t alignment);
+@@ -1119,6 +1122,17 @@ void cartridge_set_rumble(unsigned active)
+    else
+       rumble_strength_down++;
+ 
++   // Check write access for duty cycle for rk3566
++   char* filepath = "/sys/class/pwm/pwmchip1/pwm0/duty_cycle";
++   int returnval;
++   returnval = access (filepath, F_OK);
++   if (returnval == 0){
++     returnval = access (filepath, W_OK);
++     if (errno == EACCES){
++       system("sudo chmod 777 /sys/class/pwm/pwmchip1/pwm0/duty_cycle &");
++     }
++   }
++
+    rumble_active = true;
+ }
+ 
+@@ -1140,8 +1154,53 @@ static void apply_rumble(void)
+    if (strength == rumble_strength_last)
        return;
  
-    if (active)
--      rumble_strength_up++;
-+     if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+        fputs("10", file);
+-   rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, strength);
+-   rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, strength);
++    uint pwm_duty_cycle = 0;
++    switch(strength) {
++      case 65535:
++        pwm_duty_cycle = 100000;
++        break;
++      case 58982:
++        pwm_duty_cycle = 200000;
++        break;
++      case 52429:
++        pwm_duty_cycle = 300000;
++        break;
++      case 45876:
++        pwm_duty_cycle = 400000;
++        break;
++      case 39323:
++        pwm_duty_cycle = 500000;
++        break;
++      case 32770:
++        pwm_duty_cycle = 600000;
++        break;
++      case 26217:
++        pwm_duty_cycle = 650000;
++        break;
++      case 19664:
++        pwm_duty_cycle = 700000;
++        break;
++      case 13111:
++        pwm_duty_cycle = 750000;
++        break;
++      case 6558:
++        pwm_duty_cycle = 800000;
++        break;
++      default:
++        pwm_duty_cycle = 1000000;
++    }
++
++    FILE *file;
++	if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", pwm_duty_cycle);
++	    fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", pwm_duty_cycle);
 +        fclose(file);
-+     } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+        fputs("0", file);
-+        fclose(file);
-+     } else {
-+        rumble_strength_up++;
-+     }
-    else
--      rumble_strength_down++;
-+     if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+        fputs("1000000", file);
-+        fclose(file);
-+     } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+        fputs("1", file);
-+        fclose(file);
-+     } else {
-+        rumble_strength_down++;
-+     }
++	} else {
++        rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, strength);
++        rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, strength);
++    }
  
-    rumble_active = true;
+    rumble_strength_last = strength;
+ }
+@@ -1156,8 +1215,17 @@ static void deactivate_rumble(void)
+        (rumble_strength_last == 0))
+       return;
+ 
+-   rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, 0);
+-   rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, 0);
++    FILE *file;
++    if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", 1000000);
++	    fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", 1000000);
++        fclose(file);
++    } else {
++        rumble.set_rumble_state(0, RETRO_RUMBLE_WEAK, 0);
++        rumble.set_rumble_state(0, RETRO_RUMBLE_STRONG, 0);
++    }
+ 
+    rumble_strength_last = 0;
  }
