@@ -35,6 +35,8 @@ bitness="$(getconf LONG_BIT)"
 
 	 cd fbneo
 
+	 git revert -n 5c8ee4d9773d74ae06d34887dcf8bb8da4f33e90 # Enable Killer Instinct driver
+	 git revert -n 458f9551e69d34589538d5b3b26d5941174ae0f9 # Enable Killer Instinct driver
 	 fbneosa_patches=$(find *.patch)
 
 	 if [[ ! -z "$fbneosa_patches" ]]; then
