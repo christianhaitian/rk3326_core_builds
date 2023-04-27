@@ -14,9 +14,7 @@ bitness="$(getconf LONG_BIT)"
 #commit="25f9ed87ff6947d9576fc9d79dee0784e638ac58" # SDL 2.0.16
 #commit="f9b918ff403782986f2a6712e6e2a462767a0457" # SDL 2.0.20 although it builds as 2.0.20.0 ¯\_(ツ)_/¯
 #commit="f070c83a6059c604cbd098680ddaee391b0a7341" # SDL 2.0.26.2
-#commit="adf31f6ec0be0f9ba562889398f71172c7941023" # SDL 2.0.26.3
 #commit="8c9beb0c873f6ca5efbd88f1ad2648bfc793b2ac" # SDL 2.0.24.0
-#commit="07d0f51fa292895443f563f0cbde4cb3802d87fa" # SDL 2.0.26.4
 commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 
 	# sdl2 Standalone Build
@@ -117,8 +115,7 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 			   -DSDL_OPENGLES=ON \
 			   -DSDL_VULKAN=OFF \
 			   -DSDL_KMSDRM=ON \
-			   -DSDL_PULSEAUDIO=ON \
-			   -DSDL_HIDAPI_JOYSTICK=OFF ..
+			   -DSDL_PULSEAUDIO=ON ..
           export LDFLAGS="${LDFLAGS} -lrga"
        fi
 
@@ -134,9 +131,9 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.2600.*
+	     strip build/.libs/libSDL2-2.0.so.0.2600.5
 	  else
-	     strip libSDL2-2.0.so.0.2600.*
+	     strip libSDL2-2.0.so.0.2600.5
 	  fi
 
 	  if [ ! -d "$cur_wd/sdl2-$bitness/" ]; then
@@ -144,9 +141,9 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     cp build/.libs/libSDL2-2.0.so.0.2600.* $cur_wd/sdl2-$bitness/.
+	     cp build/.libs/libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/.
 	  else
-	     cp libSDL2-2.0.so.0.2600.* $cur_wd/sdl2-$bitness/.
+	     cp libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/.
 	  fi
 
 	  echo " "
