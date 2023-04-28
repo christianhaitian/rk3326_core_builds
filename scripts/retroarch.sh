@@ -181,4 +181,18 @@ bitness="$(getconf LONG_BIT)"
 	  cp *.filt ../../../retroarch$bitness/filters/video
 	  echo " "
 	  echo "Video filters have been built and copied to the rk3326_core_builds/retroarch$bitness/filters/video subfolder"
+
+          cd ../../libretro-common/audio/dsp_filters
+          ./configure
+          make -j$(nproc)
+          if [[ $? != "0" ]]; then
+                echo " "
+                echo "There was an error while building the audio dsp filters for retroarch.  Stopping here."
+                exit 1
+          fi
+          mkdir -p ../../../../retroarch$bitness/filters/audio
+          cp *.so ../../../../retroarch$bitness/filters/audio
+          cp *.dsp ../../../../retroarch$bitness/filters/audio
+          echo " "
+          echo "Audio dsp filters have been built and copied to the rk3566_core_builds/retroarch$bitness/filters/audio subfolder"
 	fi
