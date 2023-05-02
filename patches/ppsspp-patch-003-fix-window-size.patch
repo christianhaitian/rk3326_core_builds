@@ -1,23 +1,23 @@
 diff --git a/SDL/SDLMain.cpp b/SDL/SDLMain.cpp
-index 415860069..69c25e1d1 100644
+index 7d09fc5ca..ea357a328 100644
 --- a/SDL/SDLMain.cpp
 +++ b/SDL/SDLMain.cpp
-@@ -656,14 +656,14 @@ int main(int argc, char *argv[]) {
+@@ -740,14 +740,14 @@ int main(int argc, char *argv[]) {
  #endif
  
  	if (mode & SDL_WINDOW_FULLSCREEN_DESKTOP) {
--		pixel_xres = g_DesktopWidth;
--		pixel_yres = g_DesktopHeight;
-+		pixel_xres = 320;
-+		pixel_yres = 240;
+-		g_display.pixel_xres = g_DesktopWidth;
+-		g_display.pixel_yres = g_DesktopHeight;
++		g_display.pixel_xres = 320;
++		g_display.pixel_yres = 240;
  		if (g_Config.iForceFullScreen == -1)
  			g_Config.bFullScreen = true;
  	} else {
  		// set a sensible default resolution (2x)
--		pixel_xres = 480 * 2 * set_scale;
--		pixel_yres = 272 * 2 * set_scale;
-+		pixel_xres = 320;
-+		pixel_yres = 240;
+-		g_display.pixel_xres = 480 * 2 * set_scale;
+-		g_display.pixel_yres = 272 * 2 * set_scale;
++		g_display.pixel_xres = 320;
++		g_display.pixel_yres = 240;
  		if (portrait) {
- 			std::swap(pixel_xres, pixel_yres);
+ 			std::swap(g_display.pixel_xres, g_display.pixel_yres);
  		}
