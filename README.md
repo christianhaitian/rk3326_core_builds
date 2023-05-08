@@ -115,6 +115,9 @@ cd rk3326_core_builds
 ### To build just freechaf core (64bit only):
 `./builds.sh freechaf`
 
+### To build just gearsystem core (64bit only):
+`./builds.sh gearsystem`
+
 ### To build just hypseus (64bit only):
 `./builds.sh hypseus`
 
