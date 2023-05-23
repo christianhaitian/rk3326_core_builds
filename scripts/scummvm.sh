@@ -115,7 +115,8 @@ minfluidsynthverneeded="3"
 	  cp /engines/grim/shaders/* extra/shaders/.
 	  cp /engines/stark/shaders/* extra/shaders/.
 	  cp gui/themes/*.zip themes/.
-	  cp gui/themes/translations.dat themes/. 
+	  cp gui/themes/translations.dat themes/.
+	  cp gui/themes/shaders.dat themes/.
 	  echo "19000000030000000300000002030000,gameforce_gamepad,leftstick:b14,rightx:a3,leftshoulder:b4,start:b9,lefty:a0,dpup:b10,righty:a2,a:b1,b:b0,guide:b16,dpdown:b11,rightshoulder:b5,righttrigger:b7,rightstick:b15,dpright:b13,x:b2,back:b8,leftx:a1,y:b3,dpleft:b12,lefttrigger:b6,platform:Linux,
 190000004b4800000010000000010000,GO-Advance Gamepad,a:b1,b:b0,x:b2,y:b3,leftshoulder:b4,rightshoulder:b5,dpdown:b7,dpleft:b8,dpright:b9,dpup:b6,leftx:a0,lefty:a1,leftstick:b10,guide:b12,lefttrigger:b11,rightstick:b13,righttrigger:b14,start:b15,platform:Linux,
 190000004b4800000010000001010000,GO-Advance Gamepad (rev 1.1),a:b1,b:b0,x:b2,y:b3,leftshoulder:b4,rightshoulder:b5,dpdown:b9,dpleft:b10,dpright:b11,dpup:b8,leftx:a0,lefty:a1,guide:b12,leftstick:b14,lefttrigger:b13,rightstick:b15,righttrigger:b16,start:b17,platform:Linux,
@@ -128,7 +129,7 @@ minfluidsynthverneeded="3"
 	  fi
 
 	  cp scummvm ../scummvm$bitness/.
-	  tar -zchvf ../scummvm$bitness/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ LICENSES/ scummvm AUTHORS COPYING NEWS.md README.md
+	  tar -zchvf ../scummvm$bitness/scummvm_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz extra/ themes/ LICENSES/ scummvm AUTHORS COPYING COPYRIGHT NEWS.md README.md
 
 	  echo " "
 	  echo "scummvm has been created and has been placed in the rk3326_core_builds/scummvm$bitness subfolder"
