@@ -1,26 +1,11 @@
 #!/bin/bash
 
-if [[ -e "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick" ]]; then
-  param_device="anbernic"
-elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
-  if [[ ! -z $(cat /etc/emulationstation/es_input.cfg | grep "190000004b4800000010000001010000") ]]; then
-    param_device="oga"
-  else
-    param_device="rk2020"
-  fi
-elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
-  param_device="ogs"
-elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
-  param_device="rg552"
-else
-  param_device="chi"
-fi
-
 if [[ $1 == "standalone" ]]; then
         directory=$(dirname "$2" | cut -d "/" -f2)
-        sudo /opt/quitter/oga_controls lzdoom $param_device &
+	sudo /usr/local/bin/doomkeydemon.py &
 	if [ ".$(echo "$2"| cut -d. -f2)" == ".sh" ] || [ ".$(echo "$2"| cut -d. -f2)" == ".SH" ]; then
-	"$2"
+	dos2unix "${2}"
+        "$2"
 	elif [ ".$(echo "$2"| cut -d. -f2)" == ".doom" ] || [ ".$(echo "$2"| cut -d. -f2)" == ".DOOM" ]; then
 	  IWAD=""; MODS=""; DEH=""; SAVE=""; CONF=""; PARAMS=""; DOOM_BASE_DIR="/$directory/doom/"
 	  dos2unix "${2}"
@@ -41,14 +26,13 @@ if [[ $1 == "standalone" ]]; then
 	else
 	/opt/lzdoom/lzdoom -iwad "$2"
 	fi
-        if [[ ! -z $(pidof oga_controls) ]]; then
-          sudo kill -9 $(pidof oga_controls)
-        fi
+	sudo killall python3
         sudo systemctl restart oga_events &
 elif [[ $1 == "standalone-gzdoom" ]]; then
         directory=$(dirname "$2" | cut -d "/" -f2)
-        sudo /opt/quitter/oga_controls gzdoom $param_device &
+	sudo /usr/local/bin/doomkeydemon.py &
         if [ ".$(echo "$2"| cut -d. -f2)" == ".sh" ] || [ ".$(echo "$2"| cut -d. -f2)" == ".SH" ]; then
+        dos2unix "${2}"
         "$2"
         elif [ ".$(echo "$2"| cut -d. -f2)" == ".doom" ] || [ ".$(echo "$2"| cut -d. -f2)" == ".DOOM" ]; then
           IWAD=""; MODS=""; DEH=""; SAVE=""; CONF=""; PARAMS=""; DOOM_BASE_DIR="/$directory/doom/"
@@ -70,10 +54,9 @@ elif [[ $1 == "standalone-gzdoom" ]]; then
         else
         /opt/gzdoom/gzdoom -iwad "$2" +gl_es 1 +vid_preferbackend 3 +cl_capfps 0
         fi
-        if [[ ! -z $(pidof oga_controls) ]]; then
-          sudo kill -9 $(pidof oga_controls)
-        fi
+	sudo killall python3
         sudo systemctl restart oga_events &
 else
   /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$3"
 fi
+
