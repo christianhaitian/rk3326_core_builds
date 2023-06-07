@@ -82,6 +82,12 @@ cd rk3326_core_builds
 ### To build just gambatte (64bit only):
 `./builds.sh gambatte`
 
+### To build just gearsystem (64bit only):
+`./builds.sh gearsystem`
+
+### To build just gearcoleco (64bit only):
+`./builds.sh gearcoleco`
+
 ### To build just genesis-plus-gx (64bit only):
 `./builds.sh genesis-plus-gx`
 
