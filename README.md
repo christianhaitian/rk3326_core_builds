@@ -187,6 +187,9 @@ cd rk3326_core_builds
 ### To build just np2kai (64bit only):
 `./builds.sh np2kai`
 
+### To build just numero (64bit only):
+`./builds.sh numero`
+
 ### To build just o2em (64bit only):
 `./builds.sh o2em`
 
