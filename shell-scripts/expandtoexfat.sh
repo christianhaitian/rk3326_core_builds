@@ -43,6 +43,7 @@ sync
 sleep 2
 sudo fsck.exfat -a /dev/mmcblk0p3
 sync
+printf "t\n3\n7\nw\n" | sudo fdisk /dev/mmcblk0
 
 sudo mount -t exfat -w /dev/mmcblk0p3 /roms
 exitcode=$?
