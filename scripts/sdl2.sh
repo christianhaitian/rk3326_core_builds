@@ -15,7 +15,8 @@ bitness="$(getconf LONG_BIT)"
 #commit="f9b918ff403782986f2a6712e6e2a462767a0457" # SDL 2.0.20 although it builds as 2.0.20.0 ¯\_(ツ)_/¯
 #commit="f070c83a6059c604cbd098680ddaee391b0a7341" # SDL 2.0.26.2
 #commit="8c9beb0c873f6ca5efbd88f1ad2648bfc793b2ac" # SDL 2.0.24.0
-commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
+#commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
+commit="031912c4b6c5db80b443f04aa56fec3e4e645153" # SDL 2.0.28.2
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
@@ -131,9 +132,9 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.2600.5
+	     strip build/.libs/libSDL2-2.0.so.0.2800.2
 	  else
-	     strip libSDL2-2.0.so.0.2600.5
+	     strip libSDL2-2.0.so.0.2800.2
 	  fi
 
 	  if [ ! -d "$cur_wd/sdl2-$bitness/" ]; then
@@ -141,9 +142,9 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     cp build/.libs/libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/.
+	     cp build/.libs/libSDL2-2.0.so.0.2800.2 $cur_wd/sdl2-$bitness/.
 	  else
-	     cp libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/.
+	     cp libSDL2-2.0.so.0.2800.2 $cur_wd/sdl2-$bitness/.
 	  fi
 
 	  echo " "
@@ -181,11 +182,11 @@ commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.2600.5
-	     cp build/.libs/libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.2600.5.rotated
+	     strip build/.libs/libSDL2-2.0.so.0.2800.2
+	     cp build/.libs/libSDL2-2.0.so.0.2800.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.2800.2.rotated
 	  else
-	     strip libSDL2-2.0.so.0.2600.5
-	     cp libSDL2-2.0.so.0.2600.5 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.2600.5.rotated
+	     strip libSDL2-2.0.so.0.2800.2
+	     cp libSDL2-2.0.so.0.2800.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.2800.2.rotated
       fi
 
 	  echo " "
