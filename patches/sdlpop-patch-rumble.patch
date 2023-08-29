@@ -1,0 +1,21 @@
+diff --git a/src/seg003.c b/src/seg003.c
+index d1b7196..f6d2e71 100644
+--- a/src/seg003.c
++++ b/src/seg003.c
+@@ -768,6 +768,16 @@ int flash_if_hurt() {
+ 		return 1;
+ 	} else if (hitp_delta < 0) {
+ 		if (is_joyst_mode && enable_controller_rumble) {
++          FILE *file;
++            // for rk3326 devices with rumble support
++            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
++                 system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.1 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
++                 fclose(file);
++            // for rk35666 devices with rumble support
++            } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r"))) {
++                 system("echo 0 | tee /sys/class/pwm/pwmchip1/pwm0/enable && sleep 0.1 && echo 1 | tee /sys/class/pwm/pwmchip1/pwm0/enable &");
++                 fclose(file);
++            }
+ 			if (sdl_haptic != NULL) {
+ 				SDL_HapticRumblePlay(sdl_haptic, 1.0, 100); // rumble at full strength for 100 milliseconds
+ #if SDL_VERSION_ATLEAST(2,0,9)

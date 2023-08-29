@@ -337,13 +337,16 @@ cd rk3326_core_builds
 ### To build Nxegnine-evo (64bit only)
 `./builds.sh nxengine-evo`
 
+### To build SDLPoP (64bit only)
+`./builds.sh sdlpop`
+
 ### To add a system for screenscraper scraping in Emulationstation-fcamod (64bit only)
 `./builds.sh es_add_scrape`
 
 ### To build Emulationstation-fcamod (64bit only)
 `./builds.sh es_build`
 
-### To build SDL 2.0.16
+### To build SDL 2.0.28.2
 `./builds.sh sdl2`
 
 ### To update the retroarch-cores repo with new or updated cores:
