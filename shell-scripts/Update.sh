@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [[ "$(stat -c "%U" /home/ark)" != "ark" ]]; then
+  printf "Fixing home folder permissions.  Please wait..."
+  sudo chown -R ark:ark /home/ark
+  sudo chmod -R 755 /home/ark
+fi
+
+printf "\nChecking for updates.  Please wait..."
+
 LOG_FILE="/home/ark/esupdate.log"
 
 if [ -f "$LOG_FILE" ]; then
@@ -17,10 +25,10 @@ if [ -z "$ISITCHINA" ]; then
   ISITCHINA=$(curl -s --connect-timeout 30 -m 60 https://api.iplocation.net/?ip=$(curl -s --connect-timeout 30 -m 60 checkip.amazonaws.com) | grep -Po '"country_name":.*?[^\\]"')
 fi
 
-if [[ "$ISITCHINA" == "\"country\":\"China\"" ]] || [[ "$ISITCHINA" == "\"country_name\":\"China\"" ]]; then
-  printf "\n\nSwitching to China server for updates.\n\n" | tee -a "$LOG_FILE"
-  LOCATION="$CLOCATION"
-fi
+#if [[ "$ISITCHINA" == "\"country\":\"China\"" ]] || [[ "$ISITCHINA" == "\"country_name\":\"China\"" ]]; then
+#  printf "\n\nSwitching to China server for updates.\n\n" | tee -a "$LOG_FILE"
+#  LOCATION="$CLOCATION"
+#fi
 
 if [[ "$LOCATION" != "$CLOCATION" ]]; then
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/LICENSE -O /dev/shm/LICENSE -a "$LOG_FILE"
@@ -58,10 +66,16 @@ elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; the
 	else
 	  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RK2020.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 	fi
-elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
+elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]] && [ "$(cat ~/.config/.DEVICE)" == "RGB10MAX" ]; then
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RGB10MAX.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG351MP.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
+elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]] && [ "$(cat ~/.config/.DEVICE)" == "RG353V" ]; then
+  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG353V.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
+elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]] && [ "$(cat ~/.config/.DEVICE)" == "RG353M" ]; then
+  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG353M.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
+elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]] && [ "$(cat ~/.config/.DEVICE)" == "RK2023" ]; then
+  wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RK2023.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
   wget -t 3 -T 60 --no-check-certificate "$LOCATION"/Update-RG503.sh -O /home/ark/ArkOSUpdate.sh -a "$LOG_FILE"
 else
