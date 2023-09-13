@@ -1,48 +1,30 @@
 diff --git a/SDL/SDLMain.cpp b/SDL/SDLMain.cpp
-index d81157d83..7d09fc5ca 100644
+index 27695ec2d..e761cb8e8 100644
 --- a/SDL/SDLMain.cpp
 +++ b/SDL/SDLMain.cpp
-@@ -893,9 +893,9 @@ int main(int argc, char *argv[]) {
- 		printf("Init from thread error: '%s'\n", error_message.c_str());
- 	}
- 
--#ifdef MOBILE_DEVICE
-+//#ifdef MOBILE_DEVICE
- 	SDL_ShowCursor(SDL_DISABLE);
--#endif
-+//#endif
- 
- 	if (!useEmuThread) {
- 		NativeInitGraphics(graphicsContext);
-@@ -997,11 +997,11 @@ int main(int argc, char *argv[]) {
- 						g_Config.iWindowHeight = new_height;
- 					}
- 					// Hide/Show cursor correctly toggling fullscreen
--					if (lastUIState == UISTATE_INGAME && fullscreen && !g_Config.bShowTouchControls) {
-+					/*if (lastUIState == UISTATE_INGAME && fullscreen && !g_Config.bShowTouchControls) {
- 						SDL_ShowCursor(SDL_DISABLE);
- 					} else if (lastUIState != UISTATE_INGAME || !fullscreen) {
- 						SDL_ShowCursor(SDL_ENABLE);
--					}
-+					}*/
- 					break;
- 				}
- 
-@@ -1292,7 +1292,7 @@ int main(int argc, char *argv[]) {
- 		if (g_QuitRequested || g_RestartRequested)
+@@ -803,12 +803,7 @@ static void ProcessSDLEvent(SDL_Window *window, const SDL_Event &event, InputSta
+ 				g_Config.iWindowWidth = new_width;
+ 				g_Config.iWindowHeight = new_height;
+ 			}
+-			// Hide/Show cursor correctly toggling fullscreen
+-			if (lastUIState == UISTATE_INGAME && fullscreen && !g_Config.bShowTouchControls) {
+-				SDL_ShowCursor(SDL_DISABLE);
+-			} else if (lastUIState != UISTATE_INGAME || !fullscreen) {
+-				SDL_ShowCursor(SDL_ENABLE);
+-			}
++			SDL_ShowCursor(SDL_DISABLE);
  			break;
+ 		}
  
--#if !defined(MOBILE_DEVICE)
-+/*#if !defined(MOBILE_DEVICE)
+@@ -1444,10 +1439,7 @@ int main(int argc, char *argv[]) {
+ #if !defined(MOBILE_DEVICE)
  		if (lastUIState != GetUIState()) {
  			lastUIState = GetUIState();
- 			if (lastUIState == UISTATE_INGAME && g_Config.UseFullScreen() && !g_Config.bShowTouchControls)
-@@ -1300,7 +1300,7 @@ int main(int argc, char *argv[]) {
- 			if (lastUIState != UISTATE_INGAME || !g_Config.UseFullScreen())
- 				SDL_ShowCursor(SDL_ENABLE);
+-			if (lastUIState == UISTATE_INGAME && g_Config.UseFullScreen() && !g_Config.bShowTouchControls)
+-				SDL_ShowCursor(SDL_DISABLE);
+-			if (lastUIState != UISTATE_INGAME || !g_Config.UseFullScreen())
+-				SDL_ShowCursor(SDL_ENABLE);
++			SDL_ShowCursor(SDL_DISABLE);
  		}
--#endif
-+#endif*/
+ #endif
  
- 		// Disabled by default, needs a workaround to map to psp keys.
- 		if (g_Config.bMouseControl) {
