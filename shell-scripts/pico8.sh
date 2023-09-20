@@ -20,7 +20,9 @@ elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; the
   fi
 elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
   param_device="rg503"
-  res="960,544"
+  xres="$(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)' | cut -dx -f1)"
+  yres="$(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)' | cut -dx -f2)"
+  res="${xres},${yres}"
 else
   param_device="chi"
   res="640,480"
@@ -29,6 +31,8 @@ fi
 directory="$(dirname "$2" | cut -d "/" -f2)"
 basefile="$(basename -- "$2")"
 basefilenoext="${basefile%.*}"
+
+. /usr/local/bin/buttonmon.sh
 
 if [[ ! -f "/$directory/pico-8/sdl_controllers.txt" ]]; then
 echo "19000000030000000300000002030000,gameforce_gamepad,leftstick:b14,rightx:a3,leftshoulder:b4,start:b9,lefty:a0,dpup:b10,righty:a2,a:b1,b:b0,guide:b16,dpdown:b11,rightshoulder:b5,righttrigger:b7,rightstick:b15,dpright:b13,x:b2,back:b8,leftx:a1,y:b3,dpleft:b12,lefttrigger:b6,platform:Linux,
@@ -39,10 +43,10 @@ echo "19000000030000000300000002030000,gameforce_gamepad,leftstick:b14,rightx:a3
 190000004b4800000111000000010000,retrogame_joypad,a:b1,b:b0,x:b2,y:b3,back:b8,start:b9,rightstick:b12,leftstick:b11,dpleft:b15,dpdown:b14,dpright:b16,dpup:b13,leftshoulder:b4,lefttrigger:b6,rightshoulder:b5,righttrigger:b7,leftx:a0,lefty:a1,rightx:a2,righty:a3,platform:Linux," > /$directory/pico-8/sdl_controllers.txt
 fi
 
-if [[ -f "/$directory/pico-8/pico8_dyn" ]]; then
-  pico8executable=pico8_dyn
-elif [[ -f "/$directory/pico-8/pico8_64" ]]; then
+if [[ -f "/$directory/pico-8/pico8_64" ]]; then
   pico8executable=pico8_64
+elif [[ -f "/$directory/pico-8/pico8_dyn" ]]; then
+  pico8executable=pico8_dyn
 fi
 
 LaunchFake08() {
@@ -78,12 +82,44 @@ LaunchFake08() {
   sudo kill -9 $(pidof gptokeyb)
   sudo systemctl restart oga_events &
   printf "\033c" >> /dev/tty1
-  exit 1
+  exit 0
 }
+
+if [[ $1 == "retroarch" ]]; then
+  if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
+    printf "\033c" >> /dev/tty1
+    printf "\033[1;33m" >> /dev/tty1
+    printf "\n Sorry, splore is not available with the Fake08 retroarch emulator." >> /dev/tty1
+    sleep 5
+    printf "\033[0m" >> /dev/tty1
+    printf "\033c" >> /dev/tty1
+    exit 1
+  fi
+  filename="$2"
+  ext="${filename##*.}"
+  if [[ "$ext" == "png" ]] || [[ "$ext" == "PNG" ]]; then
+   # .png extension doesn't work with the fake08 retroarch emulator
+   # so let's temporarily convert them to .p8 files to launch with retroarch
+   # if [[ "$basefilenoext" == *".p8"* ]] || [[ "$basefilenoext" == *".P8"* ]]; then
+   #   cp -f "$2" "/$directory/pico-8/carts/$basefilenoext"
+   #   file="/$directory/pico-8/carts/$basefilenoext"
+   # else
+   #   cp -f "$2" "/$directory/pico-8/carts/${basefilenoext}.p8"
+   #   file="/$directory/pico-8/carts/${basefilenoext}.p8"
+   # fi
+   # /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/fake08_libretro.so "$file"
+   # rm -f "$file"
+   sed -i '/builtin_imageviewer_enable \= "true"/c\builtin_imageviewer_enable \= "false"' /home/ark/.config/retroarch/retroarch.cfg
+   /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/fake08_libretro.so "$2"
+  else
+    /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/fake08_libretro.so "$2"
+  fi
+  exit 0
+fi
 
 if [[ $1 == "fake08" ]]; then
       LaunchFake08 "$2"
-elif [[ ! -f "/$directory/pico-8/$pico8executable" ]]; then
+elif [[ ! -f "/$directory/pico-8/$pico8executable" ]] && [[ "$1" != *"retroarch"* ]]; then
       printf "\033c" >> /dev/tty1
       printf "\033[1;33m" >> /dev/tty1
       printf "\n I don't detect a pico8_dyn or pico8_64 file in the" >> /dev/tty1
@@ -94,7 +130,7 @@ elif [[ ! -f "/$directory/pico-8/$pico8executable" ]]; then
       sleep 10
       printf "\033[0m" >> /dev/tty1
       LaunchFake08 "$2"
-elif [[ ! -f "/$directory/pico-8/pico8.dat" ]]; then
+elif [[ ! -f "/$directory/pico-8/pico8.dat" ]] &&  [[ "$1" != *"retroarch"* ]]; then
       printf "\033c" >> /dev/tty1
       printf "\033[1;33m" >> /dev/tty1
       printf "\n I don't detect a pico8.dat file in the" >> /dev/tty1
@@ -109,6 +145,30 @@ fi
 
 sudo /opt/quitter/oga_controls $pico8executable $param_device &
 
+Test_Button_B
+if [ "$?" -eq "10" ]; then
+  printf "\n Starting splore.  Please wait..." >> /dev/tty1
+  if [[ $1 == "float-scaled" ]]; then
+    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
+  elif [[ $1 == "pixel-perfect" ]]; then
+    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1
+  elif [[ $1 == "full-screen" ]]; then
+    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
+  fi
+
+  printf "\033[0m" >> /dev/tty1
+  mv -f /$directory/pico-8/bbs/carts/*.png /$directory/pico-8/carts/
+  mv -f /$directory/pico-8/bbs/carts/*.PNG /$directory/pico-8/carts/
+  mv -f /$directory/pico-8/bbs/carts/*.p8 /$directory/pico-8/carts/
+  mv -f /$directory/pico-8/bbs/carts/*.P8 /$directory/pico-8/carts/
+
+  if [[ ! -z $(pidof oga_controls) ]]; then
+    sudo kill -9 $(pidof oga_controls)
+  fi
+  sudo systemctl restart oga_events &
+  exit 0
+fi
+
 if [[ $1 == "float-scaled" ]]; then
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
@@ -121,7 +181,7 @@ elif [[ $1 == "pixel-perfect" ]]; then
 	else
 		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1 -run "$2"
 	fi
-else
+elif [[ $1 == "full-screen" ]]; then
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
 	else
