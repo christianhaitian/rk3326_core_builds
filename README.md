@@ -319,6 +319,9 @@ cd rk3326_core_builds
 ### To build just virtualjaguar:
 `./builds.sh virtualjaguar`
 
+### To build just wasm-4:
+`./builds.sh wasm4`
+
 ### To build just yabasanshiro (32bit only):
 `./builds.sh yabasanshiro`
 
