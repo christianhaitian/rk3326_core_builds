@@ -1,16 +1,18 @@
 diff --git a/src/input.cpp b/src/input.cpp
-index cac7782..95d861b 100644
+index cac7782..69e120c 100644
 --- a/src/input.cpp
 +++ b/src/input.cpp
-@@ -123,8 +123,14 @@ bool input_init(void)
- 
+@@ -124,7 +124,17 @@ bool input_init(void)
  void rumble(float str, uint32_t len)
  {
--  if (settings->rumble)
-+  if (settings->rumble){
+   if (settings->rumble)
++  {
 +    FILE *file;
 +    if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r"))) {
-+      system("echo 10 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.12 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
++      system("echo 450000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle && sleep 0.10 && echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle &");
++      fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
++      system("echo 450000 | sudo tee /sys/class/pwm/pwmchip1/pwm0/duty_cycle && sleep 0.10 && echo 1000000 | sudo tee /sys/class/pwm/pwmchip1/pwm0/duty_cycle &");
 +      fclose(file);
 +    }
      SDL_JoystickRumble(joy, 0xFFFF * str, 0xFFFF * str, len);
