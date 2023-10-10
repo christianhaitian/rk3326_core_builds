@@ -22,7 +22,7 @@ fi
 
 maxSize=$(lsblk -b --output SIZE -n -d /dev/mmcblk0)
 
-newExtSizePct=$(printf %.2f "$((10**4 * 9589934592/$maxSize))e-4")
+newExtSizePct=$(printf %.2f "$((10**4 * 11000000000/$maxSize))e-4")
 newExtSizePct=$(echo print 1-$newExtSizePct | perl)
 ExfatPctToRemain=$(echo print 100*$newExtSizePct | perl)
 
