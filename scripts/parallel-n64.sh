@@ -42,7 +42,7 @@ bitness="$(getconf LONG_BIT)"
 			echo "There was an error while applying $patching.  Stopping here."
 			exit 1
 		   fi
-		   rm "$patching" 
+		   rm "$patching"
 		 fi
 	  done
 	 fi
@@ -50,7 +50,7 @@ bitness="$(getconf LONG_BIT)"
 	  if [[ "$bitness" == "32" ]]; then
 		make platform=Odroidgoa -lto -j$(nproc)
 	  else
-		make platform=emuelec64-armv8 -lto -j$(nproc)
+		make platform=unix_RK3326 -lto -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then
