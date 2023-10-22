@@ -8,7 +8,6 @@ for (( ; ; ))
 do
   if [ ! -e "/dev/snd/controlC7" ] && [[ "$DAC_EXIST" != "None" ]]; then
     sed -i '/hw:[0-9]/s//hw:0/' /home/ark/.asoundrc /home/ark/.asoundrcbak
-    #sudo pkill ogage
     sudo systemctl restart oga_events &
     DAC_EXIST="None"
     if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
@@ -30,12 +29,8 @@ do
         echo "defaults.pcm.card ${DAC}" > /etc/asound.conf
         echo "defaults.ctl.card ${DAC}" >> /etc/asound.conf
         echo "ctl.!default { type hw card 0 }" >> /etc/asound.conf
-        #sudo pkill ogage
-        #sudo systemctl stop oga_events
-        #sudo -u ark '/usr/local/bin/ogage' &
-      #else
-        sudo systemctl restart oga_events &
       fi
+      sudo systemctl restart oga_events &
     fi
   fi
   if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]] && [[ "$DAC" == "$DAC_EXIST" ]]; then
