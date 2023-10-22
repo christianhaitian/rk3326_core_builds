@@ -8,6 +8,7 @@ for (( ; ; ))
 do
   if [ ! -e "/dev/snd/controlC7" ] && [[ "$DAC_EXIST" != "None" ]]; then
     sed -i '/hw:[0-9]/s//hw:0/' /home/ark/.asoundrc /home/ark/.asoundrcbak
+    sudo pkill ogage
     sudo systemctl restart oga_events &
     DAC_EXIST="None"
     if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
@@ -24,11 +25,15 @@ do
         amixer -q -c ${DAC} sset "${i}" 100%
       done
       sed -i '/hw:[0-9]/s//hw:'$DAC'/' /home/ark/.asoundrc /home/ark/.asoundrcbak
-      sudo systemctl restart oga_events &
       DAC_EXIST="$DAC"
       if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
         echo "defaults.pcm.card ${DAC}" > /etc/asound.conf
         echo "defaults.ctl.card ${DAC}" >> /etc/asound.conf
+        sudo pkill ogage
+        sudo systemctl stop oga_events
+        sudo -u ark '/usr/local/bin/ogage' &
+      else
+        sudo systemctl restart oga_events &
       fi
     fi
   fi
