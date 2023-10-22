@@ -10,6 +10,11 @@ do
     sed -i '/hw:[0-9]/s//hw:0/' /home/ark/.asoundrc /home/ark/.asoundrcbak
     sudo systemctl restart oga_events &
     DAC_EXIST="None"
+    if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
+      if [ -e "/etc/asound.conf" ]; then
+        rm -f /etc/asound.conf
+      fi
+    fi
   elif [ -e "/dev/snd/controlC7" ] && [[ "$DAC" != "$DAC_EXIST" ]]; then
     DAC=$(ls -l /dev/snd/controlC7 | awk 'NR>=control {print $11;}' | cut -d 'C' -f2)
     if [[ $DAC =~ $NUM_CHECK ]]; then
@@ -21,12 +26,16 @@ do
       sed -i '/hw:[0-9]/s//hw:'$DAC'/' /home/ark/.asoundrc /home/ark/.asoundrcbak
       sudo systemctl restart oga_events &
       DAC_EXIST="$DAC"
+      if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
+        echo "defaults.pcm.card ${DAC}" > /etc/asound.conf
+        echo "defaults.ctl.card ${DAC}" >> /etc/asound.conf
+      fi
     fi
   fi
   if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]] && [[ "$DAC" == "$DAC_EXIST" ]]; then
       for i in "${USB_DAC[@]}"
       do
-        amixer -q -c ${DAC} sset "${i}" $(current_volume)
+        amixer -q -c ${DAC} sset "${i}" $(sudo -u ark '/usr/local/bin/current_volume')
       done
   fi
   sleep 1
