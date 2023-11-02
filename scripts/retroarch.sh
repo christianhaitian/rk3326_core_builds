@@ -60,6 +60,14 @@ bitness="$(getconf LONG_BIT)"
 	    --disable-vulkan_display \
 	    --disable-wayland \
 	    --disable-x11 \
+        --disable-xrandr \
+        --disable-winrawinput \
+        --disable-gdi \
+        --disable-d3d10 \
+        --disable-d3d11 \
+        --disable-d3d12 \
+        --disable-opengl1 \
+        --disable-microphone \
 	    --enable-alsa \
 	    --enable-egl \
 	    --enable-freetype \
@@ -85,11 +93,19 @@ bitness="$(getconf LONG_BIT)"
 	    --disable-vulkan_display \
 	    --disable-wayland \
 	    --disable-x11 \
+        --disable-xrandr \
+        --disable-winrawinput \
+        --disable-gdi \
+        --disable-d3d10 \
+        --disable-d3d11 \
+        --disable-d3d12 \
+        --disable-opengl1 \
+        --disable-microphone \
 	    --enable-alsa \
 	    --enable-egl \
 	    --enable-freetype \
 	    --enable-kms \
-            --enable-neon \
+        --enable-neon \
 	    --enable-networking \
 	    --enable-odroidgo2 \
 	    --enable-opengles \
