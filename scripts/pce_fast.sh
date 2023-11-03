@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro pce_fast build
-	if [[ "$var" == "pce_fast" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "pce_fast" || "$var" == "all" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "beetle-pce-fast-libretro/" ]; then
 		git clone https://github.com/libretro/beetle-pce-fast-libretro.git
@@ -53,15 +53,15 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip mednafen_pce_fast_libretro.so
 
-	  if [ ! -d "../cores64/" ]; then
-		mkdir -v ../cores64
+	  if [ ! -d "../cores${bitness}/" ]; then
+		mkdir -v ../cores${bitness}
 	  fi
 
-	  cp mednafen_pce_fast_libretro.so ../cores64/.
+	  cp mednafen_pce_fast_libretro.so ../cores${bitness}/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/mednafen_pce_fast_libretro.so.commit
 
 	  echo " "
-	  echo "mednafen_pce_fast_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "mednafen_pce_fast_libretro.so has been created and has been placed in the rk3326_core_builds/cores${bitness} subfolder"
 	fi

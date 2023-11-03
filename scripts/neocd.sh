@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro neocd build
-	if [[ "$var" == "neocd" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "neocd" || "$var" == "all" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "neocd/" ]; then
 		git clone https://github.com/libretro/neocd_libretro.git
@@ -53,15 +53,15 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip neocd_libretro.so
 
-	  if [ ! -d "../cores64/" ]; then
-		mkdir -v ../cores64
+	  if [ ! -d "../cores${bitness}/" ]; then
+		mkdir -v ../cores${bitness}
 	  fi
 
-	  cp neocd_libretro.so ../cores64/.
+	  cp neocd_libretro.so ../cores${bitness}/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/neocd_libretro.so.commit
 
 	  echo " "
-	  echo "neocd_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "neocd_libretro.so has been created and has been placed in the rk3326_core_builds/cores${bitness} subfolder"
 	fi
