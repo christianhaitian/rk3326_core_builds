@@ -173,7 +173,7 @@ bitness="$(getconf LONG_BIT)"
 	      cp retroarch ../retroarch$bitness/retroarch-rgaunrotated
 
 	      if [[ "$bitness" == "32" ]]; then
-		    mv ../retroarch$bitness/retroarch ../retroarch$bitness/retroarch32-rgaunrotated
+		    mv ../retroarch$bitness/retroarch-rgaunrotated ../retroarch$bitness/retroarch32-rgaunrotated
 	      fi
 
 	      echo " "
