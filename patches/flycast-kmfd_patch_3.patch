@@ -1,0 +1,71 @@
+diff --git a/Makefile b/Makefile
+index 6883de83a7..44dbc9bc73 100644
+--- a/Makefile
++++ b/Makefile
+@@ -40,7 +40,7 @@ endif
+ 
+ CC_AS    ?= ${CROSS_COMPILE}as
+ 
+-#MFLAGS   :=
++MFLAGS   :=
+ #ASFLAGS  :=
+ #LDFLAGS  :=
+ #INCFLAGS :=
+@@ -1079,7 +1079,7 @@ LIBS     += -lm
+ PREFIX        ?= /usr/local
+ 
+ ifneq (,$(findstring arm, $(ARCH)))
+-	CC_AS    = ${CROSS_COMPILE}gcc #The ngen_arm.S must be compiled with gcc, not as
++	CC_AS    = ${CROSS_COMPILE}${CC} #The ngen_arm.S must be compiled with gcc, not as
+ 	ASFLAGS  += $(CFLAGS)
+ endif
+ 
+diff --git a/core/libretro/libretro.cpp b/core/libretro/libretro.cpp
+index 48450e25fb..1d8b7e89c4 100644
+--- a/core/libretro/libretro.cpp
++++ b/core/libretro/libretro.cpp
+@@ -103,7 +103,7 @@ char save_dir[PATH_MAX];
+ char eeprom_file[PATH_MAX];
+ char nvmem_file[PATH_MAX];
+ char nvmem_file2[PATH_MAX];		// AtomisWave
+-bool boot_to_bios;
++bool boot_to_bios = true;
+ 
+ static bool devices_need_refresh = false;
+ static int device_type[4] = {-1,-1,-1,-1};
+@@ -1848,8 +1848,8 @@ bool retro_load_game(const struct retro_game_info *game)
+    if (!(environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir))
+       dir = game_dir;
+ 
+-   snprintf(game_dir, sizeof(game_dir), "%s%cdc%c", dir, slash, slash);
+-   snprintf(game_dir_no_slash, sizeof(game_dir_no_slash), "%s%cdc", dir, slash);
++   snprintf(game_dir, sizeof(game_dir), "%s", dir);
++   snprintf(game_dir_no_slash, sizeof(game_dir_no_slash), "%s", dir);
+ 
+    // Per-content VMU additions START
+    // > Get save directory
+@@ -1954,7 +1954,7 @@ bool retro_load_game(const struct retro_game_info *game)
+    {
+       char data_dir[1024];
+ 
+-      snprintf(data_dir, sizeof(data_dir), "%s%s", game_dir, "data");
++      snprintf(data_dir, sizeof(data_dir), "%s", game_dir);
+ 
+       INFO_LOG(COMMON, "Creating dir: %s", data_dir);
+       struct stat buf;
+diff --git a/core/rend/TexCache.h b/core/rend/TexCache.h
+index c92e2e4b1e..d4ed897cf0 100644
+--- a/core/rend/TexCache.h
++++ b/core/rend/TexCache.h
+@@ -820,9 +820,9 @@ class BaseTextureCache
+ 	std::unordered_map<u64, Texture> cache;
+ 	// Only use TexU and TexV from TSP in the cache key
+ 	//     TexV : 7, TexU : 7
+-	const TSP TSPTextureCacheMask = { 63 };
++	const TSP TSPTextureCacheMask = { { 7, 7 } };
+ 	//     TexAddr : 0x1FFFFF, Reserved : 0, StrideSel : 0, ScanOrder : 1, PixelFmt : 7, VQ_Comp : 1, MipMapped : 1
+-	const TCW TCWTextureCacheMask = { 0xFC1FFFFF };
++	const TCW TCWTextureCacheMask = { { 0x1FFFFF, 0, 0, 1, 7, 1, 1 } };
+ };
+ 
+ void ReadFramebuffer(PixelBuffer<u32>& pb, int& width, int& height);
