@@ -64,6 +64,9 @@ cd rk3326_core_builds
 ### To build just ecwolf standalone emulator (64bit only):
 `./builds.sh ecwolfsa
 
+### To build just ep128emu (64bit only):
+`./builds.sh ep128emu`
+
 ### To build just fake08 standalone emulator (64bit only):
 `./builds.sh fake08sa`
 
