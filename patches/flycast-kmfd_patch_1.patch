@@ -1,0 +1,193 @@
+diff --git a/Makefile b/Makefile
+index 01d99c30..c65a2f3e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -23,7 +23,7 @@ HAVE_CLANG    ?= 0
+ HAVE_CDROM    := 0
+ ENABLE_MODEM  := 1
+ 
+-TARGET_NAME   := flycast
++TARGET_NAME   := km_flycast_xtreme
+ 
+ ifeq ($(HAVE_CLANG),1)
+ 	CXX      = ${CC_PREFIX}clang++
+diff --git a/core/libretro/libretro.cpp b/core/libretro/libretro.cpp
+index 2efca4b0..4c015ced 100644
+--- a/core/libretro/libretro.cpp
++++ b/core/libretro/libretro.cpp
+@@ -955,7 +955,7 @@ static void update_variables(bool first_startup)
+    else
+    	settings.rend.DelayFrameSwapping = false;
+ 
+-   var.key = CORE_OPTION_NAME "_frame_skipping";
++   var.key = CORE_OPTION_NAME "_slingshot_turbo_boost";
+    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+    {
+ 	   if (!strcmp("disabled", var.value))
+@@ -2264,11 +2264,11 @@ const char* retro_get_system_directory(void)
+ 
+ void retro_get_system_info(struct retro_system_info *info)
+ {
+-   info->library_name = "Flycast";
++   info->library_name = "Flycast Xtreme";
+ #ifndef GIT_VERSION
+ #define GIT_VERSION ""
+ #endif
+-   info->library_version = "0.1" GIT_VERSION;
++   info->library_version = "2K22" GIT_VERSION;
+    info->valid_extensions = "chd|cdi|elf|cue|gdi|lst|bin|dat|zip|7z|m3u";
+    info->need_fullpath = true;
+    info->block_extract = true;
+diff --git a/core/libretro/libretro_core_options.h b/core/libretro/libretro_core_options.h
+index 3433ba40..b70641b4 100644
+--- a/core/libretro/libretro_core_options.h
++++ b/core/libretro/libretro_core_options.h
+@@ -199,7 +199,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+          { NULL, NULL },
+       },
+ #ifdef LOW_RES
+-      "320x240",
++      "640x480",
+ #else
+       "640x480",
+ #endif
+@@ -236,7 +236,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+ #if defined(LOW_END)
+       "per-strip (fast, least accurate)",
+ #else
+-      "per-triangle (normal)",
++      "per-strip (fast, least accurate)",
+ #endif
+    },
+    {
+@@ -254,7 +254,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+ #ifdef LOW_END
+       "enabled",
+ #else
+-      "disabled",
++      "enabled",
+ #endif
+    },
+    {/* TODO: needs explanation */
+@@ -525,7 +525,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+          { "16",  NULL },
+          { NULL, NULL },
+       },
+-      "4",
++      "off",
+    },
+    {
+       CORE_OPTION_NAME "_pvr2_filtering",
+@@ -635,7 +635,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+ #ifdef LOW_END
+       "disabled",
+ #else
+-      "enabled",
++      "disabled",
+ #endif
+    },
+    {
+@@ -654,10 +654,10 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+    },
+ #endif
+    {
+-      CORE_OPTION_NAME "_frame_skipping",
+-      "Frame Skipping",
++      CORE_OPTION_NAME "_slingshot_turbo_boost",
++      "Slingshot Turbo Boost",
+       NULL,
+-      "Sets the number of frames to skip between each displayed frame.",
++      "Exploits frames by factoring formula of disabled to higher# then lower# renderering smoothness factor.",
+       NULL,
+       "video",
+       {
+@@ -668,9 +668,43 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+          { "4",         NULL },
+          { "5",         NULL },
+          { "6",         NULL },
++         { "7",         NULL },
++         { "8",         NULL },
++         { "9",         NULL },
++         { "10",         NULL },
++         { "11",         NULL },
++         { "12",         NULL },
++         { "13",         NULL },
++         { "14",         NULL },
++         { "15",         NULL },
++         { "16",         NULL },
++         { "17",         NULL },
++         { "18",         NULL },
++         { "19",         NULL },		 
++         { "20",         NULL },
++         { "21",         NULL },
++         { "22",         NULL },
++         { "23",         NULL },
++         { "24",         NULL },	
++         { "25",         NULL },		 
++         { "26",         NULL },
++         { "27",         NULL },
++         { "28",         NULL },
++         { "29",         NULL },
++         { "30",         NULL },
++         { "31",         NULL },
++         { "32",         NULL },
++         { "33",         NULL },	
++         { "34",         NULL },		 
++         { "35",         NULL },
++         { "36",         NULL },
++         { "37",         NULL },
++         { "38",         NULL },
++         { "39",         NULL },
++         { "40",         NULL },		 
+          { NULL, NULL },
+       },
+-      "disabled",
++      "2",
+    },
+    {
+       CORE_OPTION_NAME "_enable_purupuru",
+diff --git a/info/km_flycast_xtreme_libretro.info b/info/km_flycast_xtreme_libretro.info
+new file mode 100644
+index 00000000..387738ba
+--- /dev/null
++++ b/info/km_flycast_xtreme_libretro.info
+@@ -0,0 +1,39 @@
++display_name = "Sega - DC (km_Flycast Xtreme)"
++authors = "flyinghead"
++supported_extensions = "chd|cdi|iso|elf|bin|cue|gdi|lst|zip|dat|7z"
++corename = "Flycast Xtreme"
++manufacturer = "Sega"
++categories = "Emulator"
++systemname = "Sega Dreamcast"
++systemid = "dreamcast"
++database = "Sega - Dreamcast|Sega - NAOMI|MAME"
++license = "GPLv2"
++permissions = ""
++display_version = "Git"
++supports_no_game = "false"
++firmware_count = 8
++firmware0_desc = "dc_boot.bin (Dreamcast BIOS)"
++firmware0_path = "dc/dc_boot.bin"
++firmware0_opt = "false"
++firmware1_desc = "dc_flash.bin (Date/Time/Language)"
++firmware1_path = "dc/dc_flash.bin"
++firmware1_opt = "false"
++firmware2_desc = "naomi.zip (Naomi Bios from MAME)"
++firmware2_path = "dc/naomi.zip"
++firmware2_opt  = "true"
++firmware3_desc = "hod2bios.zip (Naomi The House of the Dead 2 Bios from MAME)"
++firmware3_path = "dc/hod2bios.zip"
++firmware3_opt  = "true"
++firmware4_desc = "f355dlx.zip (Naomi Ferrari F355 Challenge deluxe Bios from MAME)"
++firmware4_path = "dc/f355dlx.zip"
++firmware4_opt  = "true"
++firmware5_desc = "f355bios.zip (Naomi Ferrari F355 Challenge twin/deluxe Bios from MAME)"
++firmware5_path = "dc/f355bios.zip"
++firmware5_opt  = "true"
++firmware6_desc = "airlbios.zip (Naomi Airline Pilots deluxe Bios from MAME)"
++firmware6_path = "dc/airlbios.zip"
++firmware6_opt  = "true"
++firmware7_desc = "awbios.zip (Atomiswave BIOS from MAME)"
++firmware7_path = "dc/awbios.zip"
++firmware7_opt  = "true"
++notes = "(!) dc_boot.bin (md5): e10c53c2f8b90bab96ead2d368858623|(!) dc_flash.bin (md5): 0a93f7940c455905bea6e392dfde92a4|(!) naomi.zip (md5): eb4099aeb42ef089cfe94f8fe95e51f6|(!) hod2bios.zip (md5): 9c755171b222fb1f4e1439d5b709dbf1|(!) f355dlx.zip (md5): 5e83867c751f692a000afdf658dc181f|(!) f355bios.zip (md5): f126d318f135f38ee377fef2acf08d7e|(!) airlbios.zip (md5): 3f348c88af99a40fbd11fa435f28c69d|(!) awbios.zip (md5): 0ec5ae5b5a5c4959fa8b43fcf8687f7c"

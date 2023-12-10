@@ -1,0 +1,206 @@
+diff --git a/Makefile b/Makefile
+index 66babb821c..6883de83a7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,56 +1,52 @@
+-DEBUG         := 0
+-DEBUG_ASAN    := 0
+-DEBUG_UBSAN   := 0
+-NO_REND       := 0
+-HAVE_GL       := 1
+-HAVE_GL2      := 0
+-HAVE_OIT      ?= 0
+-HAVE_VULKAN   := 0
+-HAVE_CORE     := 0
+-NO_THREADS    := 0
+-NO_EXCEPTIONS := 0
+-NO_NVMEM      := 0
+-NO_VERIFY     := 1
+-HAVE_LTCG     ?= 0
+-HAVE_GENERIC_JIT := 1
+-HAVE_GL3      := 0
+-FORCE_GLES    := 0
+-STATIC_LINKING:= 0
+-HAVE_TEXUPSCALE := 1
+-HAVE_OPENMP   := 1
+-HAVE_CHD      := 1
+-HAVE_CLANG    ?= 0
+-HAVE_CDROM    := 0
+-ENABLE_MODEM  := 1
++DEBUG            ?= 0
++DEBUG_ASAN       ?= 0
++DEBUG_UBSAN      ?= 0
++NO_REND          ?= 0
++HAVE_GL          ?= 1
++HAVE_GL2         ?= 0
++HAVE_OIT         ?= 0
++HAVE_VULKAN      ?= 0
++HAVE_CORE        ?= 0
++NO_THREADS       ?= 0
++NO_EXCEPTIONS    ?= 0
++NO_NVMEM         ?= 0
++NO_VERIFY        ?= 1
++HAVE_LTCG        ?= 1
++HAVE_GENERIC_JIT ?= 1
++HAVE_GL3         ?= 0
++FORCE_GLES       ?= 0
++STATIC_LINKING   ?= 0
++HAVE_TEXUPSCALE  ?= 1
++HAVE_OPENMP      ?= 0
++HAVE_CHD         ?= 1
++HAVE_CLANG       ?= 0
++HAVE_CDROM       ?= 0
++ENABLE_MODEM     ?= 1
+ 
+ TARGET_NAME   := km_flycast_xtreme
+ 
+ ifeq ($(HAVE_CLANG),1)
+-	CXX      = ${CC_PREFIX}clang++
+-	CC       = ${CC_PREFIX}clang
++	CXX      ?= ${CROSS_COMPILE}clang++
++	CC       ?= ${CROSS_COMPILE}clang
+ 	SHARED   := -fuse-ld=lld
+ else
+-	CXX      ?= ${CC_PREFIX}g++
+-	CC       ?= ${CC_PREFIX}gcc
++	CXX      ?= ${CROSS_COMPILE}g++
++	CC       ?= ${CROSS_COMPILE}gcc
+ 	SHARED   :=
+ endif
+ ifeq ($(HAVE_LTCG),1)
+ 	SHARED   += -flto
+ endif
+ 
+-ifneq (${AS},)
+-	CC_AS := ${AS}
+-endif
+-CC_AS    ?= ${CC_PREFIX}as
++CC_AS    ?= ${CROSS_COMPILE}as
+ 
+-MFLAGS   := 
+-ASFLAGS  := 
+-LDFLAGS  :=
+-LDFLAGS_END :=
+-INCFLAGS :=
+-LIBS     :=
+-CFLAGS   := 
+-CXXFLAGS :=
++#MFLAGS   :=
++#ASFLAGS  :=
++#LDFLAGS  :=
++#INCFLAGS :=
++#LIBS     :=
++CFLAGS   += -std=gnu99
++CXXFLAGS += -std=gnu++11
+ 
+ GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
+ ifneq ($(GIT_VERSION)," unknown")
+@@ -124,7 +120,7 @@ ifeq ($(STATIC_LINKING),1)
+ endif
+ 
+ # Unix
+-ifneq (,$(findstring unix,$(platform)))
++ifneq (,$(findstring NOunix,$(platform)))
+ 	EXT    ?= so
+ 	TARGET := $(TARGET_NAME)_libretro.$(EXT)
+ 	SHARED += -shared -Wl,--version-script=link.T
+@@ -779,7 +775,7 @@ else ifeq ($(platform), qnx)
+ else ifneq (,$(findstring armv,$(platform)))
+ 	EXT    ?= so
+ 	TARGET := $(TARGET_NAME)_libretro.$(EXT)
+-	SHARED += -shared -Wl,--version-script=link.T -Wl,--no-undefined
++	SHARED += -shared -Wl,--version-script=link.T -Wl,--as-needed -Wl,--no-undefined
+ 	fpic := -fPIC
+ 	CPUFLAGS += -DNO_ASM -DARM -D__arm__ -DARM_ASM -DNOSSE
+ 	WITH_DYNAREC=arm
+@@ -1083,7 +1079,7 @@ LIBS     += -lm
+ PREFIX        ?= /usr/local
+ 
+ ifneq (,$(findstring arm, $(ARCH)))
+-	CC_AS    = ${CC_PREFIX}${CC} #The ngen_arm.S must be compiled with gcc, not as
++	CC_AS    = ${CROSS_COMPILE}gcc #The ngen_arm.S must be compiled with gcc, not as
+ 	ASFLAGS  += $(CFLAGS)
+ endif
+ 
+diff --git a/core/hw/arm7/arm7.cpp b/core/hw/arm7/arm7.cpp
+index 86ba3edc77..8ac22c6669 100644
+--- a/core/hw/arm7/arm7.cpp
++++ b/core/hw/arm7/arm7.cpp
+@@ -593,7 +593,7 @@ extern const u32 ICacheSize=1024*1024;
+ u8 ARM7_TCB[ICacheSize+4096];
+ #elif defined(__linux__) || defined(HAVE_LIBNX)
+ 
+-u8 ARM7_TCB[ICacheSize+4096] __attribute__((section(".text")));
++u8 ARM7_TCB[ICacheSize+4096] __attribute__((section(".bss.sh4")));
+ 
+ #elif defined(__APPLE__)
+ u8 ARM7_TCB[ICacheSize+4096] __attribute__((section("__TEXT, .text")));
+diff --git a/core/hw/sh4/dyna/driver.cpp b/core/hw/sh4/dyna/driver.cpp
+index 86583b3c2f..2ac494b04b 100644
+--- a/core/hw/sh4/dyna/driver.cpp
++++ b/core/hw/sh4/dyna/driver.cpp
+@@ -30,7 +30,7 @@ u8 SH4_TCB[CODE_SIZE + TEMP_CODE_SIZE + 4096]
+ #elif defined(__linux__) || defined(__HAIKU__) || \
+       defined(__FreeBSD__) || defined(__DragonFly__) || \
+ 	  defined(HAVE_LIBNX)
+-	__attribute__((section(".text")));
++	__attribute__((section(".bss.sh4")));
+ #elif defined(__MACH__)
+ 	__attribute__((section("__TEXT,.text")));
+ #else
+diff --git a/core/libretro-common/include/glsm/glsm.h b/core/libretro-common/include/glsm/glsm.h
+index b95e217733..770ff51a40 100644
+--- a/core/libretro-common/include/glsm/glsm.h
++++ b/core/libretro-common/include/glsm/glsm.h
+@@ -32,8 +32,8 @@
+ RETRO_BEGIN_DECLS
+ 
+ #ifdef HAVE_OPENGLES2
+-typedef double GLdouble;
+-typedef double GLclampd;
++//typedef GLfloat GLdouble;
++typedef GLclampf GLclampd;
+ #endif
+ 
+ #if defined(HAVE_OPENGLES2)
+diff --git a/core/log/StringUtil.h b/core/log/StringUtil.h
+index 9e65a8bb5a..ccd1c70d0c 100644
+--- a/core/log/StringUtil.h
++++ b/core/log/StringUtil.h
+@@ -5,7 +5,6 @@
+ constexpr u32 CODEPAGE_SHIFT_JIS = 932;
+ constexpr u32 CODEPAGE_WINDOWS_1252 = 1252;
+ #else
+-#include <codecvt>
+ #include <errno.h>
+ #include <iconv.h>
+ #include <locale.h>
+diff --git a/core/reios/descrambl.cpp b/core/reios/descrambl.cpp
+index f4c932d30d..7234200e88 100644
+--- a/core/reios/descrambl.cpp
++++ b/core/reios/descrambl.cpp
+@@ -7,7 +7,7 @@
+ */
+ 
+ #include "descrambl.h"
+-#include <algorithm>
++//#include <algorithm>
+ 
+ #define MAXCHUNK (2048*1024)
+ 
+diff --git a/core/rend/TexCache.h b/core/rend/TexCache.h
+index d4ed897cf0..c92e2e4b1e 100644
+--- a/core/rend/TexCache.h
++++ b/core/rend/TexCache.h
+@@ -820,9 +820,9 @@ class BaseTextureCache
+ 	std::unordered_map<u64, Texture> cache;
+ 	// Only use TexU and TexV from TSP in the cache key
+ 	//     TexV : 7, TexU : 7
+-	const TSP TSPTextureCacheMask = { { 7, 7 } };
++	const TSP TSPTextureCacheMask = { 63 };
+ 	//     TexAddr : 0x1FFFFF, Reserved : 0, StrideSel : 0, ScanOrder : 1, PixelFmt : 7, VQ_Comp : 1, MipMapped : 1
+-	const TCW TCWTextureCacheMask = { { 0x1FFFFF, 0, 0, 1, 7, 1, 1 } };
++	const TCW TCWTextureCacheMask = { 0xFC1FFFFF };
+ };
+ 
+ void ReadFramebuffer(PixelBuffer<u32>& pb, int& width, int& height);
