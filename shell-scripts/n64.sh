@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dtb" ] || [ -f "/boot/rk3326-gameforce-linux.dtb" ] || [ -f "/boot/rk3566.dtb" ] || [ -f "/boot/rk3566-OC.dtb" ]; then
+if [ -f "/boot/rk3326-rg351v-linux.dtb" ] || [ -f "/boot/rk3326-rg351mp-linux.dtb" ] || [ -f "/boot/rk3326-r35s-linux.dtb" ] || [ -f "/boot/rk3326-gameforce-linux.dtb" ] || [ -f "/boot/rk3566.dtb" ] || [ -f "/boot/rk3566-OC.dtb" ]; then
   xres="$(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)' | cut -dx -f1)"
   yres="$(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)' | cut -dx -f2)"
 else
@@ -8,12 +8,8 @@ else
   yres="$(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)' | cut -dx -f1)"
 fi
 
-if [ -f "/boot/rk3326-odroidgo2-linux.dtb" ] || [ -f "/boot/rk3326-odroidgo2-linux-v11.dtb" ] || [ -f "/boot/rk3566.dtb" ] || [ -f "/boot/rk3566-OC.dtb" ] || [ -f "/boot/rk3326-odroidgo3-linux.dtb" ]; then
-  if [ "$(cat ~/.config/.DEVICE)" == "RG353V" ] || [ "$(cat ~/.config/.DEVICE)" == "RG353M" ] || [ "$(cat ~/.config/.DEVICE)" == "RK2023" ]; then
-    game="${2}"
-  else
-    game="${3}"
-  fi
+if [ "$#" -gt 2 ]; then
+  game="${3}"
 else
   game="${2}"
 fi
@@ -40,3 +36,4 @@ elif [[ $1 == "standalone-GlideN64" ]]; then
 else
   /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$3"
 fi
+
