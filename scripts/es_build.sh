@@ -333,42 +333,42 @@ bitness="$(getconf LONG_BIT)"
 			echo " "
 			echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
 
-			cd $cur_wd
-			branch="fullscreen"
-			if [ ! -d "emulationstation-fcamod-$branch/" ]; then
-			  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
-			  if [[ $? != "0" ]]; then
-				echo " "
-				echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
-				exit 1
-			  fi
-			fi 
+			#cd $cur_wd
+			#branch="fullscreen"
+			#if [ ! -d "emulationstation-fcamod-$branch/" ]; then
+			#  git clone --recursive $es_git -b $branch emulationstation-fcamod-$branch
+			#  if [[ $? != "0" ]]; then
+			#	echo " "
+			#	echo "There was an error while cloning the $branch branch of the emulationstation-fcamod git.  Is Internet active or did the git location change?  Stopping here."
+			#	exit 1
+			#  fi
+			#fi 
 
-			cd emulationstation-fcamod-$branch 
+			#cd emulationstation-fcamod-$branch 
 
-			cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
-			if [[ $? != "0" ]]; then
-			  echo " "
-			  echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
-			  exit 1
-			fi
+			#cmake -DSCREENSCRAPER_DEV_LOGIN="devid=$devid&devpassword=$devpass" -DGAMESDB_APIKEY="$apikey" -DSCREENSCRAPER_SOFTNAME="$softname" .
+			#if [[ $? != "0" ]]; then
+			#  echo " "
+			#  echo "There was an error while cmaking the $branch of emulationstation-fcamod.  Stopping here."
+			#  exit 1
+			#fi
 
-			make -j$(nproc)
-			if [[ $? != "0" ]]; then
-			  echo " "
-			  echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
-			  exit 1
-			fi
+			#make -j$(nproc)
+			#if [[ $? != "0" ]]; then
+			#  echo " "
+			#  echo "There was an error while building the $branch of emulationstation-fcamod.  Stopping here."
+			#  exit 1
+			#fi
 
-			strip emulationstation
+			#strip emulationstation
 
-			if [ ! -d "../es-fcamod/" ]; then
-			  mkdir -v ../es-fcamod
-			fi
+			#if [ ! -d "../es-fcamod/" ]; then
+			#  mkdir -v ../es-fcamod
+			#fi
 
-			cp emulationstation ../es-fcamod/emulationstation.$branch
-			echo " "
-			echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
+			#cp emulationstation ../es-fcamod/emulationstation.$branch
+			#echo " "
+			#echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
 
 			cd $cur_wd
 			branch="rgb10max"
