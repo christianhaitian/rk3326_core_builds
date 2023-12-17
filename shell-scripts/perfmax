@@ -1,23 +1,34 @@
 #!/bin/bash
 printf "\033c" >> /dev/tty1
-rm /home/ark/.asoundrc
-if [ -f "/roms/launchimages/loading.jpg" ]; then
-  image-viewer /roms/launchimages/loading.jpg &
-  PROC=$!
-  (sleep 1.5s; kill -9 $PROC)
-fi
-if [[ $1 == "On" ]] || [[ $1 == "standalone-bios" ]] || [[ $1 == "standalone-nobios" ]] || [[ $1 == "standalone-Rice" ]] || [[ $1 == "standalone-Glide64mk2" ]] || [[ $1 == "retrorun" ]] || [[ $1 == "retrorun32" ]] || [[ $2 == "flycast" ]] || [[ $2 == "flycast32_rumble" ]] || [[ $2 == "flycast_xtreme" ]] || [[ $2 == "reicast_xtreme" ]] || [[ $1 == "standalone" ]] || [[ $1 == "standalone-go" ]] || [[ $2 == "yabasanshiro" ]] || [[ $2 == "yabause" ]] || [[ $2 == "mupen64plus" ]] || [[ $2 == "parallel_n64" ]] || [[ $2 == "mupen64plus_next" ]] || [[ $2 == "pcsx_rearmed_rumble" ]] || [[ $2 == "pcsx_rearmed" ]] || [[ $2 == "duckstation" ]]; then
-  chmod 777 /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
-  chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-  chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
-  echo performance > /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
-  echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-  echo performance > /sys/devices/platform/dmc/devfreq/dmc/governor
+
+if [[ "$(tr -d '\0' < /proc/device-tree/compatible)" == *"rk3326"* ]]; then
+  isitrk3326="True"
+  gpu="ff400000"
 else
-  chmod 777 /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
-  chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-  chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
-  echo simple_ondemand > /sys/devices/platform/ff400000.gpu/devfreq/ff400000.gpu/governor
-  echo interactive > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-  echo dmc_ondemand > /sys/devices/platform/dmc/devfreq/dmc/governor
+  isitrk3326=""
+  gpu="fde60000"
+fi
+
+if [[ ! -z "$isitrk3326" ]]; then
+  rm /home/ark/.asoundrc
+fi
+
+if [ -f "/roms/launchimages/loading.jpg" ]; then
+  ffplay -x 1280 -y 720 /roms/launchimages/loading.jpg &
+  PROC=$!
+  (sleep 2s; kill -9 $PROC)
+fi
+
+chmod 777 /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
+chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
+
+if [[ "$1" != "ondemand" ]]; then
+  echo "$1" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
+  echo "$1" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  echo "$1" > /sys/devices/platform/dmc/devfreq/dmc/governor
+else
+  echo simple_"$1" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
+  echo "$1" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  echo dmc_"$1" > /sys/devices/platform/dmc/devfreq/dmc/governor
 fi
