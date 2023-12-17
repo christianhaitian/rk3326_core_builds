@@ -15,11 +15,11 @@ else
   usr_dmc_speed="528000000"
 fi
 
-if [[ ! -z "$isitrk3326" ]]; then
+if [[ ! -z "$isitrk3326" ]] && [[ $(tty) != *"pts"* ]]; then
   rm /home/ark/.asoundrc
 fi
 
-if [ -f "/roms/launchimages/loading.jpg" ]; then
+if [ -f "/roms/launchimages/loading.jpg" ] && [[ $(tty) != *"pts"* ]]; then
   ffplay -x 1280 -y 720 /roms/launchimages/loading.jpg &
   PROC=$!
   (sleep 2s; kill -9 $PROC)
