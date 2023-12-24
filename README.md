@@ -169,6 +169,9 @@ cd rk3326_core_builds
 ### To build just microvision Standalone emulator:
 `./builds.sh microvisionsa`
 
+### To build just mu:
+`./builds.sh mu`
+
 ### To build just mupen64plus-next:
 `./builds.sh mupen64plus-nx`
 
