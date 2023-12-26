@@ -22,6 +22,9 @@ cd rk3326_core_builds
 ### To build all libretro core scripts including mame and mess ones (Warning, a very long build.  Maybe even over 24 hours!):
 `./builds.sh ALL`
 
+### To build just amiberry standalone emulator (64bit only):
+`./builds.sh amiberry`
+
 ### To build just 81 (64bit only):
 `./builds.sh 81`
 
