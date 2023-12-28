@@ -1,19 +1,18 @@
 #!/bin/bash
 
-if [[ -e "/dev/input/by-path/platform-ff300000.usb-usb-0:1.2:1.0-event-joystick" ]]; then
-  param_device="anbernic"
-elif [[ -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
-  if [[ ! -z $(cat /etc/emulationstation/es_input.cfg | grep "190000004b4800000010000001010000") ]]; then
-    param_device="oga"
-  else
-    param_device="rk2020"
-  fi
-elif [[ -e "/dev/input/by-path/platform-odroidgo3-joypad-event-joystick" ]]; then
-  param_device="ogs"
-elif [[ -e "/dev/input/by-path/platform-singleadc-joypad-event-joystick" ]]; then
-  param_device="rg503"
-else
-  param_device="chi"
+#
+# This fix should allow ScummVM games to launch from a root .scummvm file and not from a subfolder
+#
+# This now makes the requirement that the .scummvm file has the same name as the folder the game is stored in
+# and this will work without the subfolders.  This also works if the .scummvm file is within the folder
+#
+# Thanks to EnsignRutherford for this fix. (https://github.com/christianhaitian/arkos/issues/858)
+#
+fbname=$(basename "$2" .scummvm)
+fbdir=$(dirname "$2")
+if [ -d "$fbdir/$fbname" ]; then
+   game=$(dirname "$2")/"$fbname"/"$(basename "$2")"
+   set -- "$1" "$game" "$3"
 fi
 
 directory="$(dirname "$2" | cut -d "/" -f2)"
@@ -30,22 +29,18 @@ then
   printf "\033c" >> /dev/tty1
 elif [[ $1 == "standalone" ]] && [[ ${2,,} != *"menu.scummvm"* ]]
 then
-  sudo /opt/quitter/oga_controls scummvm $param_device &
   cd /opt/scummvm
+  sudo /usr/local/bin/scummvmkeydemon.py &
   DIR="$( cd "$( dirname "${2}" )" >/dev/null 2>&1 && pwd )/"
   ./scummvm --auto-detect --path="$DIR"
-  if [[ ! -z $(pidof oga_controls) ]]; then
-    sudo kill -9 $(pidof oga_controls)
-  fi
+  sudo killall python3
   sudo systemctl restart oga_events &
 elif [[ $1 == "standalone" ]] && [[ ${2,,} == *"menu.scummvm"* ]]
 then
-  sudo /opt/quitter/oga_controls scummvm $param_device &
   cd /opt/scummvm
+  sudo /usr/local/bin/scummvmkeydemon.py &
   ./scummvm
-  if [[ ! -z $(pidof oga_controls) ]]; then
-    sudo kill -9 $(pidof oga_controls)
-  fi
+  sudo killall python3
   sudo systemctl restart oga_events &
 else
   if  [[ ${3,,} == *"menu.scummvm"* ]]
@@ -55,4 +50,3 @@ else
       /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$3"
   fi
 fi
-
