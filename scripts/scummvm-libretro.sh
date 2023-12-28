@@ -41,10 +41,9 @@ bitness="$(getconf LONG_BIT)"
 		   rm "$patching" 
 	  done
 	 fi
-	  make clean
-	  sed -i '/a53/s//a35/' backends/platform/libretro/build/Makefile
-	  sed -i '/rpi3_64/s//rk3326/' backends/platform/libretro/build/Makefile
-	  make -C backends/platform/libretro/build platform=rk3326 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
+	  sed -i '/a53/s//a35/' backends/platform/libretro/Makefile
+	  sed -i '/rpi3_64/s//rk3326/' backends/platform/libretro/Makefile
+	  make -C backends/platform/libretro platform=rk3326 CXXFLAGS="$CXXFLAGS -DHAVE_POSIX_MEMALIGN=1" -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -52,13 +51,13 @@ bitness="$(getconf LONG_BIT)"
 		exit 1
 	  fi
 
-	  strip backends/platform/libretro/build/scummvm_libretro.so
+	  strip backends/platform/libretro/scummvm_libretro.so
 
 	  if [ ! -d "../cores64/" ]; then
 		mkdir -v ../cores64
 	  fi
 
-	  cp backends/platform/libretro/build/scummvm_libretro.so ../cores64/.
+	  cp backends/platform/libretro/scummvm_libretro.so ../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
