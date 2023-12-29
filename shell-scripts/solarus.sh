@@ -22,12 +22,13 @@ fi
 sudo systemctl start solarushotkey
 rm -rf ~/.solarus
 directory=$(dirname "$1" | cut -d "/" -f2)
-if [[ ! -d "/$directory/solarus/.solarus" ]]; then
-  mkdir /$directory/solarus/.solarus
+if [[ -d "/$directory/solarus/.solarus" ]]; then
+  mv /$directory/solarus/.solarus /$directory/solarus/.saves
 fi
-ln -s /$directory/solarus/.solarus ~/
+if [[ ! -d "/$directory/solarus/.saves" ]]; then
+  mkdir /$directory/solarus/.saves
+fi
+ln -s /$directory/solarus/.saves /home/ark/.solarus
 cd /opt/solarus/
 SDL_GAMECONTROLLERCONFIG="$sdl_controllerconfig" /opt/solarus/solarus-run -fullscreen=yes -joypad-deadzone=$deadzone "$1"
 sudo systemctl stop solarushotkey
-
-
