@@ -346,7 +346,7 @@ bitness="$(getconf LONG_BIT)"
 			  mkdir -v ../es-fcamod
 			fi
 
-			cp emulationstation ../es-fcamod/emulationstation.$branch
+			cp emulationstation ../es-fcamod/emulationstation.header
 			echo " "
 			echo "The $branch branch version of emulationstation-fcamod has been created and has been placed in the rk3326_core_builds/es-fcamod subfolder."
 

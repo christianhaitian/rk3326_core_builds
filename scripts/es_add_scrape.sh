@@ -92,7 +92,7 @@ bitness="$(getconf LONG_BIT)"
 			exit 0
 		 ;;
 		 "4")
-			for branch in 351v 503noTTS master fullscreen rgb10max
+			for branch in 351v 503noTTS master rgb10max
 			do
 			  cd $cur_wd
 			  if [ ! -d "emulationstation-fcamod-$branch/" ]; then
