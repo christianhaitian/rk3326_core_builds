@@ -44,7 +44,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi 
 
 	  cd engine
-	  chmod 777 version.h
+	  chmod 777 version.sh
 	  ./version.sh
 	  make BUILD_LINUX_aarch64=1 -j$(nproc)
 
