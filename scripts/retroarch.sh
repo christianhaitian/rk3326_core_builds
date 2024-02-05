@@ -131,17 +131,17 @@ bitness="$(getconf LONG_BIT)"
 		mkdir -v ../retroarch$bitness
 	  fi
 
-	  cp retroarch ../retroarch$bitness/.
+	  cp retroarch ../retroarch$bitness/retroarch.rk3326.rot
 
 	  if [[ "$bitness" == "32" ]]; then
-		mv ../retroarch$bitness/retroarch ../retroarch$bitness/retroarch32
+		mv ../retroarch$bitness/retroarch.rk3326.rot ../retroarch$bitness/retroarch32.rk3326.rot
 	  fi
 
 	  echo " "
 	  if [[ "$bitness" == "32" ]]; then
-		echo "retroarch32 has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		echo "retroarch32.rk3326.rot has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
 	  else
-		echo "retroarch has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		echo "retroarch.rk3326.rot has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
 	  fi
 
       if [[ $retroarch_rgapatch == "yes" ]]; then
@@ -170,17 +170,17 @@ bitness="$(getconf LONG_BIT)"
 		    mkdir -v ../retroarch$bitness
 	      fi
 
-	      cp retroarch ../retroarch$bitness/retroarch-rgaunrotated
+	      cp retroarch ../retroarch$bitness/retroarch.rk3326.unrot
 
 	      if [[ "$bitness" == "32" ]]; then
-		    mv ../retroarch$bitness/retroarch-rgaunrotated ../retroarch$bitness/retroarch32-rgaunrotated
+		    mv ../retroarch$bitness/retroarch.rk3326.unrot ../retroarch$bitness/retroarch32.rk3326.unrot
 	      fi
 
 	      echo " "
 	      if [[ "$bitness" == "32" ]]; then
-		    echo "retroarch32-rgaunrotated has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		    echo "retroarch32.rk3326.unrot has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
 	      else
-		    echo "retroarch-rgaunrotated has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
+		    echo "retroarch.rk3326.unrot has been created and has been placed in the rk3326_core_builds/retroarch$bitness subfolder"
 	      fi
       fi
 
