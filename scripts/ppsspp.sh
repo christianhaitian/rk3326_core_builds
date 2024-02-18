@@ -54,6 +54,7 @@ bitness="$(getconf LONG_BIT)"
      done
 
 	 cd ppsspp/ffmpeg
+	 sed -i '/--disable-everything \\/s//--disable-everything \\\n    --disable-iconv \\/g' linux_arm64.sh
 	 ./linux_arm64.sh
      rm -rf linux/x86_64/*
 	 cp -R linux/aarch64/. linux/x86_64/
@@ -79,12 +80,20 @@ bitness="$(getconf LONG_BIT)"
 	  cmake -DUSING_EGL=OFF \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DUSING_GLES2=ON \
-	        -DUSE_FFMPEG=YES \
+		-DUSE_FFMPEG=YES \
 		-DUSE_SYSTEM_FFMPEG=NO \
+		-DVULKAN=OFF \
+		-DUSE_VULKAN_DISPLAY_KHR=OFF \
 		-DUSING_X11_VULKAN=OFF \
+		-DUSE_WAYLAND_WSI=OFF \
+		-DUSING_FBDEV=ON \
 		-DCMAKE_C_COMPILER=/usr/bin/clang \
 		-DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-		-DCMAKE_C_FLAGS=-fpermissive \
+		-DCMAKE_C_FLAGS="-fpermissive -march=armv8-a+crc -mtune=cortex-a35 -funsafe-math-optimizations" \
+		-DCMAKE_CXX_FLAGS="-fpermissive -march=armv8-a+crc -mtune=cortex-a35 -funsafe-math-optimizations" \
+		-DUSE_MINIUPNPC=OFF \
+		-DUSING_QT_UI=OFF \
+		-DUSE_DISCORD=OFF \
 		-DCMAKE_CXX_FLAGS=-fpermissive ../.
 	  make -j$(nproc)
 
