@@ -1,0 +1,22 @@
+diff --git a/source/frontends/sdl/utils.cpp b/source/frontends/sdl/utils.cpp
+index 5b751a4a..a92a9522 100644
+--- a/source/frontends/sdl/utils.cpp
++++ b/source/frontends/sdl/utils.cpp
+@@ -27,7 +27,7 @@ namespace sa2
+     
+     const int iscapture = 0;
+ 
+-#if SDL_VERSION_ATLEAST(2, 24, 0)
++/*#if SDL_VERSION_ATLEAST(2, 24, 0)
+     char *defaultDevice = nullptr;
+     SDL_AudioSpec spec;
+     if (!SDL_GetDefaultAudioInfo(&defaultDevice, &spec, iscapture))
+@@ -36,7 +36,7 @@ namespace sa2
+       SDL_free(defaultDevice);
+     }
+     else
+-#endif
++#endif*/
+ 
+     {
+       os << "<default>";

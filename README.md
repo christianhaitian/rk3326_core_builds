@@ -25,6 +25,9 @@ cd rk3326_core_builds
 ### To build just amiberry standalone emulator (64bit only):
 `./builds.sh amiberry`
 
+### To build just applewin standalone emulator (64bit only):
+`./builds.sh applewin`
+
 ### To build just 81 (64bit only):
 `./builds.sh 81`
 
