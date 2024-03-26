@@ -139,6 +139,9 @@ cd rk3326_core_builds
 ### To build just hypseus-singe (64bit only):
 `./builds.sh hypseus-singe`
 
+### To build just linapple standalone emulator (64bit only):
+`./builds.sh linapplesa`
+
 ### To build just lynx (64bit only):
 `./builds.sh lynx`
 
