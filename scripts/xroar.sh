@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-tarname="xroar-1.5.3.tar.gz"
+tarname="xroar-1.5.5.tar.gz"
 dirname="${tarname%.*.*}"
 
 	# xroar package
