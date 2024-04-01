@@ -1,0 +1,13 @@
+diff --git a/src/Joystick.cpp b/src/Joystick.cpp
+index 26daeec..b02d662 100644
+--- a/src/Joystick.cpp
++++ b/src/Joystick.cpp
+@@ -253,7 +253,7 @@ void CheckJoystick0() {
+       ypos[0]=val;
+     }
+ 
+-    printf("XPos: %i    YPos: %i \n", xpos[0], ypos[0]);
++    //printf("XPos: %i    YPos: %i \n", xpos[0], ypos[0]);
+   }
+ }
+ 

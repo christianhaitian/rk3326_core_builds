@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of linapple
 	  if [ ! -d "linapple/" ]; then
-		git clone --recursive https://github.com/linappleii/linapple.git
+		git clone --recursive https://github.com/christianhaitian/linapple.git
 
 		if [[ $? != "0" ]]; then
 		  echo " "
