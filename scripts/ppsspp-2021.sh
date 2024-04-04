@@ -57,6 +57,7 @@ bitness="$(getconf LONG_BIT)"
 	git checkout v1.12.3
 	git submodule update --init
 	cd ffmpeg
+	sed -i '/--disable-everything \\/s//--disable-everything \\\n    --disable-iconv \\/g' linux_arm64.sh
 	./linux_arm64.sh
 	cd ..
          
