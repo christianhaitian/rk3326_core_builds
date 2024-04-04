@@ -100,6 +100,6 @@ bitness="$(getconf LONG_BIT)"
 	  tar -zchvf ../../ppsspp-2021_$bitness/ppssppsdl_2019_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz assets/ PPSSPPSDL
 
 	  echo " "
-	  echo "PPSSPPSDL 2019 executable and ppssppsdl_2019_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz package has been created and has been placed in the rk3326_core_builds/ppsspp-2021_$bitness subfolder"
+	  echo "PPSSPPSDL 2021 executable and ppssppsdl_2021_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz package has been created and has been placed in the rk3326_core_builds/ppsspp-2021_$bitness subfolder"
 
 	fi
