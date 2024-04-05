@@ -16,7 +16,7 @@
 -   WITH_DYNAREC=arm
 +  ifneq (,$(findstring NG,$(BOARD)))
 +    WITH_DYNAREC=aarch64
-+    GL_LIB := -lGLESv3
++    GL_LIB := -lGLESv2
 +    GLES = 0
 +    GLES3= 1
 +  endif
