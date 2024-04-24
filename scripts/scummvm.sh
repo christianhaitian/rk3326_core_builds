@@ -86,6 +86,7 @@ minfluidsynthverneeded="3"
       cd ../..
      fi      
 
+	  git checkout v2.8.1
 	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
 	  make clean
 	  make -j$(nproc)
