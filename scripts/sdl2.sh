@@ -17,7 +17,9 @@ bitness="$(getconf LONG_BIT)"
 #commit="8c9beb0c873f6ca5efbd88f1ad2648bfc793b2ac" # SDL 2.0.24.0
 #commit="ac13ca9ab691e13e8eebe9684740ddcb0d716203" # SDL 2.0.26.5
 #commit="031912c4b6c5db80b443f04aa56fec3e4e645153" # SDL 2.0.28.2
-commit="f461d91cd265d7b9a44b4d472b1df0c0ad2855a0" # SDL 2.0.30.2
+#commit="f461d91cd265d7b9a44b4d472b1df0c0ad2855a0" # SDL 2.0.30.2
+commit="fb1497566c5a05e2babdcf45ef0ab5c7cca2c4ae" # SDL 2.0.30.3
+extension="3000.3"
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
@@ -133,9 +135,9 @@ commit="f461d91cd265d7b9a44b4d472b1df0c0ad2855a0" # SDL 2.0.30.2
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.3000.2
+	     strip build/.libs/libSDL2-2.0.so.0.$extension
 	  else
-	     strip libSDL2-2.0.so.0.3000.2
+	     strip libSDL2-2.0.so.0.$extension
 	  fi
 
 	  if [ ! -d "$cur_wd/sdl2-$bitness/" ]; then
@@ -143,9 +145,9 @@ commit="f461d91cd265d7b9a44b4d472b1df0c0ad2855a0" # SDL 2.0.30.2
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     cp build/.libs/libSDL2-2.0.so.0.3000.2 $cur_wd/sdl2-$bitness/.
+	     cp build/.libs/libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/.
 	  else
-	     cp libSDL2-2.0.so.0.3000.2 $cur_wd/sdl2-$bitness/.
+	     cp libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/.
 	  fi
 
 	  echo " "
@@ -183,11 +185,11 @@ commit="f461d91cd265d7b9a44b4d472b1df0c0ad2855a0" # SDL 2.0.30.2
 	  fi
 
       if [[ $bitness == "32" ]]; then
-	     strip build/.libs/libSDL2-2.0.so.0.3000.2
-	     cp build/.libs/libSDL2-2.0.so.0.3000.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.3000.2.rotated
+	     strip build/.libs/libSDL2-2.0.so.0.$extension
+	     cp build/.libs/libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.$extension.rotated
 	  else
-	     strip libSDL2-2.0.so.0.3000.2
-	     cp libSDL2-2.0.so.0.3000.2 $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.3000.2.rotated
+	     strip libSDL2-2.0.so.0.$extension
+	     cp libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.$extension.rotated
       fi
 
 	  echo " "
