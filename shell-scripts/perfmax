@@ -19,23 +19,57 @@ if [[ ! -z "$isitrk3326" ]] && [[ $(tty) != *"pts"* ]]; then
   rm /home/ark/.asoundrc
 fi
 
-if [ -f "/roms/launchimages/loading.jpg" ] && [[ $(tty) != *"pts"* ]]; then
-  ffplay -x 1280 -y 720 /roms/launchimages/loading.jpg &
-  PROC=$!
-  (sleep 2s; kill -9 $PROC)
+if [ -e "/home/ark/.config/.GameLoadingIModeASCII" ] && [[ $(tty) != *"pts"* ]]; then
+  if [ -f "/roms/launchimages/loading.ascii" ]; then
+    echo -en "\033[21m" > /dev/tty1 && cat /roms/launchimages/loading.ascii > /dev/tty1
+  else
+    continue
+  fi
+elif [ -e "/home/ark/.config/.GameLoadingIModePIC" ] && [[ $(tty) != *"pts"* ]]; then
+  directory=$(echo "$(dirname "$2")"/images)
+  basefile="$(basename -- "$2")"
+  basefilenoext="${basefile%.*}"
+  if [ -e "/home/ark/.config/.LOADING_IMAGE_MARQUEE" ]; then
+    image="marquee"
+  elif [ -e "/home/ark/.config/.LOADING_IMAGE_THUMB" ]; then
+    image="thumb"
+  elif [ -e "/home/ark/.config/.LOADING_IMAGE_IMAGE" ]; then
+    image="image"
+  else
+    image=""
+  fi
+  if [ -e "${directory}/${basefilenoext}-${image}.png" ]; then
+    ffplay -x 1280 -y 720 "${directory}/${basefilenoext}-${image}.png" &
+    PROC=$!
+    (sleep 2s; kill -9 $PROC)
+  else
+    if [ -f "/roms/launchimages/loading.jpg" ]; then
+      ffplay -x 1280 -y 720 /roms/launchimages/loading.jpg &
+      PROC=$!
+      (sleep 2s; kill -9 $PROC)
+	else
+	  continue
+	fi
+  fi
+else
+  clear > /dev/tty1
 fi
 
 chmod 777 /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
 chmod 777 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
 chmod 777 /sys/devices/platform/dmc/devfreq/dmc/governor
 
-if [[ "$1" == "powersave" ]]; then
+if [[ "$1" == "kodi" ]]; then
+  echo "performance" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
+  echo "performance" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+  echo "performance" > /sys/devices/platform/dmc/devfreq/dmc/governor
+elif [[ "$1" == "powersave" ]]; then
   echo "userspace" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
-  echo "${usr_gpu_speed}" | sudo tee /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/userspace/set_freq
+  echo "${usr_gpu_speed}" | sudo tee /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/userspace/set_freq > /dev/null &
   echo "userspace" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-  echo "${usr_cpu_speed}" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed
+  echo "${usr_cpu_speed}" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed > /dev/null &
   echo "userspace" > /sys/devices/platform/dmc/devfreq/dmc/governor
-  echo "${usr_dmc_speed}" | sudo tee  /sys/devices/platform/dmc/devfreq/dmc/userspace/set_freq
+  echo "${usr_dmc_speed}" | sudo tee  /sys/devices/platform/dmc/devfreq/dmc/userspace/set_freq > /dev/null &
 elif [[ "$1" != "ondemand" ]]; then
   echo "$1" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
   echo "$1" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
@@ -44,4 +78,38 @@ else
   echo simple_"$1" > /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor
   echo "$1" > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
   echo dmc_"$1" > /sys/devices/platform/dmc/devfreq/dmc/governor
+  if [ "$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_governor)" == "ondemand" ]; then
+    echo 85 | sudo tee -a /sys/devices/system/cpu/cpu*/cpufreq/ondemand/up_threshold > /dev/null &
+    echo 150 | sudo tee -a /sys/devices/system/cpu/cpu*/cpufreq/ondemand/sampling_down_factor > /dev/null &
+  fi
+fi
+
+if [ -f "/usr/local/bin/quickmode.sh" ]; then
+   sudo rm -f /dev/shm/governor_settings.state
+   sudo touch /dev/shm/governor_settings.state
+   sudo chmod 777 /dev/shm/governor_settings.state
+   mapfile settings < /dev/shm/governor_settings.state
+
+   settings[0]="$(cat /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor)"
+   settings[1]="$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_governor)"
+   settings[2]="$(cat /sys/devices/platform/dmc/devfreq/dmc/governor)"
+
+   for j in "${settings[@]}"
+   do
+     echo $j
+   done > /dev/shm/governor_settings.state
+
+   if [[ "$(cat /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/governor)" == "userspace" ]]; then
+     sudo rm -f /dev/shm/userspace_speed_settings.state
+     sudo touch /dev/shm/userspace_speed_settings.state
+     sudo chmod 777 /dev/shm/userspace_speed_settings.state
+     mapfile usettings < /dev/shm/userspace_speed_settings.state
+     usettings[0]="$(cat /sys/devices/platform/${gpu}.gpu/devfreq/${gpu}.gpu/userspace/set_freq)"
+     usettings[1]="$(cat /sys/devices/system/cpu/cpufreq/policy0/scaling_setspeed)"
+     usettings[2]="$(cat /sys/devices/platform/dmc/devfreq/dmc/userspace/set_freq)"
+     for j in "${usettings[@]}"
+     do
+       echo $j
+     done > /dev/shm/userspace_speed_settings.state
+   fi
 fi
