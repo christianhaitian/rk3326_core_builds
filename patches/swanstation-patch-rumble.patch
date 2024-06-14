@@ -1,19 +1,18 @@
 diff --git a/src/libretro/libretro_host_interface.cpp b/src/libretro/libretro_host_interface.cpp
-index 4d66854b..b7b38feb 100644
+index 291364e0..c5da0b9c 100644
 --- a/src/libretro/libretro_host_interface.cpp
 +++ b/src/libretro/libretro_host_interface.cpp
-@@ -27,6 +27,10 @@
- #include <cstring>
- #include <tuple>
- #include <utility>
+@@ -31,6 +31,9 @@
+ #include <compat/strl.h>
+ #include <file/file_path.h>
+ #include <streams/file_stream.h>
 +#include <stdio.h>
 +#include <unistd.h>
 +#include <errno.h>
-+
+ 
  Log_SetChannel(LibretroHostInterface);
  
- #ifdef WIN32
-@@ -1191,6 +1195,15 @@ void LibretroHostInterface::OnRunningGameChanged(const std::string& path, CDImag
+@@ -1203,6 +1206,15 @@ void LibretroHostInterface::OnRunningGameChanged(const std::string& path, CDImag
  void LibretroHostInterface::InitRumbleInterface()
  {
    m_rumble_interface_valid = g_retro_environment_callback(RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE, &m_rumble_interface);
@@ -29,7 +28,7 @@ index 4d66854b..b7b38feb 100644
  }
  
  void LibretroHostInterface::UpdateControllers()
-@@ -1323,6 +1336,37 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
+@@ -1335,6 +1347,37 @@ void LibretroHostInterface::UpdateControllersAnalogController(u32 index)
    {
      const u16 strong = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(0) * 65535.0f));
      const u16 weak = static_cast<u16>(static_cast<u32>(controller->GetVibrationMotorStrength(1) * 65535.0f));
