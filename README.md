@@ -40,6 +40,9 @@ cd rk3326_core_builds
 ### To build just arduous (64bit only):
 `./builds.sh arduous`
 
+### To build just ardens (64bit only):
+`./builds.sh ardens`
+
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
 
