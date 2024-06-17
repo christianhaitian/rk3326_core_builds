@@ -125,6 +125,7 @@ do
        var=all
        for build_this in scripts/*.sh
        do
+           cd $cur_wd
            bittest=$(head -20 $build_this | grep -i '"$bitness" == ' | tr -dc '0-9')
            bitresult=${bittest: -2}
            if [[ $build_this == *"mame"* ]] || [[ $build_this == *"mess"* ]]; then
@@ -134,7 +135,6 @@ do
            elif [[ ! -z $bitresult ]] && [[ $bitresult != $bitness ]]; then
              echo "Skipping $build_this as it's not to be built in this current ${bitness}bit environment"
            else
-                cd $cur_wd
                 source $build_this
                 if [[ $? != "0" ]]; then
                      echo " "
