@@ -10,7 +10,7 @@ diff -rupN stella.orig/src/os/libretro/Makefile stella/src/os/libretro/Makefile
 +   fpic := -fPIC
 +   SHARED := -shared -Wl,--version-script=link.T -Wl,--no-undefined
 +   CXXFLAGS += -lpthread -DARM64
-+   LDFLAGS += -lpthread -static-libgcc -lstdc++
++   LDFLAGS += -lpthread -static-libgcc -static-libstdc++ -liconv
 +   ARCH = arm64
 +   USE_DYNAREC = 1
 +
