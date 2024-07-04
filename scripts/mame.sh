@@ -47,13 +47,20 @@ bitness="$(getconf LONG_BIT)"
       mkswap /swapfile1
       swapon /swapfile1
 
+      update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
+      update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
+      export CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/c++/13/backward:/usr/local/include/c++/13/aarch64-linux-gnu
+
 	  make -f Makefile.libretro clean
-      params=(OSD=retro RETRO=1 NOWERROR=1 OS=linux TARGETOS=linux CONFIG=libretro NO_USE_MIDI=1 TARGET=mame SUBTARGET=arcade PYTHON_EXECUTABLE=python3 PTR64=1)
+      params=(OSD=retro RETRO=1 NOWERROR=1 OS=linux TARGETOS=linux CONFIG=libretro NO_USE_MIDI=1 TARGET=mame SUBTARGET=arcade PYTHON_EXECUTABLE=python3 PTR64=1 NO_USE_BGFX=1 OPTIMIZE=fast PLATFORM=arm64)
 	  make ${params[@]} -f Makefile.libretro -j5
 
 	  if [[ $? != "0" ]]; then
         swapoff -v /swapfile1
         rm /swapfile1
+		update-alternatives --set gcc "/usr/bin/gcc-8"
+		update-alternatives --set g++ "/usr/bin/g++-8"
+		unset CPLUS_INCLUDE_PATH
 		echo " "
 		echo "There was an error while building the newest lr-mame core.  Stopping here."
 		exit 1
@@ -61,6 +68,9 @@ bitness="$(getconf LONG_BIT)"
 
       swapoff -v /swapfile1
       rm /swapfile1
+	  update-alternatives --set gcc "/usr/bin/gcc-8"
+	  update-alternatives --set g++ "/usr/bin/g++-8"
+	  unset CPLUS_INCLUDE_PATH
       
 	  strip mamearcade_libretro.so
 
