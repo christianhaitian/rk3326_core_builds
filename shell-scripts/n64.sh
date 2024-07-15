@@ -54,8 +54,12 @@ if [[ $1 == "standalone-Rice" ]]; then
   if [[ $2 == "Widescreen_Aspect" ]]; then
     /opt/mupen64plus/mupen64plus --resolution "${xres}x${yres}" --plugindir /opt/mupen64plus --gfx mupen64plus-video-rice.so --corelib /opt/mupen64plus/libmupen64plus.so.2 --datadir /opt/mupen64plus "$game"
   else
-    ricewidthhack=$(((yres * 4) / 3))
-    /opt/mupen64plus/mupen64plus --resolution "${ricewidthhack}x${yres}" --plugindir /opt/mupen64plus --gfx mupen64plus-video-rice.so --corelib /opt/mupen64plus/libmupen64plus.so.2 --datadir /opt/mupen64plus "$game"
+    if [ -f "/home/ark/.config/.DEVICE" ] && [ ! -z "$(grep "RGB30" /home/ark/.config/.DEVICE | tr -d '\0')" ]; then
+      /opt/mupen64plus/mupen64plus --resolution "700x500" --plugindir /opt/mupen64plus --gfx mupen64plus-video-rice.so --corelib /opt/mupen64plus/libmupen64plus.so.2 --datadir /opt/mupen64plus "$game"
+    else
+      ricewidthhack=$(((yres * 4) / 3))
+      /opt/mupen64plus/mupen64plus --resolution "${ricewidthhack}x${yres}" --plugindir /opt/mupen64plus --gfx mupen64plus-video-rice.so --corelib /opt/mupen64plus/libmupen64plus.so.2 --datadir /opt/mupen64plus "$game"
+    fi
   fi
 elif [[ $1 == "standalone-Glide64mk2" ]]; then
   if [[ $2 == "Widescreen_Aspect" ]]; then
@@ -72,3 +76,4 @@ elif [[ $1 == "standalone-GlideN64" ]]; then
 else
   /usr/local/bin/"$1" -L /home/ark/.config/"$1"/cores/"$2"_libretro.so "$3"
 fi
+
