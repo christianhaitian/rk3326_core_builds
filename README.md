@@ -55,6 +55,9 @@ cd rk3326_core_builds
 ### To build just crocods (64bit only):
 `./builds.sh crocods`
 
+### To build just chimerasnes (64bit only):
+`./builds.sh chimerasnes`
+
 ### To build DevilutionX (64bit only)
 `./builds.sh devilutionx
 
