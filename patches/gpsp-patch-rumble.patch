@@ -1,0 +1,96 @@
+diff --git a/libretro/libretro.c b/libretro/libretro.c
+index 6afa60d..a95ea37 100644
+--- a/libretro/libretro.c
++++ b/libretro/libretro.c
+@@ -3,6 +3,8 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdint.h>
++#include <unistd.h>
++#include <errno.h>
+ 
+ #include <streams/file_stream.h>
+ #include <libretro.h>
+@@ -1116,9 +1118,22 @@ bool retro_load_game(const struct retro_game_info* info)
+ 
+    struct retro_rumble_interface rumbleif;
+    if (environ_cb(RETRO_ENVIRONMENT_GET_RUMBLE_INTERFACE, &rumbleif))
++   {
+       rumble_cb = rumbleif.set_rumble_state;
++      // Check write access for duty cycle for rk3566
++      char* filepath = "/sys/class/pwm/pwmchip1/pwm0/duty_cycle";
++      int returnval;
++      returnval = access (filepath, F_OK);
++      if (returnval == 0){
++        returnval = access (filepath, W_OK);
++        if (errno == EACCES)
++          system("sudo chmod 777 /sys/class/pwm/pwmchip1/pwm0/duty_cycle &");
++      }
++   }
+    else
++   {
+       rumble_cb = NULL;
++   }
+ 
+    reset_gba();
+ 
+@@ -1267,9 +1282,57 @@ void retro_run(void)
+ 
+    if (rumble_cb) {
+      // TODO: Add some user-option to select a rumble policy
+-     u32 strength = 0xffff * rumble_active_pct();
++     /*u32 strength = 0xffff * rumble_active_pct();
+      rumble_cb(0, RETRO_RUMBLE_WEAK,   MIN(strength, 0xffff));
+-     rumble_cb(0, RETRO_RUMBLE_STRONG, MIN(strength, 0xffff) / 2);
++     rumble_cb(0, RETRO_RUMBLE_STRONG, MIN(strength, 0xffff) / 2);*/
++    uint pwm_duty_cycle = 0;
++    switch((int)(rumble_active_pct()*100)) {
++      case 90 ... 100:
++        pwm_duty_cycle = 100000;
++        break;
++      case 80 ... 89:
++        pwm_duty_cycle = 200000;
++        break;
++      case 70 ... 79:
++        pwm_duty_cycle = 300000;
++        break;
++      case 60 ... 69:
++        pwm_duty_cycle = 400000;
++        break;
++      case 50 ... 59:
++        pwm_duty_cycle = 500000;
++        break;
++      case 40 ... 49:
++        pwm_duty_cycle = 600000;
++        break;
++      case 30 ... 39:
++        pwm_duty_cycle = 650000;
++        break;
++      case 20 ... 29:
++        pwm_duty_cycle = 700000;
++        break;
++      case 10 ... 19:
++        pwm_duty_cycle = 750000;
++        break;
++      case 1 ... 9:
++        pwm_duty_cycle = 800000;
++        break;
++      default:
++        pwm_duty_cycle = 1000000;
++    }
++
++    FILE *file;
++	if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", pwm_duty_cycle);
++	    fclose(file);
++    } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++        fprintf(file, "%u", pwm_duty_cycle);
++        fclose(file);
++	} else {
++	 u32 strength = 0xffff * rumble_active_pct();
++	 rumble_cb(0, RETRO_RUMBLE_WEAK,   MIN(strength, 0xffff));
++	 rumble_cb(0, RETRO_RUMBLE_STRONG, MIN(strength, 0xffff) / 2);
++	}
+    }
+ 
+    audio_run();
