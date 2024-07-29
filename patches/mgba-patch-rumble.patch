@@ -1,38 +1,87 @@
 diff --git a/src/platform/libretro/libretro.c b/src/platform/libretro/libretro.c
-index 5726fe654..51abd9c58 100644
+index ca1698b01..74583be66 100644
 --- a/src/platform/libretro/libretro.c
 +++ b/src/platform/libretro/libretro.c
-@@ -1728,12 +1728,29 @@ void retro_run(void) {
+@@ -4,6 +4,9 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ #include "libretro.h"
++#include <unistd.h>
++#include <errno.h>
++#include <stdio.h>
+ 
+ #include <mgba-util/common.h>
+ 
+@@ -1722,13 +1725,68 @@ void retro_run(void) {
  #endif
  
  	if (rumbleCallback) {
++
 +        FILE *file;
  		if (rumbleUp) {
 -			rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
 -			rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
-+            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+               fputs("10", file);
-+               fclose(file);
-+            } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+               fputs("0", file);
-+               fclose(file);
-+            } else {
-+			   rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
-+			   rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++          uint pwm_duty_cycle = 0;
++          switch((int)(rumbleUp*5.882)) {
++            case 90 ... 100:
++              pwm_duty_cycle = 100000;
++              break;
++            case 80 ... 89:
++              pwm_duty_cycle = 200000;
++              break;
++            case 70 ... 79:
++              pwm_duty_cycle = 300000;
++              break;
++            case 60 ... 69:
++              pwm_duty_cycle = 400000;
++              break;
++            case 50 ... 59:
++              pwm_duty_cycle = 500000;
++              break;
++            case 40 ... 49:
++              pwm_duty_cycle = 600000;
++              break;
++            case 30 ... 39:
++              pwm_duty_cycle = 650000;
++              break;
++            case 20 ... 29:
++              pwm_duty_cycle = 700000;
++              break;
++            case 10 ... 19:
++              pwm_duty_cycle = 750000;
++              break;
++            case 1 ... 9:
++              pwm_duty_cycle = 800000;
++              break;
++            default:
++              pwm_duty_cycle = 1000000;
 +			}
++
++   	        if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++              fprintf(file, "%u", pwm_duty_cycle);
++	          fclose(file);
++            } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++              fprintf(file, "%u", pwm_duty_cycle);
++              fclose(file);
++	        } else {
++		      rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++		      rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
++	        }
  		} else {
 -			rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
 -			rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
-+            if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
-+               fputs("1000000", file);
-+               fclose(file);
-+            } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/enable", "r+"))) {
-+               fputs("1", file);
-+               fclose(file);
-+            } else {
-+			   rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
-+			   rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
-+			}
++  	        if ((file = fopen("/sys/class/pwm/pwmchip0/pwm0/duty_cycle", "r+"))) {
++              fprintf(file, "%u", 1000000);
++	          fclose(file);
++            } else if ((file = fopen("/sys/class/pwm/pwmchip1/pwm0/duty_cycle", "r+"))) {
++              fprintf(file, "%u", 1000000);
++              fclose(file);
++	        } else {
++		      rumbleCallback(0, RETRO_RUMBLE_STRONG, 0);
++			  rumbleCallback(0, RETRO_RUMBLE_WEAK, 0);
++	        }
  		}
++
  		rumbleUp = 0;
  		rumbleDown = 0;
+ 	}
