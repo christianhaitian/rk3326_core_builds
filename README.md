@@ -232,6 +232,9 @@ cd rk3326_core_builds
 ### To build just opera (64bit only):
 `./builds.sh opera`
 
+### To build just piemu standalone emulator (64bit only):
+`./builds.sh piemusa`
+
 ### To build just potator (64bit only):
 `./builds.sh potator`
 
