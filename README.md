@@ -298,6 +298,9 @@ cd rk3326_core_builds
 ### To build just scummvm libretro (64bit only):
 `./builds.sh scummvm-libretro`
 
+### To build just smsplus-gx libretro (64bit only):
+`./builds.sh smsplus-gx`
+
 ### To build just solarus standalone (64bit only):
 `./builds.sh solarus`
 
