@@ -124,6 +124,12 @@ cd rk3326_core_builds
 ### To build just handy (64bit only):
 `./builds.sh handy`
 
+### To build just hatari (64bit only):
+`./builds.sh hatari`
+
+### To build just hatarib (64bit only):
+`./builds.sh hatarib`
+
 ### To build just fceumm (64bit only):
 `./builds.sh fceumm`
 
