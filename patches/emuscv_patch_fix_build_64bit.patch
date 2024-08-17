@@ -1,5 +1,5 @@
 diff --git a/Makefile.libretro b/Makefile.libretro
-index e1df23a..de874ec 100644
+index e1df23a..ec5f3f6 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
 @@ -79,7 +79,7 @@ ifneq (,$(findstring unix,$(platform)))
