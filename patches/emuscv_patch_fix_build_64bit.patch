@@ -1,0 +1,62 @@
+diff --git a/Makefile.libretro b/Makefile.libretro
+index e1df23a..de874ec 100644
+--- a/Makefile.libretro
++++ b/Makefile.libretro
+@@ -79,7 +79,7 @@ ifneq (,$(findstring unix,$(platform)))
+ # Raspberry Pi
+ 	ifneq (,$(findstring rpi,$(platform)))
+ 		PLATFORM_DEFINES += -D_RASPBERRYPI
+-		CFLAGS += -fomit-frame-pointer -ffast-math -marm
++		CFLAGS += -fomit-frame-pointer -ffast-math
+ 		CXXFLAGS += $(CFLAGS)
+ 		ifneq (,$(findstring rpi0,$(platform)))
+ 			PLATFORM_DEFINES += -D_RASPBERRYPI0
+@@ -96,7 +96,7 @@ ifneq (,$(findstring unix,$(platform)))
+ 		else ifneq (,$(findstring rpi3,$(platform)))
+ 			PLATFORM_DEFINES += -D_RASPBERRYPI3
+ 			PLATFORM_DEFINES += -D_RESOLUTION_AUTO_MEDIUM
+-			CFLAGS += -mcpu=cortex-a53 -mfpu=neon-fp-armv8 -mfloat-abi=hard
++			CFLAGS += -mcpu=cortex-a35
+ 		else ifneq (,$(findstring rpi4,$(platform)))
+ 			PLATFORM_DEFINES += -D_RASPBERRYPI4
+ 			PLATFORM_DEFINES += -D_RESOLUTION_AUTO_HIGH
+diff --git a/src/common.h b/src/common.h
+index 7bf6441..57602fb 100644
+--- a/src/common.h
++++ b/src/common.h
+@@ -117,13 +117,13 @@
+ #include <cstring>
+ #include <string>
+ #include <ctime>
+-#if defined(_WIN32)
++/*#if defined(_WIN32)
+     #include <io.h>
+ #elif defined(_OSX)
+     #include <sys/uio.h>
+ #else
+     #include <sys/io.h>
+-#endif
++#endif*/
+ #ifdef _MSC_VER
+ 	#include <typeinfo.h>
+ #else
+diff --git a/src/vm/debugger.cpp b/src/vm/debugger.cpp
+index 222cee5..48b0837 100644
+--- a/src/vm/debugger.cpp
++++ b/src/vm/debugger.cpp
+@@ -8,13 +8,13 @@
+ */
+ 
+ #include <stdlib.h>
+-#if defined(_WIN32)
++/*#if defined(_WIN32)
+     #include <io.h>
+ #elif defined(_OSX)
+     #include <sys/uio.h>
+ #else
+     #include <sys/io.h>
+-#endif
++#endif*/
+ #include <fcntl.h>
+ 
+ #include "../fileio.h"
