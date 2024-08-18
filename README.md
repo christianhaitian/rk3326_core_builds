@@ -199,6 +199,9 @@ cd rk3326_core_builds
 ### To build just microvision Standalone emulator:
 `./builds.sh microvisionsa`
 
+### To build just minivmac (64bit only):
+`./builds.sh minivmac`
+
 ### To build just mu:
 `./builds.sh mu`
 
