@@ -268,6 +268,9 @@ cd rk3326_core_builds
 ### To build just puae2021 (64bit Only):
 `./builds.sh puae2021`
 
+### To build just puzzlescript (64bit only):
+`./builds.sh puzzlescript`
+
 ### To build just px68k (64bit Only):
 `./builds.sh px68k`
 
