@@ -367,6 +367,9 @@ cd rk3326_core_builds
 ### To build just vice cores:
 `./builds.sh vice`
 
+### To build just vircon32 core (64bit only):
+`./builds.sh vircon32`
+
 ### To build just virtualboy (64bit only):
 `./builds.sh vb`
 
