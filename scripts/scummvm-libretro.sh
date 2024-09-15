@@ -16,7 +16,7 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "scummvm-libretro" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "scummvm/" ]; then
-		git clone https://github.com/libretro/scummvm.git
+		git clone --recursive https://github.com/libretro/scummvm.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
