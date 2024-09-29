@@ -128,6 +128,7 @@ extension="3000.7"
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
+	  git revert -n e5024fae3decb724e397d3c9dbcb744d8c79aac1
 	  make -j$(nproc)
 	  #make install
 
