@@ -12,15 +12,4 @@ index d9367eb08..c79d8ce1d 100644
  // Placeholder definitions for strings that are in the game content table where the labels are needed even when that file is not loaded.
  
  // Level names
-diff --git a/wadsrc/static/menudef.txt b/wadsrc/static/menudef.txt
-index 90ca64d1e..a1d6b3339 100644
---- a/wadsrc/static/menudef.txt
-+++ b/wadsrc/static/menudef.txt
-@@ -664,6 +664,7 @@ OptionMenu "OtherControlsMenu" protected
- 	Control    "$CNTRLMNU_ADJUST_GAMMA"    , "bumpgamma"
- 
- 	StaticText ""
-+	Control    "$CNTRLMNU_OPEN_MAIN"       , "menu_main"
- 	Control    "$CNTRLMNU_OPEN_HELP"       , "menu_help"
- 	Control    "$CNTRLMNU_OPEN_SAVE"       , "menu_save"
- 	Control    "$CNTRLMNU_OPEN_LOAD"       , "menu_load"
+
