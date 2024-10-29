@@ -62,7 +62,7 @@ bitness="$(getconf LONG_BIT)"
 	  cp onsyuri_libretro.so ../../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
+	  echo $gitcommit > ../../cores$(getconf LONG_BIT)/onsyuri_libretro.so.commit
 
 	  echo " "
 	  echo "onsyuri_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
