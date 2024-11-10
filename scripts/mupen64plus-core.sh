@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3326 platform for various Linux     #
+# various programs for the rk3326 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -43,24 +43,32 @@
 	  done
 	 fi
 
+      update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
+      update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
+
       if [[ "$bitness" == "32" ]]; then
         _opts='VULKAN=0 USE_GLES=1 NEON=1 VFP_HARD=1 OPTFLAGS="-O3" V=1 PIE=1 ACCURATE_FPU=1'
       else
         _opts='VULKAN=0 USE_GLES=1 NEW_DYNAREC=1 OPTFLAGS="-O3" V=1 PIE=1 ACCURATE_FPU=1'
       fi
       
-      export CFLAGS="-mtune=cortex-a35 -flto=$(nproc) -fuse-linker-plugin"
+      export CFLAGS="-mtune=cortex-a55 -flto=$(nproc) -fuse-linker-plugin"
       export CXXFLAGS="$CXXFLAGS $CFLAGS"
       export LDFLAGS="$CFLAGS"
       
       make -C "projects/unix" clean
-	  make -j$(nproc) -C "projects/unix" $_opts all
+	  make -j$(nproc) -C "projects/unix" CC="gcc-8" CXX="g++-8" $_opts all
 
 	  if [[ $? != "0" ]]; then
+	  	update-alternatives --set gcc "/usr/bin/gcc-8"
+	  	update-alternatives --set g++ "/usr/bin/g++-8"
 		echo " "
 		echo "There was an error while building the newest mupen64plus-core standalone.  Stopping here."
 		exit 1
 	  fi
+
+	  update-alternatives --set gcc "/usr/bin/gcc-8"
+	  update-alternatives --set g++ "/usr/bin/g++-8"
 
 	  strip projects/unix/libmupen64plus.so.2.0.0
 
