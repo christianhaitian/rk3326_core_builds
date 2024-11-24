@@ -3,6 +3,13 @@
 rootdirectory=$(dirname "$3" | cut -d "/" -f2)
 romsdirectory=$(dirname "$3" | cut -d "/" -f3)
 
+if [[ ! -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
+  if test ! -z "$(cat /home/ark/.config/.DEVICE | grep RGB20PRO | tr -d '\0')"
+  then
+    sudo setfont /usr/share/consolefonts/Lat7-TerminusBold32x16.psf.gz
+  fi
+fi
+
 rm -rf ~/.mednafen/firmware
 rm -rf ~/.mednafen/sav
 rm -rf ~/.mednafen/mcs
@@ -68,4 +75,8 @@ else
   else
     /opt/mednafen/mednafen "$3"
   fi
+fi
+
+if [[ ! -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
+  sudo setfont /usr/share/consolefonts/Lat7-Terminus20x10.psf.gz
 fi
