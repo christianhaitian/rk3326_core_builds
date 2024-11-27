@@ -75,6 +75,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+	  export CCC_OVERRIDE_OPTIONS="^--gcc-install-dir=/lib/gcc/aarch64-linux-gnu/8"
 	  mkdir build
 	  cd build
 	  cmake -DUSING_EGL=OFF \
@@ -103,6 +104,7 @@ bitness="$(getconf LONG_BIT)"
 		echo "There was an error while building the newest ppsspp standalone.  Stopping here."
 		exit 1
 	  fi
+	  unset CCC_OVERRIDE_OPTIONS
 
 	  strip PPSSPPSDL
 
