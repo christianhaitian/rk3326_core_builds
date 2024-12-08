@@ -21,8 +21,9 @@ bitness="$(getconf LONG_BIT)"
 #commit="fb1497566c5a05e2babdcf45ef0ab5c7cca2c4ae" # SDL 2.0.30.3
 #commit="2eef7ca475decd2b864214cdbfe72b143b16d459" # SDL 2.0.30.5 (BAD)
 #commit="7ca3d26e7aa0ff1f7ba48eee2f35ac5fb4de0057" # SDL 2.0.30.6 (Bad)
-commit="release-2.30.x"
-extension="3000.7"
+#commit="release-2.30.x"
+commit="9c821dc21ccbd69b2bda421fdb35cb4ae2da8f5e" # SDL 2.0.30.10
+extension="3000.10"
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
