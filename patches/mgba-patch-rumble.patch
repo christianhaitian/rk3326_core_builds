@@ -22,7 +22,7 @@ index ca1698b01..74583be66 100644
 -			rumbleCallback(0, RETRO_RUMBLE_STRONG, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
 -			rumbleCallback(0, RETRO_RUMBLE_WEAK, rumbleUp * 0xFFFF / (rumbleUp + rumbleDown));
 +          uint pwm_duty_cycle = 0;
-+          switch((int)(rumbleUp*5.882)) {
++          switch((int)(rumbleUp*2.9)) {
 +            case 90 ... 100:
 +              pwm_duty_cycle = 100000;
 +              break;

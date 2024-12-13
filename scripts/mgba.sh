@@ -48,6 +48,7 @@ bitness="$(getconf LONG_BIT)"
 		 fi
 	  done
 	 fi
+	  sed -i '/-mcpu=cortex-a35/s//-mtune=cortex-a35/g' Makefile.libretro
 	  cmake .
 	  make clean
 	  make -f Makefile.libretro platform=goadvance -j$(nproc)
