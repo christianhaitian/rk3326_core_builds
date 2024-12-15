@@ -109,6 +109,9 @@ cd rk3326_core_builds
 ### To build just freeintv:
 `./builds.sh freeintv`
 
+### To build just freej2me:
+`./builds.sh freej2me`
+
 ### To build just gambatte (64bit only):
 `./builds.sh gambatte`
 
