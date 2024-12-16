@@ -55,6 +55,7 @@ bitness="$(getconf LONG_BIT)"
 	    CFLAGS="-Ofast -march=armv8-a -mtune=cortex-a35 -fomit-frame-pointer -DNDEBUG" ./configure --disable-caca \
 	    --disable-mali_fbdev \
 	    --disable-opengl \
+	    --disable-opengl_core \
 	    --disable-opengl1 \
 	    --disable-qt \
 	    --disable-sdl \
@@ -88,6 +89,7 @@ bitness="$(getconf LONG_BIT)"
 	    CFLAGS="-Ofast -march=armv8-a -mtune=cortex-a35 -mfpu=neon-fp-armv8 -mfloat-abi=hard -fomit-frame-pointer -DNDEBUG" ./configure --disable-caca \
 	    --disable-mali_fbdev \
 	    --disable-opengl \
+	    --disable-opengl_core \
 	    --disable-opengl1 \
 	    --disable-qt \
 	    --disable-sdl \
