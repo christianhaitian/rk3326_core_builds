@@ -1,8 +1,8 @@
 diff --git a/src/javax/microedition/rms/RecordStore.java b/src/javax/microedition/rms/RecordStore.java
-index 40b9711..fa30706 100644
+index 7691576..cf380b6 100644
 --- a/src/javax/microedition/rms/RecordStore.java
 +++ b/src/javax/microedition/rms/RecordStore.java
-@@ -76,8 +76,8 @@ public class RecordStore
+@@ -79,8 +79,8 @@ public class RecordStore
  
  		appname = Mobile.getPlatform().loader.suitename;
  
@@ -13,16 +13,16 @@ index 40b9711..fa30706 100644
  
  		try
  		{
-@@ -273,7 +273,7 @@ public class RecordStore
- 	{
+@@ -318,7 +318,7 @@ public class RecordStore
  		try
  		{
+ 			Mobile.log(Mobile.LOG_DEBUG, RecordStore.class.getPackage().getName() + "." + RecordStore.class.getSimpleName() + ": " + "Deleting RecordStore "+recordStoreName);
 -			File fstore = new File(Mobile.getPlatform().dataPath + "./rms/"+Mobile.getPlatform().loader.suitename+"/"+recordStoreName);
 +			File fstore = new File("/dev/shm/j2me/rms/"+Mobile.getPlatform().loader.suitename+"/"+recordStoreName);
  			fstore.delete();
  		}
  		catch (Exception e)
-@@ -386,7 +386,7 @@ public class RecordStore
+@@ -428,7 +428,7 @@ public class RecordStore
  		Mobile.log(Mobile.LOG_DEBUG, RecordStore.class.getPackage().getName() + "." + RecordStore.class.getSimpleName() + ": " + "List Record Stores");
  		if(rmsPath==null)
  		{
