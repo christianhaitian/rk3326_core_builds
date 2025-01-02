@@ -1,22 +1,22 @@
 diff --git a/retroarch.c b/retroarch.c
-index 4c31631aba..ab04f1425b 100644
+index a7e5f5299f..5fddb95dcc 100644
 --- a/retroarch.c
 +++ b/retroarch.c
-@@ -2450,7 +2450,7 @@ bool command_event(enum event_command cmd, void *data)
-          system("(sleep 1 && shutdown -P now) & disown");
+@@ -4306,7 +4306,7 @@ bool command_event(enum event_command cmd, void *data)
+             system("nohup /usr/bin/lakka-shutdown.sh 2>&1 >/dev/null & exit");
  #else
-          command_event(CMD_EVENT_QUIT, NULL);
--         system("shutdown -P now");
-+         system("sudo shutdown -P now");
+             command_event(CMD_EVENT_QUIT, NULL);
+-            system("shutdown -P now");
++            system("sudo shutdown -P now");
  #endif /* HAVE_LAKKA */
  #endif
-          break;
-@@ -2465,7 +2465,7 @@ bool command_event(enum event_command cmd, void *data)
-          system("(sleep 1 && shutdown -r now) & disown");
+          }
+@@ -4323,7 +4323,7 @@ bool command_event(enum event_command cmd, void *data)
+             system("nohup /usr/bin/lakka-reboot.sh 2>&1 >/dev/null & exit");
  #else
-          command_event(CMD_EVENT_QUIT, NULL);
--         system("shutdown -r now");
-+         system("sudo shutdown -r now");
+             command_event(CMD_EVENT_QUIT, NULL);
+-            system("shutdown -r now");
++            system("sudo shutdown -r now");
  #endif /* HAVE_LAKKA */
  #endif
-          break;
+          }
