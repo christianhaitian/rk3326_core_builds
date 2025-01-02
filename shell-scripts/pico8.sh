@@ -112,40 +112,52 @@ elif [[ ! -f "/$directory/pico-8/$pico8executable" ]] && [[ "$1" != *"retroarch"
       printf "\033c" >> /dev/tty1
       printf "\033[1;33m" >> /dev/tty1
       msgbox "I don't detect a pico8_dyn or pico8_64 file in the /$directory/pico-8 folder. \
-	  Please place your purchased pico-8 files in this location and try to launch your cart \
-	  again. For now, this game will be launched using the Fake08 emulator."
+      Please place your purchased pico-8 files in this location and try to launch your cart \
+      again. For now, this game will be launched using the Fake08 emulator. Press A to continue."
       printf "\033[0m" >> /dev/tty1
       LaunchFake08 "$2"
 elif [[ ! -f "/$directory/pico-8/pico8.dat" ]] &&  [[ "$1" != *"retroarch"* ]]; then
       printf "\033c" >> /dev/tty1
       printf "\033[1;33m" >> /dev/tty1
       msgbox "I don't detect a pico8.dat file in the /$directory/pico-8 folder. Please place \
-	  your purchased pico-8 files in this location and try to launch your cart again. For now, \
-	  this game will be launched using the Fake08 emulator."
+      your purchased pico-8 files in this location and try to launch your cart again. For now, \
+      this game will be launched using the Fake08 emulator. Press A to continue."
       printf "\033[0m" >> /dev/tty1
       LaunchFake08 "$2"
 fi
 
 sudo /opt/quitter/oga_controls $pico8executable $param_device &
 
+if [ ! -d "/opt/pico-8/bbs" ]; then
+  mkdir -p /opt/pico-8/bbs
+fi
+
+unlink /opt/pico-8/bbs/carts
+if [[ "/opt/pico-8/carts" == "$(realpath --canonicalize-existing /opt/pico-8/carts)" ]]; then
+  rm -rf /opt/pico-8/carts
+fi
+unlink /opt/pico-8/carts
+ln -sf /$directory/pico-8/carts /opt/pico-8/bbs/carts
+ln -sf /$directory/pico-8/carts /opt/pico-8/carts
+
 Test_Button_B
 if [ "$?" -eq "10" ]; then
   printf "\n Starting splore.  Please wait..." >> /dev/tty1
   touch /dev/shm/Splore_Loaded
   if [[ $1 == "float-scaled" ]]; then
-    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
+    /$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
   elif [[ $1 == "pixel-perfect" ]]; then
-    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1
+    /$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1
   elif [[ $1 == "full-screen" ]]; then
-    /$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
+    /$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
   fi
   rm /dev/shm/Splore_Loaded
 
   printf "\033[0m" >> /dev/tty1
-  mv -f /$directory/pico-8/bbs/carts/*.png /$directory/pico-8/carts/
-  mv -f /$directory/pico-8/bbs/carts/*.PNG /$directory/pico-8/carts/
-  mv -f /$directory/pico-8/bbs/carts/*.p8 /$directory/pico-8/carts/
-  mv -f /$directory/pico-8/bbs/carts/*.P8 /$directory/pico-8/carts/
+   #mv -f /$directory/pico-8/bbs/carts/*.png /$directory/pico-8/carts/
+   #mv -f /$directory/pico-8/bbs/carts/*.PNG /$directory/pico-8/carts/
+   #mv -f /$directory/pico-8/bbs/carts/*.p8 /$directory/pico-8/carts/
+   #mv -f /$directory/pico-8/bbs/carts/*.P8 /$directory/pico-8/carts/
 
   if [[ ! -z $(pidof oga_controls) ]]; then
     sudo kill -9 $(pidof oga_controls)
@@ -157,26 +169,26 @@ fi
 if [[ $1 == "float-scaled" ]]; then
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		touch /dev/shm/Splore_Loaded
-		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
+		/$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0
 		rm /dev/shm/Splore_Loaded
 	else
-		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -run "$2"
+		/$directory/pico-8/$pico8executable -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -run "$2"
 	fi
 elif [[ $1 == "pixel-perfect" ]]; then
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		touch /dev/shm/Splore_Loaded
-		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1
+		/$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1
 		rm /dev/shm/Splore_Loaded
 	else
-		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1 -run "$2"
+		/$directory/pico-8/$pico8executable -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -pixel_perfect 1 -run "$2"
 	fi
 elif [[ $1 == "full-screen" ]]; then
 	if [[ ${basefilenoext,,} == "zzzsplore" ]]; then
 		touch /dev/shm/Splore_Loaded
-		/$directory/pico-8/$pico8executable -splore -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
+		/$directory/pico-8/$pico8executable -splore -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res
 		rm /dev/shm/Splore_Loaded
 	else
-		/$directory/pico-8/$pico8executable -home /$directory/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res -run "$2"
+		/$directory/pico-8/$pico8executable -home /opt/pico-8/ -root_path /$directory/pico-8/carts/ -joystick 0 -draw_rect 0,0,$res -run "$2"
 	fi
 fi
 
@@ -185,7 +197,8 @@ if [[ ! -z $(pidof oga_controls) ]]; then
 fi
 sudo systemctl restart oga_events &
 
-mv -f /$directory/pico-8/bbs/carts/*.png /$directory/pico-8/carts/
-mv -f /$directory/pico-8/bbs/carts/*.PNG /$directory/pico-8/carts/
-mv -f /$directory/pico-8/bbs/carts/*.p8 /$directory/pico-8/carts/
-mv -f /$directory/pico-8/bbs/carts/*.P8 /$directory/pico-8/carts/
+#mv -f /$directory/pico-8/bbs/carts/*.png /$directory/pico-8/carts/
+#mv -f /$directory/pico-8/bbs/carts/*.PNG /$directory/pico-8/carts/
+#mv -f /$directory/pico-8/bbs/carts/*.p8 /$directory/pico-8/carts/
+#mv -f /$directory/pico-8/bbs/carts/*.P8 /$directory/pico-8/carts/
+
