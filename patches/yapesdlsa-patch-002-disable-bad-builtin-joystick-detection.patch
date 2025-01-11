@@ -1,0 +1,13 @@
+diff --git a/keyboard.cpp b/keyboard.cpp
+index 60e1421..e848aaf 100644
+--- a/keyboard.cpp
++++ b/keyboard.cpp
+@@ -55,7 +55,7 @@ KEYS::KEYS()
+ void KEYS::initPcJoys()
+ {
+ 	nrOfJoys = SDL_NumJoysticks();
+-	SDL_JoystickEventState(SDL_ENABLE);
++	SDL_JoystickEventState(SDL_DISABLE);
+ 	sdlJoys[0] = sdlJoys[1] = 0;
+ 	unsigned int i = nrOfJoys + 1;
+ 	if (i > 2) i = 2;

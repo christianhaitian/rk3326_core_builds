@@ -1,0 +1,13 @@
+diff --git a/interface.cpp b/interface.cpp
+index b91178c..19dc712 100644
+--- a/interface.cpp
++++ b/interface.cpp
+@@ -506,7 +506,7 @@ bool UI::handle_menu_command( struct element_t *element)
+ 						prgLoadFromT64(element->name, 0, ted8360);
+ 				}
+ #if (SDL_VERSION_ATLEAST(2,24,0))
+-				SDL_ResetKeyboard();
++				void SDL_ResetKeyboard(void);
+ #endif
+ 			}
+ 			clear (0, 0);
