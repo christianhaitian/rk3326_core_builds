@@ -400,6 +400,9 @@ cd rk3326_core_builds
 ### To build just yabause:
 `./builds.sh yabause`
 
+### To build just yapesdl standalone:
+`./builds.sh yapesdlsa`
+
 ### To build just x1 (64bit only):
 `./builds.sh x1`
 

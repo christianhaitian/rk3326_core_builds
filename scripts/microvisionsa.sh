@@ -12,17 +12,17 @@
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
-	# fake08 Standalone build
+	# microvision Standalone build
 	if [[ "$var" == "microvisionsa" ]]  && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 
-	  # Now we'll start the clone and build of fake08
+	  # Now we'll start the clone and build of microvision
 	  if [ ! -d "microvisionsa/" ]; then
 		git clone --recursive https://github.com/christianhaitian/Paul-Robson-s-Microvision-Emulation.git microvisionsa
 
 		if [[ $? != "0" ]]; then
 		  echo " "
-		  echo "There was an error while cloning the fake08 standalone git.  Is Internet active or did the git location change?  Stopping here."
+		  echo "There was an error while cloning the microvision standalone git.  Is Internet active or did the git location change?  Stopping here."
 		  exit 1
 		fi
 		cp patches/microvisionsa-patch* microvisionsa/.
@@ -53,7 +53,7 @@ bitness="$(getconf LONG_BIT)"
            make -j$(nproc)
            if [[ $? != "0" ]]; then
 		     echo " "
-		     echo "There was an error that occured while making the fake08 standalone.  Stopping here."
+		     echo "There was an error that occured while making the microvision standalone.  Stopping here."
              exit 1
            fi
            strip mvem
