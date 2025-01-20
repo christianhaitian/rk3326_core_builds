@@ -53,14 +53,14 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip target/release/doukutsu_rs_libretro.so
 
-	  if [ ! -d "../cores64/" ]; then
-		mkdir -v ../cores64
+	  if [ ! -d "../../cores64/" ]; then
+		mkdir -v ../../cores64
 	  fi
 
-	  cp target/release/doukutsu_rs_libretro.so ../cores64/.
+	  cp target/release/doukutsu_rs_libretro.so ../../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$bitness/doukutsu-rs-lr_libretro.so.commit
+	  echo $gitcommit > ../../cores$bitness/doukutsu-rs-lr_libretro.so.commit
 
 	  echo " "
 	  echo "doukutsu-rs-lr_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
