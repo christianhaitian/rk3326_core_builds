@@ -8,7 +8,12 @@ if [ "$filesystem" = "ntfs" ]; then
 	filesystem="ntfs-3g"
 fi
 
-sudo mount -t $filesystem /dev/sda1 /mnt/usbdrive -o uid=1002
+altCharSet=""
+if [[ "$filesystem" =~ ^(vfat|fat16|fat32|ntfs|ntfs_3g)$ ]]; then
+	altCharSet=",iocharset=iso8859-1"
+fi
+
+sudo mount -t $filesystem /dev/sda1 /mnt/usbdrive -o uid=1002,gid=1002$altCharSet
 status=$?
 
 if test $status -eq 0
