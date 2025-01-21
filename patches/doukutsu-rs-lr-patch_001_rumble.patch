@@ -1,0 +1,62 @@
+diff --git a/drsretroarch/src/libretro.rs b/drsretroarch/src/libretro.rs
+index 15111d3..160d052 100644
+--- a/drsretroarch/src/libretro.rs
++++ b/drsretroarch/src/libretro.rs
+@@ -19,7 +19,6 @@ use libc::{c_void, c_char, c_uint, c_float, c_double, size_t};
+ use std::path::PathBuf;
+ use std::panic;
+ 
+-
+ extern crate log as rlog;
+ 
+ use crate::core;
+@@ -657,6 +656,9 @@ pub mod joypad_rumble_context {
+     use super::{call_environment_mut, Environment};
+     use libc::{c_uint, c_ushort};
+     use std::ptr::addr_of_mut;
++    use std::fs::OpenOptions;
++    use std::io::Write;
++    use std::path::Path;
+ 
+     #[repr(C)]
+     pub enum RumbleMotor {
+@@ -672,7 +674,7 @@ pub mod joypad_rumble_context {
+         }
+     }
+ 
+-    
++
+     #[repr(C)]
+     struct RumbelstateCallback {
+         pub rumble_callback: unsafe extern "C" fn(port: c_uint, effect: RumbleMotor, strength: c_ushort) -> bool,
+@@ -700,6 +702,30 @@ pub mod joypad_rumble_context {
+     /// * **effect** - The rumble motor to set the strength of.
+     /// * **strength** - The desired intensity of the rumble motor, ranging from \c 0 to \c 0xffff (inclusive).
+     pub fn set_rumble(controller_port: u32, effect: u16, strengh: u16) -> bool {
++
++        let mut rumble_location = "None";
++        if Path::new("/sys/class/pwm/pwmchip1/pwm0/duty_cycle").exists() {
++           rumble_location = "/sys/class/pwm/pwmchip1/pwm0/duty_cycle";
++        } else if Path::new("/sys/class/pwm/pwmchip0/pwm0/duty_cycle").exists() {
++           rumble_location = "/sys/class/pwm/pwmchip0/pwm0/duty_cycle";
++        }
++        if rumble_location != "None" {
++           let mut data_file = OpenOptions::new()
++               .append(true)
++               .open(rumble_location)
++               .expect("cannot open file");
++           let a = strengh;
++           if a > 0 {
++              data_file
++                  .write("700000".as_bytes())
++                  .expect("write failed");
++           } else {
++              data_file
++                  .write("1000000".as_bytes())
++                  .expect("write failed");
++           }
++        }
++
+         unsafe{
+             (STATIC_RUMBLE_CONTEXT.rumble_callback)(controller_port, RumbleMotor::from(effect), strengh)
+         }

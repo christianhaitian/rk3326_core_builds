@@ -27,9 +27,9 @@ bitness="$(getconf LONG_BIT)"
 
 	 cd doukutsu-rs-nm/
 	 
-	 doukutsu-rs-lr_patches=$(find *.patch)
+	 doukutsu_patches=$(find *.patch)
 	 
-	 if [[ ! -z "$dosboxpure_patches" ]]; then
+	 if [[ ! -z "$doukutsu_patches" ]]; then
 	  for patching in doukutsu-rs-lr-patch*
 	  do
 		   patch -Np1 < "$patching"
