@@ -1,8 +1,8 @@
 diff --git a/runloop.c b/runloop.c
-index 80c8891cce..ce4c786da3 100644
+index c16e76f595..c7e1fc53be 100644
 --- a/runloop.c
 +++ b/runloop.c
-@@ -7880,16 +7880,16 @@ void runloop_path_set_redirect(settings_t *settings,
+@@ -7832,16 +7832,16 @@ void runloop_path_set_redirect(settings_t *settings,
     char content_dir_name[DIR_MAX_LENGTH];
     char new_savefile_dir[DIR_MAX_LENGTH];
     char new_savestate_dir[DIR_MAX_LENGTH];
@@ -29,21 +29,18 @@ index 80c8891cce..ce4c786da3 100644
  
     content_dir_name[0] = '\0';
  
-@@ -7904,37 +7904,8 @@ void runloop_path_set_redirect(settings_t *settings,
-         || sort_savestates_by_content_enable)
-        && !string_is_empty(runloop_st->runtime_content_path_basename))
-       fill_pathname_parent_dir_name(content_dir_name,
--                                    runloop_st->runtime_content_path_basename,
--                                    sizeof(content_dir_name));
--
+@@ -7859,34 +7859,6 @@ void runloop_path_set_redirect(settings_t *settings,
+                                     runloop_st->runtime_content_path_basename,
+                                     sizeof(content_dir_name));
+ 
 -   /* Set savefile directory if empty to content directory */
 -   if (     string_is_empty(intermediate_savefile_dir)
 -         || savefiles_in_content_dir)
 -   {
--      strlcpy(intermediate_savefile_dir,
--              runloop_st->runtime_content_path_basename,
--              sizeof(intermediate_savefile_dir));
--      path_basedir(intermediate_savefile_dir);
+-      fill_pathname_basedir(
+-            intermediate_savefile_dir,
+-            runloop_st->runtime_content_path_basename,
+-            sizeof(intermediate_savefile_dir));
 -
 -      if (string_is_empty(intermediate_savefile_dir))
 -         RARCH_LOG("Cannot resolve save file path.\n");
@@ -53,10 +50,9 @@ index 80c8891cce..ce4c786da3 100644
 -   if (   string_is_empty(intermediate_savestate_dir)
 -       || savestates_in_content_dir)
 -   {
--      strlcpy(intermediate_savestate_dir,
--              runloop_st->runtime_content_path_basename,
--              sizeof(intermediate_savestate_dir));
--      path_basedir(intermediate_savestate_dir);
+-      fill_pathname_basedir(intermediate_savestate_dir,
+-            runloop_st->runtime_content_path_basename,
+-            sizeof(intermediate_savestate_dir));
 -
 -      if (string_is_empty(intermediate_savestate_dir))
 -         RARCH_LOG("Cannot resolve save state file path.\n");
@@ -64,12 +60,11 @@ index 80c8891cce..ce4c786da3 100644
 -
 -   strlcpy(new_savefile_dir, intermediate_savefile_dir, sizeof(new_savefile_dir));
 -   strlcpy(new_savestate_dir, intermediate_savestate_dir, sizeof(new_savestate_dir));
-+            runloop_st->runtime_content_path_basename,
-+            sizeof(content_dir_name));
- 
+-
     if (sysinfo && !string_is_empty(sysinfo->library_name))
     {
-@@ -7946,13 +7917,13 @@ void runloop_path_set_redirect(settings_t *settings,
+ #ifdef HAVE_MENU
+@@ -7897,13 +7869,13 @@ void runloop_path_set_redirect(settings_t *settings,
           /* Per-core and/or per-content-directory saves */
           if ((sort_savefiles_enable
                || sort_savefiles_by_content_enable)
@@ -85,7 +80,7 @@ index 80c8891cce..ce4c786da3 100644
                    content_dir_name,
                    sizeof(new_savefile_dir));
  
-@@ -7971,22 +7942,22 @@ void runloop_path_set_redirect(settings_t *settings,
+@@ -7922,22 +7894,22 @@ void runloop_path_set_redirect(settings_t *settings,
                 {
                    RARCH_LOG("%s %s\n",
                              msg_hash_to_str(MSG_REVERTING_SAVEFILE_DIRECTORY_TO),
@@ -112,7 +107,7 @@ index 80c8891cce..ce4c786da3 100644
                    content_dir_name,
                    sizeof(new_savestate_dir));
  
-@@ -8005,15 +7976,45 @@ void runloop_path_set_redirect(settings_t *settings,
+@@ -7956,15 +7928,45 @@ void runloop_path_set_redirect(settings_t *settings,
                 {
                    RARCH_LOG("%s %s\n",
                              msg_hash_to_str(MSG_REVERTING_SAVESTATE_DIRECTORY_TO),
