@@ -48,7 +48,7 @@ index 15111d3..160d052 100644
 +           let a = strengh;
 +           if a > 0 {
 +              data_file
-+                  .write("700000".as_bytes())
++                  .write("400000".as_bytes())
 +                  .expect("write failed");
 +           } else {
 +              data_file
