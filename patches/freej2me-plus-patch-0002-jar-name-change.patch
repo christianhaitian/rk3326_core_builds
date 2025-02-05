@@ -12,20 +12,20 @@ index 4637a0d..13f7c8b 100644
  		<fileset dir="resources" />
  		<metainf dir="META-INF" />
 diff --git a/src/libretro/freej2me_libretro.c b/src/libretro/freej2me_libretro.c
-index 82b6e6a..1fbe074 100755
+index 5dd5b6c..8d272a0 100755
 --- a/src/libretro/freej2me_libretro.c
 +++ b/src/libretro/freej2me_libretro.c
-@@ -537,7 +537,7 @@ void retro_init(void)
- 	}
- 
- 	outPath = malloc(sizeof(char) * PATH_MAX_LENGTH);
--	fill_pathname_join(outPath, systemPath, "freej2me-lr.jar", PATH_MAX_LENGTH);
-+	fill_pathname_join(outPath, systemPath, "freej2me-plus-lr.jar", PATH_MAX_LENGTH);
- 
- 	/* Allocate memory for launch arguments */
- 	params = (char**)malloc(sizeof(char*) * 14);
+@@ -551,7 +551,7 @@ void retro_init(void)
+ 	params = (char**)malloc(sizeof(char*) * 15);
+ 	params[0] = strdup("java");
+ 	params[1] = strdup("-jar");
+-	params[2] = strdup("freej2me-lr.jar");
++	params[2] = strdup("freej2me-plus-lr.jar");
+ 	params[3] = strdup(resArg[0]);
+ 	params[4] = strdup(resArg[1]);
+ 	params[5] = strdup(rotateArg);
 diff --git a/src/libretro/freej2me_libretro.h b/src/libretro/freej2me_libretro.h
-index 4b85c2f..da1bab9 100644
+index e041d5e..a868def 100644
 --- a/src/libretro/freej2me_libretro.h
 +++ b/src/libretro/freej2me_libretro.h
 @@ -54,7 +54,7 @@ static const struct retro_message_ext messages[] =
@@ -37,7 +37,7 @@ index 4b85c2f..da1bab9 100644
     {"FreeJ2ME child process loaded successfully!", 4000, 1, RETRO_LOG_INFO, RETRO_MESSAGE_TARGET_OSD, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
     {"", 0, 0, 0, 0, 0, 0}
  };
-@@ -218,8 +218,8 @@ struct retro_core_option_v2_definition core_options[] =
+@@ -236,8 +236,8 @@ struct retro_core_option_v2_definition core_options[] =
          "freej2me_midifont",
          "System > MIDI Soundfont",
          "MIDI Soundfont",
@@ -48,7 +48,7 @@ index 4b85c2f..da1bab9 100644
          "system_settings",
          {
              { "off", "Default" },
-@@ -502,7 +502,7 @@ struct retro_core_option_definition core_options_v1 [] =
+@@ -535,7 +535,7 @@ struct retro_core_option_definition core_options_v1 [] =
      {
          "freej2me_midifont",
          "MIDI Soundfont",
