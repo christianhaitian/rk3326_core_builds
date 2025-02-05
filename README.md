@@ -46,6 +46,9 @@ cd rk3326_core_builds
 ### To build just atari800 (64bit only):
 `./builds.sh atari800`
 
+### To build just b2 (64bit only):
+`./builds.sh b2`
+
 ### To build just beetle-psx (64bit only):
 `./builds.sh beetle-psx`
 
