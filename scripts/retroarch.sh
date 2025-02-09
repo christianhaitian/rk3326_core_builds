@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-tag=v1.20.0
+tag="v1.20.0"
 
 	# Libretro Retroarch build
 	if [[ "$var" == "retroarch" ]]; then
@@ -27,7 +27,7 @@ tag=v1.20.0
 	  fi
 
 	 cd retroarch/
-	 git checkout $(tag)
+	 git checkout ${tag}
 
 	 # Revert change in Retroarch 1.18 of how content directory and save sorting settings work
 	 #git revert 338c9a4fe441899e98c95ab082e18ddb5f931e49 --no-edit
