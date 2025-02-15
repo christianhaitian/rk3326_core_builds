@@ -1,6 +1,8 @@
 #!/bin/bash
 
-directory=$(dirname "$2" | cut -d "/" -f2)
+directory=$(dirname "$1" | cut -d "/" -f2)
+unlink /opt/hypseus-singe/roms
+ln -sfv /$directory/alg/roms/ /opt/hypseus-singe/roms
 
 if [[ $1 == "/$directory/alg/Scan_for_new_games.alg" ]]
 then
@@ -23,24 +25,11 @@ dir="$1"
 basedir=$(basename -- $dir)
 SINGEGAME=${basedir%.*}
 
+
 function STDERR () {
 	/bin/cat - 1>&2
 }
 
-if [ "$SINGEGAME" = "-fullscreen" ]; then
-    FULLSCREEN="-fullscreen"
-    shift
-fi
-
-if [ "$SINGEGAME" = "-blend" ]; then
-    BLEND="-blend_sprites"
-    shift
-fi
-
-if [ "$SINGEGAME" = "-nolinear" ]; then
-    NEAREST="-nolinear_scale"
-    shift
-fi
 
 if [ -z $SINGEGAME ] ; then
 	echo "Specify a game to try: " | STDERR
@@ -68,18 +57,26 @@ if [ ! -f $HYPSEUS_SHARE/$SINGEGAME/$SINGEGAME.singe ] || [ ! -f $HYPSEUS_SHARE/
 fi
 
 sudo systemctl start singehotkey.service
-rm /home/ark/.asoundrc
+
+if [ -f "$HYPSEUS_SHARE/$SINGEGAME/$SINGEGAME.commands" ]; then
+    EXTRAPARAMS=$(<"$HYPSEUS_SHARE/$SINGEGAME/$SINGEGAME.commands")
+fi
+
+if [[ $(cat /sys/class/graphics/fb0/modes | grep -o -P '(?<=:).*(?=p-)') == "720x720" ]]; then
+  RES="-x 720 -y 600"
+fi
+
 $HYPSEUS_BIN singe vldp \
+-gamepad \
+-texturestream \
+${RES} \
 -framefile $HYPSEUS_SHARE/$SINGEGAME/$SINGEGAME.txt \
 -script $HYPSEUS_SHARE/$SINGEGAME/$SINGEGAME.singe \
 -homedir $HYPSEUS_HOME \
 -datadir $HYPSEUS_HOME \
-$FULLSCREEN \
-$NEAREST \
-$BLEND \
--sound_buffer 2048 \
--volume_nonvldp 5 \
--volume_vldp 20
+-fullscreen \
+$EXTRAPARAMS
+
 
 EXIT_CODE=$?
 
@@ -96,5 +93,3 @@ if [ "$EXIT_CODE" -ne "0" ] ; then
 	exit $EXIT_CODE
 fi
 sudo systemctl stop singehotkey.service
-cp /home/ark/.asoundrcbak /home/ark/.asoundrc
-
