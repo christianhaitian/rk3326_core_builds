@@ -1,0 +1,17 @@
+--- wpa_supplicant-2.11/wpa_supplicant/dbus/dbus_new_handlers.c	2024-07-20 18:04:37.000000000 +0000
++++ wpa_supplicant-2.11.temp/wpa_supplicant/dbus/dbus_new_handlers.c	2024-11-18 04:48:32.681468665 +0000
+@@ -3382,7 +3382,13 @@
+ 		    !wpa_dbus_dict_string_array_add_element(&iter_array,
+ 							    "none") ||
+ 		    !wpa_dbus_dict_string_array_add_element(&iter_array,
+-							    "ieee8021x"))
++							    "sae") ||
++		    !wpa_dbus_dict_string_array_add_element(&iter_array,
++							    "sae-ext-key") ||
++		    !wpa_dbus_dict_string_array_add_element(&iter_array,
++							    "ft-sae") ||
++		    !wpa_dbus_dict_string_array_add_element(&iter_array,
++							    "ft-sae-ext-key"))
+ 			goto nomem;
+ 
+ 		if (capa.key_mgmt & (WPA_DRIVER_CAPA_KEY_MGMT_WPA |

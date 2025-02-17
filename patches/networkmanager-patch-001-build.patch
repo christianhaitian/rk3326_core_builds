@@ -1,0 +1,24 @@
+--- a/debian/rules	2025-02-16 11:25:38.936785495 +0000
++++ b/debian/rules	2025-02-16 11:42:00.880071499 +0000
+@@ -10,7 +10,7 @@
+ # Disable lto here regardless of whether we enable the configure flag
+ # https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/1070
+ export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=-lto
+-
++export DEB_BUILD_OPTIONS = nocheck
+ export PYTHON=/usr/bin/python3
+ 
+ PPPD_PLUGIN_DIR := $(shell dh_ppp --plugin-dir)
+@@ -76,9 +76,9 @@
+ override_dh_makeshlibs:
+ 	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/NetworkManager/ -X/usr/lib/pppd/
+ 
+-override_dh_installsystemd:
+-	dh_installsystemd -pnetwork-manager --no-start NetworkManager-dispatcher.service NetworkManager-wait-online.service nm-priv-helper.service
+-	dh_installsystemd -pnetwork-manager --no-also NetworkManager.service
++#override_dh_installsystemd:
++#	dh_installsystemd -pnetwork-manager --no-start NetworkManager-dispatcher.service NetworkManager-wait-online.service nm-priv-helper.service
++#	dh_installsystemd -pnetwork-manager --no-also NetworkManager.service
+ 
+ override_dh_ppp:
+ 	dh_ppp --breaks

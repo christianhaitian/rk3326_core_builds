@@ -431,8 +431,14 @@ cd rk3326_core_builds
 ### To build Emulationstation-fcamod (64bit only)
 `./builds.sh es_build`
 
+### To build Network Manager
+`./builds.sh NetworkManager`
+
 ### To build SDL 2.0.28.2
 `./builds.sh sdl2`
+
+### To build wpasupplicant
+`./builds.sh wpa_supplicant`
 
 ### To update the retroarch-cores repo with new or updated cores:
 `./builds.sh update`

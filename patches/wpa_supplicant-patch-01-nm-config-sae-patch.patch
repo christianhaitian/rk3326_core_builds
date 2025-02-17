@@ -1,0 +1,20 @@
+--- wpa_supplicant-2.11/wpa_supplicant/config.c	2024-07-20 18:04:37.000000000 +0000
++++ wpa_supplicant-2.11.temp/wpa_supplicant/config.c	2024-11-18 04:11:37.227854312 +0000
+@@ -790,7 +790,7 @@
+ 		last = *end == '\0';
+ 		*end = '\0';
+ 		if (os_strcmp(start, "WPA-PSK") == 0)
+-			val |= WPA_KEY_MGMT_PSK;
++			val |= WPA_KEY_MGMT_PSK | WPA_KEY_MGMT_SAE;
+ 		else if (os_strcmp(start, "WPA-EAP") == 0)
+ 			val |= WPA_KEY_MGMT_IEEE8021X;
+ 		else if (os_strcmp(start, "IEEE8021X") == 0)
+@@ -814,7 +814,7 @@
+ 			val |= WPA_KEY_MGMT_IEEE8021X_SHA384;
+ #endif /* CONFIG_SHA384 */
+ 		else if (os_strcmp(start, "WPA-PSK-SHA256") == 0)
+-			val |= WPA_KEY_MGMT_PSK_SHA256;
++			val |= WPA_KEY_MGMT_PSK_SHA256 | WPA_KEY_MGMT_SAE;
+ 		else if (os_strcmp(start, "WPA-EAP-SHA256") == 0)
+ 			val |= WPA_KEY_MGMT_IEEE8021X_SHA256;
+ #ifdef CONFIG_WPS
