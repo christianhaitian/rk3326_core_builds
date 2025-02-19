@@ -11,8 +11,8 @@ GAME="$3"
 directory=$(dirname "$GAME" | cut -d "/" -f2)
 # The next 2 variables are for use with custom game controls if the user creates some
 gamecontrols=$(echo "$(ls "$GAME" | cut -d "/" -f4 | cut -d "." -f1)")
-custom_gamecontrols_nocase=$(find "/$directory/dragon/controls" -maxdepth 1 -iname "${gamecontrols}".gptk)
-alt_default_controls=$(find "/$directory/dragon/controls" -maxdepth 1 -iname xroar.gptk)
+custom_gamecontrols_nocase=$(find "/$directory/dragon32/controls" -maxdepth 1 -iname "${gamecontrols}".gptk)
+alt_default_controls=$(find "/$directory/dragon32/controls" -maxdepth 1 -iname xroar.gptk)
 # The next variable is for getting the extension of the game file
 ext="${GAME##*.}"
 
