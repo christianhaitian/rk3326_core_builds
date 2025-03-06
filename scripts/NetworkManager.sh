@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3566 platform for various Linux     #
+# various programs for the RK3326 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -11,9 +11,9 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-version="1.50.0"
-dsc="1ubuntu3.dsc"
-tar="1ubuntu3.debian.tar.xz"
+version="1.52.0"
+dsc="1ubuntu1.dsc"
+tar="1ubuntu1.debian.tar.xz"
 location="http://archive.ubuntu.com/ubuntu/pool/main/n/network-manager/"
 
 if [ -d "NetworkManager-${version}/" ]; then
@@ -30,8 +30,8 @@ apt-get -y install build-essential dpkg-dev debhelper devscripts
 
 #Get necessary packages and prepare the build directory
 wget ${location}network-manager_${version}-${dsc}
-wget ${location}network-manager_${version}.orig.tar.xz
-tar -xf network-manager_${version}.orig.tar.xz
+wget ${location}network-manager_${version}.orig.tar.bz2
+tar -xjf network-manager_${version}.orig.tar.bz2
 cd NetworkManager-${version}/
 wget ${location}network-manager_${version}-${tar}
 tar -xf network-manager_${version}-${tar}
@@ -59,6 +59,9 @@ if [[ $? != "0" ]]; then
   echo " "
   echo "Uh-oh!  Something went wrong.  Check above for the error"
   exit 1
+  mv ../*.deb ../netman
+  cd ..
+  rm -rf network-manager_${version}-${dsc} network-manager_${version}.orig.tar.bz2
 fi
 
 if [ ! -d "../netman/" ]; then
@@ -67,4 +70,4 @@ fi
 
 mv ../*.deb ../netman
 cd ..
-rm -rf network-manager_${version}-${dsc} network-manager_${version}.orig.tar.xz
+rm -rf network-manager_${version}-${dsc} network-manager_${version}.orig.tar.bz2
