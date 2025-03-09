@@ -24,6 +24,7 @@ bitness="$(getconf LONG_BIT)"
 		fi
 		cp patches/retrorun-patch* retrorun/.
 	  fi
+	fi
 
 	 cd retrorun/
 
@@ -56,10 +57,10 @@ bitness="$(getconf LONG_BIT)"
 		mkdir -v ../retrorun-$bitness
 	 fi
 
-	 cp retrorun ../retrorun-$bitness/retrorun
+	 cp retrorun ../retrorun-$bitness/retrorun-rk3326
 
 	 if [[ "$bitness" == "32" ]]; then
-		mv ../retrorun-$bitness/retrorun ../retrorun-$bitness/retrorun32
+		mv ../retrorun-$bitness/retrorun-rk3326 ../retrorun-$bitness/retrorun32-rk3326
 	 fi
 
 	 echo " "
