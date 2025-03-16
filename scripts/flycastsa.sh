@@ -86,7 +86,7 @@ bitness="$(getconf LONG_BIT)"
 		mkdir -v ../flycastsa-$(getconf LONG_BIT)
 	  fi
 
-	  cp flycast ../flycastsa-$(getconf LONG_BIT)/flycast
+	  cp flycast ../flycastsa-$(getconf LONG_BIT)/flycast-rk3326
 
 	  echo " "
 	  echo "Flycast standalone has been created and has been placed in the rk3326_core_builds/flycastsa-$(getconf LONG_BIT) subfolder"
