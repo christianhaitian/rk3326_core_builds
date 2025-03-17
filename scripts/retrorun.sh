@@ -43,7 +43,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
-	 make -j$(nproc)
+	 make config=release -j$(nproc)
 
 	 if [[ $? != "0" ]]; then
 		echo " "
