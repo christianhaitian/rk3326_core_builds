@@ -16,7 +16,7 @@ bitness="$(getconf LONG_BIT)"
 	if [[ "$var" == "retrorun" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "retrorun/" ]; then
-		git clone --recursive https://github.com/christianhaitian/retrorun-go2 retrorun
+		git clone --recursive https://github.com/navy1978/retrorun.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the retrorun git.  Is Internet active or did the git location change?  Stopping here."
