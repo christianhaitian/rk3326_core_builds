@@ -163,20 +163,20 @@ Select() {
 
   dialog --infobox "\nConnecting to Wi-Fi $1 ..." 5 $width > /dev/tty1
   clist2=`sudo nmcli -f ALL --mode tabular --terse --fields IN-USE,SSID,CHAN,SIGNAL,SECURITY dev wifi`
-  WPA3=`echo "$clist2" | grep "$1" | grep "WPA3"`
+  #WPA3=`echo "$clist2" | grep "$1" | grep "WPA3"`
 
   # try to connect
   output=`nmcli con delete "$1"`
-  if [[ "$WPA3" != *"WPA3"* ]]; then
+  #if [[ "$WPA3" != *"WPA3"* ]]; then
     output=`nmcli device wifi connect "$1" password "$PASS"`
-  else
+  #else
     #workaround for wpa2/wpa3 connectivity
-    output=`nmcli device wifi connect "$1" password "$PASS"`
-    sudo sed -i '/key-mgmt\=sae/s//key-mgmt\=wpa-psk/' /etc/NetworkManager/system-connections/"$1".nmconnection
-    sudo systemctl restart NetworkManager
-    sleep 5
-    output=`nmcli con up "$1"`
-  fi
+    #output=`nmcli device wifi connect "$1" password "$PASS"`
+    #sudo sed -i '/key-mgmt\=sae/s//key-mgmt\=wpa-psk/' /etc/NetworkManager/system-connections/"$1".nmconnection
+    #sudo systemctl restart NetworkManager
+    #sleep 5
+    #output=`nmcli con up "$1"`
+  #fi
   success=`echo "$output" | grep successfully`
 
   if [ -z "$success" ]; then
