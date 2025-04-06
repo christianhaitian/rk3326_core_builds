@@ -146,37 +146,33 @@ Activate() {
 }
 
 Select() {
+  dialog --infobox "\nConnecting to Wi-Fi $1 ..." 5 $width > /dev/tty1
+  clist2=`sudo nmcli -f ALL --mode tabular --terse --fields IN-USE,SSID,CHAN,SIGNAL,SECURITY dev wifi`
+  SEC=`echo "$clist2" | grep "$1" | grep -i -E "WPA|WEP"`
   KEYBOARD="osk"
-
-  pgrep -f gptokeyb | sudo xargs kill -9
-  # get password from input
-  PASS=`$KEYBOARD "Enter Wi-Fi password for ${1:0:15}" | tail -n 1`
-  /opt/inttools/gptokeyb -1 "Wifi.sh" -c "/opt/inttools/keys.gptk" > /dev/null &
-  if [[ ! -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
-    if test ! -z "$(cat /home/ark/.config/.DEVICE | grep RGB20PRO | tr -d '\0')"
-    then
-      sudo setfont /usr/share/consolefonts/Lat7-TerminusBold32x16.psf.gz
-    else
-      sudo setfont /usr/share/consolefonts/Lat7-TerminusBold24x12.psf.gz
+  if [[ ! -z "$SEC" ]]; then
+    pgrep -f gptokeyb | sudo xargs kill -9
+    # get password from input
+    PASS=`$KEYBOARD "Enter Wi-Fi password for ${1:0:15}" | tail -n 1`
+    /opt/inttools/gptokeyb -1 "Wifi.sh" -c "/opt/inttools/keys.gptk" > /dev/null &
+    if [[ ! -e "/dev/input/by-path/platform-odroidgo2-joypad-event-joystick" ]]; then
+      if test ! -z "$(cat /home/ark/.config/.DEVICE | grep RGB20PRO | tr -d '\0')"
+      then
+        sudo setfont /usr/share/consolefonts/Lat7-TerminusBold32x16.psf.gz
+      else
+        sudo setfont /usr/share/consolefonts/Lat7-TerminusBold24x12.psf.gz
+      fi
     fi
   fi
 
-  dialog --infobox "\nConnecting to Wi-Fi $1 ..." 5 $width > /dev/tty1
-  clist2=`sudo nmcli -f ALL --mode tabular --terse --fields IN-USE,SSID,CHAN,SIGNAL,SECURITY dev wifi`
-  #WPA3=`echo "$clist2" | grep "$1" | grep "WPA3"`
-
   # try to connect
   output=`nmcli con delete "$1"`
-  #if [[ "$WPA3" != *"WPA3"* ]]; then
+  if [[ -z "$SEC" ]]; then
+    output=`nmcli device wifi connect "$1"`
+  else
     output=`nmcli device wifi connect "$1" password "$PASS"`
-  #else
-    #workaround for wpa2/wpa3 connectivity
-    #output=`nmcli device wifi connect "$1" password "$PASS"`
-    #sudo sed -i '/key-mgmt\=sae/s//key-mgmt\=wpa-psk/' /etc/NetworkManager/system-connections/"$1".nmconnection
-    #sudo systemctl restart NetworkManager
-    #sleep 5
-    #output=`nmcli con up "$1"`
-  #fi
+  fi
+
   success=`echo "$output" | grep successfully`
 
   if [ -z "$success" ]; then
