@@ -42,8 +42,9 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi 
 	 
-	  make -C ./src/burner/libretro clean
-	  make -j$(nproc) -C ./src/burner/libretro USE_CYCLONE=0 profile=performance
+	  sed -i '/a53/s//a35/g' src/burner/libretro/Makefile
+      make -C ./src/burner/libretro clean
+	  make -C ./src/burner/libretro profile=performance platform=rpi3_64 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
