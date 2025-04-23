@@ -22,10 +22,11 @@ bitness="$(getconf LONG_BIT)"
 #commit="2eef7ca475decd2b864214cdbfe72b143b16d459" # SDL 2.0.30.5 (BAD)
 #commit="7ca3d26e7aa0ff1f7ba48eee2f35ac5fb4de0057" # SDL 2.0.30.6 (Bad)
 #commit="release-2.30.x"
-#commit="9c821dc21ccbd69b2bda421fdb35cb4ae2da8f5e" # SDL 2.0.30.10
-commit="7a44b1ab002cee6efa56d3b4c0e146b7fbaed80b" # SDL 2.0.32.0
+#commit="9519b9916cd29a14587af0507292f2bd31dd5752" # SDL 2.0.30.7
+commit="9c821dc21ccbd69b2bda421fdb35cb4ae2da8f5e" # SDL 2.0.30.10
+#commit="7a44b1ab002cee6efa56d3b4c0e146b7fbaed80b" # SDL 2.0.32.0
 #commit="e11183ea6caa3ae4895f4bc54cad2bbb0e365417" # SDL 2.0.32.2
-extension="3200.0"
+extension="3000.10"
 
 	# sdl2 Standalone Build
 	if [[ "$var" == "sdl2" ]]; then
@@ -132,7 +133,7 @@ extension="3200.0"
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
 	  git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- ../src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
-	  #git revert -n e5024fae3decb724e397d3c9dbcb744d8c79aac1
+	  git revert -n e5024fae3decb724e397d3c9dbcb744d8c79aac1
 	  make -j$(nproc)
 	  #make install
 
