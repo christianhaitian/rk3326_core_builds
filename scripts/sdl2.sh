@@ -86,7 +86,8 @@ extension="3000.10"
        else
          mkdir build
          cd build
-         cmake -DSDL_STATIC=OFF \
+         cmake -DCMAKE_INSTALL_PREFIX=/usr/lib/aarch64-linux-gnu \
+	 		   -DSDL_STATIC=OFF \
 			   -DSDL_LIBC=ON \
 			   -DSDL_GCC_ATOMICS=ON \
 			   -DSDL_ALTIVEC=OFF \
