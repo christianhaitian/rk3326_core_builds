@@ -134,7 +134,11 @@ extension="3000.10"
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
-	  git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- ../src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+   	  if [[ $bitness == "32" ]]; then
+	    git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+      	  else
+	    git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- ../src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+	  fi
 	  git revert -n e5024fae3decb724e397d3c9dbcb744d8c79aac1
 	  make -j$(nproc)
 	  #make install
