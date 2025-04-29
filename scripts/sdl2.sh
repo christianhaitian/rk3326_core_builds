@@ -78,6 +78,7 @@ extension="3000.10"
         if [[ $bitness == "32" ]]; then
          ./autogen.sh
          ./configure --prefix="/usr/lib/arm-linux-gnueabihf" \
+	 --libdir="/usr/lib/arm-linux-gnueabihf" \
 	 --host=arm-linux-gnueabihf \
          --enable-video-kmsdrm \
          --disable-video-x11 \
