@@ -77,7 +77,9 @@ extension="3000.10"
 
         if [[ $bitness == "32" ]]; then
          ./autogen.sh
-         ./configure --host=arm-linux-gnueabihf \
+         ./configure --prefix="/usr/lib/arm-linux-gnueabihf" \
+	 --libdir="/usr/lib/arm-linux-gnueabihf" \
+	 --host=arm-linux-gnueabihf \
          --enable-video-kmsdrm \
          --disable-video-x11 \
          --disable-video-rpi \
@@ -87,6 +89,7 @@ extension="3000.10"
          mkdir build
          cd build
          cmake -DCMAKE_INSTALL_PREFIX=/usr/lib/aarch64-linux-gnu \
+	 		   -DCMAKE_INSTALL_LIBDIR="/usr/lib/aarch64-linux-gnu" \
 	 		   -DSDL_STATIC=OFF \
 			   -DSDL_LIBC=ON \
 			   -DSDL_GCC_ATOMICS=ON \
@@ -133,7 +136,11 @@ extension="3000.10"
 
       #../configure --prefix=$PWD/bin$bitness
 	  #make clean
-	  git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- ../src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+   	  if [[ $bitness == "32" ]]; then
+	    git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+      	  else
+	    git checkout 528b71284f491bcb6ecfd4ab7e00d37b296bd621 -- ../src/joystick/SDL_gamecontroller.c # Revert CRC joystick changes
+	  fi
 	  git revert -n e5024fae3decb724e397d3c9dbcb744d8c79aac1
 	  make -j$(nproc)
 	  #make install
