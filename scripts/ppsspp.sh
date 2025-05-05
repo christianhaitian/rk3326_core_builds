@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="v1.18.1"
 
 	# PPSSPP Standalone build
 	if [[ "$var" == "ppsspp" ]] && [[ "$bitness" == "64" ]]; then
@@ -18,7 +19,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of PPSSPP
 	  if [ ! -d "ppsspp/" ]; then
-		git clone --recursive https://github.com/hrydgard/ppsspp.git
+		git clone --recursive --depth=1 https://github.com/hrydgard/ppsspp.git -b ${TAG}
 
 		if [[ $? != "0" ]]; then
 		  echo " "
