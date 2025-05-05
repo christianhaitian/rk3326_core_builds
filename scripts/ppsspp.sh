@@ -76,7 +76,7 @@ TAG="v1.18.1"
 	  done
 	 fi
 
-	  export CCC_OVERRIDE_OPTIONS="^--gcc-install-dir=/lib/gcc/aarch64-linux-gnu/8"
+	  #export CCC_OVERRIDE_OPTIONS="^--gcc-install-dir=/lib/gcc/aarch64-linux-gnu/8"
 	  mkdir build
 	  cd build
 	  cmake -DUSING_EGL=OFF \
@@ -105,7 +105,7 @@ TAG="v1.18.1"
 		echo "There was an error while building the newest ppsspp standalone.  Stopping here."
 		exit 1
 	  fi
-	  unset CCC_OVERRIDE_OPTIONS
+	  #unset CCC_OVERRIDE_OPTIONS
 
 	  strip PPSSPPSDL
 
