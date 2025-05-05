@@ -35,7 +35,7 @@ TAG="v1.18.1"
 	  fi
 
 	 # Ensure dependencies are installed and available
-     neededlibs=( libx11-dev libsm-dev libxext-dev git cmake mercurial libudev-dev libdrm-dev zlib1g-dev pkg-config libasound2-dev libfreetype6-dev libx11-xcb1 libxcb-dri2-0 )
+     neededlibs=( libx11-dev libsm-dev libxext-dev git clang cmake mercurial libudev-dev libdrm-dev zlib1g-dev pkg-config libasound2-dev libfreetype6-dev libx11-xcb1 libxcb-dri2-0 )
      updateapt="N"
      for libs in "${neededlibs[@]}"
      do
