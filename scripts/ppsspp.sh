@@ -87,7 +87,6 @@ TAG="v1.18.1"
 		-DUSE_SYSTEM_FFMPEG=NO \
 		-DUSE_SYSTEM_LIBPNG=OFF \
 		-DVULKAN=OFF \
-  		-DSDL2_LIBRARY="/usr/include/aarch64-linux-gnu/SDL2" \
   		-DSDL2_INCLUDE_DIR="/usr/lib/aarch64-linux-gnu" \
 		-DUSE_VULKAN_DISPLAY_KHR=OFF \
 		-DUSING_X11_VULKAN=OFF \
