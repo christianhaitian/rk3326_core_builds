@@ -89,7 +89,7 @@ minfluidsynthverneeded="3"
 
 	  ./configure --backend=sdl --enable-optimizations --opengl-mode=gles2 --enable-vkeybd --disable-debug --enable-release
 	  make clean
-	  make -j$(nproc)
+	  make -j$(( $(nproc) + 2 ))
 
 	  if [[ $? != "0" ]]; then
 		echo " "
