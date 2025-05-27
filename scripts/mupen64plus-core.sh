@@ -52,12 +52,12 @@
         _opts='VULKAN=0 USE_GLES=1 NEW_DYNAREC=1 OPTFLAGS="-O3" V=1 PIE=1 ACCURATE_FPU=1'
       fi
       
-      export CFLAGS="-mtune=cortex-a55 -flto=$(nproc) -fuse-linker-plugin"
+      export CFLAGS="-mtune=cortex-a35 -flto=$(nproc) -fuse-linker-plugin"
       export CXXFLAGS="$CXXFLAGS $CFLAGS"
       export LDFLAGS="$CFLAGS"
       
       make -C "projects/unix" clean
-	  make -j$(nproc) -C "projects/unix" CC="gcc-8" CXX="g++-8" $_opts all
+	  make -j$(nproc) -C "projects/unix" $_opts all
 
 	  if [[ $? != "0" ]]; then
 	  	#update-alternatives --set gcc "/usr/bin/gcc-8"
