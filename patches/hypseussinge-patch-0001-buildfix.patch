@@ -1,8 +1,8 @@
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 780b802..a0ec134 100644
+index 657f3fc..0138f2f 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -52,15 +52,13 @@ include(GNUInstallDirs)
+@@ -53,15 +53,13 @@ include(GNUInstallDirs)
  include(GetGitRevisionDescription)
  include(InstallRequiredSystemLibraries)
  include(FindPkgConfig)
@@ -19,7 +19,7 @@ index 780b802..a0ec134 100644
  
  message(STATUS "Target: ${CMAKE_SYSTEM_NAME} ${CMAKE_TARGET_ARCHITECTURES}")
  
-@@ -114,7 +112,6 @@ add_subdirectory(timer)
+@@ -115,7 +113,6 @@ add_subdirectory(timer)
  add_subdirectory(video)
  add_subdirectory(vldp)
  
@@ -27,7 +27,7 @@ index 780b802..a0ec134 100644
  add_dependencies( ldp-out vldp )
  add_dependencies( game vldp )
  add_dependencies( sound vldp )
-@@ -162,3 +159,5 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VER_MINOR}")
+@@ -163,3 +160,5 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VER_MINOR}")
  set(CPACK_PACKAGE_VERSION_PATCH "${VER_PATCH}")
  
  include(CPack)
@@ -47,6 +47,26 @@ index 7c3e66e..c5a8364 100644
  )
  
  set( LIB_HEADERS
+diff --git a/src/manymouse/manymouse.c b/src/manymouse/manymouse.c
+index 309d53f..fb4c2cb 100644
+--- a/src/manymouse/manymouse.c
++++ b/src/manymouse/manymouse.c
+@@ -15,7 +15,6 @@ static const char *manymouse_copyright =
+ 
+ extern const ManyMouseDriver *ManyMouseDriver_windows;
+ extern const ManyMouseDriver *ManyMouseDriver_evdev;
+-extern const ManyMouseDriver *ManyMouseDriver_xinput2;
+ extern const ManyMouseDriver *ManyMouseDriver_hidmanager;
+ extern const ManyMouseDriver *ManyMouseDriver_hidutilities;
+ 
+@@ -33,7 +32,6 @@ extern const ManyMouseDriver *ManyMouseDriver_hidutilities;
+ static const ManyMouseDriver **mice_drivers[] =
+ {
+     &ManyMouseDriver_evdev,
+-    &ManyMouseDriver_xinput2,
+     &ManyMouseDriver_windows,
+     &ManyMouseDriver_hidmanager,
+     &ManyMouseDriver_hidutilities
 diff --git a/src/vldp/vldp.h b/src/vldp/vldp.h
 index 438f1a1..a1498c5 100644
 --- a/src/vldp/vldp.h
