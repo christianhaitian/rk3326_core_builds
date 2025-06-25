@@ -47,26 +47,6 @@ index 7c3e66e..c5a8364 100644
  )
  
  set( LIB_HEADERS
-diff --git a/src/manymouse/manymouse.c b/src/manymouse/manymouse.c
-index 7f88582..8687e91 100644
---- a/src/manymouse/manymouse.c
-+++ b/src/manymouse/manymouse.c
-@@ -17,7 +17,6 @@ extern const ManyMouseDriver *ManyMouseDriver_windows;
- extern const ManyMouseDriver *ManyMouseDriver_evdev;
- extern const ManyMouseDriver *ManyMouseDriver_hidmanager;
- extern const ManyMouseDriver *ManyMouseDriver_hidutilities;
--extern const ManyMouseDriver *ManyMouseDriver_xinput2;
- 
- /*
-  * These have to be in the favored order...obviously it doesn't matter if the
-@@ -31,7 +30,6 @@ extern const ManyMouseDriver *ManyMouseDriver_xinput2;
-  */
- static const ManyMouseDriver **mice_drivers[] =
- {
--    &ManyMouseDriver_xinput2,
-     &ManyMouseDriver_evdev,
-     &ManyMouseDriver_windows,
-     &ManyMouseDriver_hidmanager,
 diff --git a/src/vldp/vldp.h b/src/vldp/vldp.h
 index 438f1a1..a1498c5 100644
 --- a/src/vldp/vldp.h
