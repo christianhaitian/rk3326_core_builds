@@ -95,8 +95,8 @@ TAG="v1.18.1"
 		-DUSING_FBDEV=ON \
 		-DCMAKE_C_COMPILER=/usr/bin/clang \
 		-DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-		-DCMAKE_C_FLAGS="-fpermissive -march=armv8-a+crc -mtune=cortex-a35 -funsafe-math-optimizations" \
-		-DCMAKE_CXX_FLAGS="-fpermissive -march=armv8-a+crc -mtune=cortex-a35 -funsafe-math-optimizations" \
+		-DCMAKE_C_FLAGS="-Ofast -fno-tree-slp-vectorize -D_NDEBUG -march=armv8-a+crc -mtune=cortex-a35 -ftree-vectorize -funsafe-math-optimizations" \
+		-DCMAKE_CXX_FLAGS="-Ofast -fno-tree-slp-vectorize -D_NDEBUG -march=armv8-a+crc -mtune=cortex-a35 -ftree-vectorize -funsafe-math-optimizations" \
 		-DUSE_MINIUPNPC=OFF \
 		-DUSING_QT_UI=OFF \
 		-DUSE_DISCORD=OFF \
