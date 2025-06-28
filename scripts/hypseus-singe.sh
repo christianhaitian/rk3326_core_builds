@@ -70,6 +70,13 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
+           # The following gaurd is for debian based source building
+	   if [[ "$0" == *"builds-alt"* ]]; then
+             sed -i '/${SDL2_INCLUDE_DIRS}/s//${SDL2_INCLUDE_DIRS}\n    \/usr\/include\/SDL2/' src/CMakeLists.txt
+	     #find . -name *.h -exec sed -i '/\"SDL_ttf.h\"/s//\"\/usr\/include\/SDL2\/SDL_ttf.h\"/' {} \;
+             #find . -name *.h -exec sed -i '/\<SDL_image.h\>/s//\"\/usr\/include\/SDL2\/SDL_image.h\"/' {} \;
+           fi
+
            if [ ! -d "build" ]; then
              mkdir build
              cd build
