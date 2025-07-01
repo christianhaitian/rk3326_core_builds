@@ -106,7 +106,7 @@ minfluidsynthverneeded="3"
 	  cp dists/pred.dic extra/.
 	  cp dists/engine-data/*.dat extra/.
 	  cp dists/engine-data/grim-patch.lab extra/.
-	  cp dists/engine-data/monkey4-patch.lab extra/.
+	  cp dists/engine-data/monkey4-patch.m4b extra/.
 	  cp dists/engine-data/queen.tbl extra/.
 	  cp dists/engine-data/sky.cpt extra/.
 	  cp dists/engine-data/wintermute.zip extra/.
