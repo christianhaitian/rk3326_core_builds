@@ -28,7 +28,7 @@ dirname="${tarname%.*.*}"
      rm -f $tarname
 	 cd $dirname
 
-     ./configure --enable-dragon --enable-coco3 --enable-mc10 --without-gtk2 \
+     ./configure --enable-dragon --enable-coco3 --enable-mc10 --without-gtk3 --without-gtk2 \
        --without-gtkgl --without-cocoa --without-oss --without-pulse \
        --without-coreaudio --without-x
 
