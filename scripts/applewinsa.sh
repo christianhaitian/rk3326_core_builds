@@ -116,8 +116,8 @@ bitness="$(getconf LONG_BIT)"
 	         mkdir ../../applewinsa-$bitness/libs
 	         cp /usr/local/lib/aarch64-linux-gnu/libslirp.so.0 ../../applewinsa-$bitness/libs/.
 	         cp /usr/lib/aarch64-linux-gnu/libboost_program_options.so.1.67.0 ../../applewinsa-$bitness/libs/.
+                 tar -zchvf ../../applewinsa-$bitness/applewinsa_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz ../../applewinsa-$bitness/applewin/sa2 ../../applewinsa-$bitness/libs/ ../../applewinsa-$bitness/bin/ ../../applewinsa-$bitness/resource/
 	       fi
-               tar -zchvf ../../applewinsa-$bitness/applewinsa_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz ../../applewinsa-$bitness/applewin/sa2 ../../applewinsa-$bitness/libs/ ../../applewinsa-$bitness/bin/ ../../applewinsa-$bitness/resource/
 
 	       echo " "
 	       echo "The applewin standalone executable has been created and has been placed in the rk3326_core_builds/applewinsa-$bitness subfolder"
