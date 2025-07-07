@@ -70,9 +70,11 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
-           update-alternatives --set gcc "/usr/local/bin/gcc"
-           update-alternatives --set g++ "/usr/local/bin/g++"
-           if [ ! -d "build" ]; then
+           if [[ "$0" == *"builds-alt"* ]]; then
+             update-alternatives --set gcc "/usr/local/bin/gcc"
+             update-alternatives --set g++ "/usr/local/bin/g++"
+           fi
+	   if [ ! -d "build" ]; then
              mkdir build
              cd build
              cmake DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SA2=ON ..
@@ -86,14 +88,18 @@ bitness="$(getconf LONG_BIT)"
            make -j$(nproc)
 
            if [[ $? != "0" ]]; then
-		     echo " "
-             update-alternatives --set gcc "/usr/bin/gcc-8"
-             update-alternatives --set g++ "/usr/bin/g++-8"
-		     echo "There was an error that occured while making the applewin standalone.  Stopping here."
+	     if [[ "$0" == *"builds-alt"* ]]; then
+	       echo " "
+               update-alternatives --set gcc "/usr/bin/gcc-8"
+               update-alternatives --set g++ "/usr/bin/g++-8"
+	     fi
+	       echo "There was an error that occured while making the applewin standalone.  Stopping here."
              exit 1
            fi
-           update-alternatives --set gcc "/usr/bin/gcc-8"
-           update-alternatives --set g++ "/usr/bin/g++-8"
+	   if [[ "$0" == *"builds-alt"* ]]; then
+             update-alternatives --set gcc "/usr/bin/gcc-8"
+             update-alternatives --set g++ "/usr/bin/g++-8"
+	   fi
            strip sa2
 
            if [ ! -d "../../applewinsa-$bitness/" ]; then
