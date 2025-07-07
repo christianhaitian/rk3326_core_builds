@@ -109,13 +109,15 @@ bitness="$(getconf LONG_BIT)"
 	       mkdir ../../applewinsa-$bitness/applewin
 	       mkdir ../../applewinsa-$bitness/bin
 	       mkdir ../../applewinsa-$bitness/resource
-	       mkdir ../../applewinsa-$bitness/libs
 	       cp sa2 ../../applewinsa-$bitness/applewin/.
 	       cp -R ../bin/* ../../applewinsa-$bitness/bin/.
 	       cp -R ../resource/* ../../applewinsa-$bitness/resource/.
-	       cp /usr/local/lib/aarch64-linux-gnu/libslirp.so.0 ../../applewinsa-$bitness/libs/.
-	       cp /usr/lib/aarch64-linux-gnu/libboost_program_options.so.1.67.0 ../../applewinsa-$bitness/libs/.
-           tar -zchvf ../../applewinsa-$bitness/applewinsa_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz ../../applewinsa-$bitness/applewin/sa2 ../../applewinsa-$bitness/libs/ ../../applewinsa-$bitness/bin/ ../../applewinsa-$bitness/resource/
+	       if [[ "$0" != *"builds-alt"* ]]; then
+	         mkdir ../../applewinsa-$bitness/libs
+	         cp /usr/local/lib/aarch64-linux-gnu/libslirp.so.0 ../../applewinsa-$bitness/libs/.
+	         cp /usr/lib/aarch64-linux-gnu/libboost_program_options.so.1.67.0 ../../applewinsa-$bitness/libs/.
+	       fi
+               tar -zchvf ../../applewinsa-$bitness/applewinsa_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz ../../applewinsa-$bitness/applewin/sa2 ../../applewinsa-$bitness/libs/ ../../applewinsa-$bitness/bin/ ../../applewinsa-$bitness/resource/
 
 	       echo " "
 	       echo "The applewin standalone executable has been created and has been placed in the rk3326_core_builds/applewinsa-$bitness subfolder"
