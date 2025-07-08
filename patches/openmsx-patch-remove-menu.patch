@@ -1,0 +1,13 @@
+diff --git a/share/scripts/osd_menu.tcl b/share/scripts/osd_menu.tcl
+index e6f2991e8..46ba631c8 100644
+--- a/share/scripts/osd_menu.tcl
++++ b/share/scripts/osd_menu.tcl
+@@ -83,7 +83,7 @@ proc remove_button {} {
+ 	osd destroy main_menu_pop_up_button
+ }
+ 
+-if {![regexp dingux "[openmsx_info platform]"] && $::osd_menu_button} {
++if {![regexp dingux "[openmsx_info platform]"] && 0} {
+ 	add_button
+ }
+ 
