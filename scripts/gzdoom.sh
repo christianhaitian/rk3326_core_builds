@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="g4.14.2"
 
 	# gzdoom Standalone build
 	if [[ "$var" == "gzdoom" ]] && [[ "$bitness" == "64" ]]; then
@@ -81,8 +82,9 @@ bitness="$(getconf LONG_BIT)"
      fi
 
 	 cd $cur_wd/gzdoom
-     git config --local --add remote.origin.fetch +refs/tags/*:refs/tags/*
-     git pull
+	 git checkout $TAG
+	 git config --local --add remote.origin.fetch +refs/tags/*:refs/tags/*
+	 git pull
 	 
 	 gzdoomsa_patches=$(find *.patch)
 	 
