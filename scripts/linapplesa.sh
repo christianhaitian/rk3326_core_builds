@@ -34,7 +34,7 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 # Ensure dependencies are installed and available
-     neededlibs=( libzip-dev libsdl1.2-dev libsdl-image1.2-dev libcurl4-openssl-dev zlib1g-dev imagemagick )
+     neededlibs=( libzip-dev libsdl1.2-dev libsdl-image1.2-dev libcurl4-openssl-dev zlib1g-dev imagemagick libglx-dev )
      updateapt="N"
      for libs in "${neededlibs[@]}"
      do
