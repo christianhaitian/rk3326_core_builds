@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of solarus
 	  if [ ! -d "solarus/" ]; then
-		git clone --recursive https://gitlab.com/solarus-games/solarus.git -b release-1.6.5
+		git clone --recursive https://gitlab.com/solarus-games/solarus.git -b release-2.0.1
 
 		if [[ $? != "0" ]]; then
 		  echo " "
