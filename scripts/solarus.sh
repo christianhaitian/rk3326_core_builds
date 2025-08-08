@@ -81,14 +81,14 @@ bitness="$(getconf LONG_BIT)"
 		exit 1
 	  fi
 
-	  strip solarus-run
+	  strip cli/solarus-run
 	  strip libsolarus.so.1.*
 
 	  if [ ! -d "../../solarus$bitness/" ]; then
 		mkdir -v ../../solarus$bitness
 	  fi
 
-	  cp solarus-run ../../solarus$bitness/.
+	  cp cli/solarus-run ../../solarus$bitness/.
 	  cp libsolarus.so.* ../../solarus$bitness/.
 	  
 	  echo " "
