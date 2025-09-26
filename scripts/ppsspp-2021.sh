@@ -80,7 +80,6 @@ bitness="$(getconf LONG_BIT)"
 	  cd build
 	  cmake -DUSING_EGL=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON \
 	  -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF \
-      -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
       -DCMAKE_C_FLAGS=-fpermissive -DCMAKE_CXX_FLAGS=-fpermissive ../.
 	  make -j$(nproc)
 
