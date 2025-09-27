@@ -80,7 +80,8 @@ bitness="$(getconf LONG_BIT)"
 	  cd build
 	  cmake -DUSING_EGL=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON \
 	  -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF \
-      -DCMAKE_C_FLAGS=-fpermissive -DCMAKE_CXX_FLAGS=-fpermissive ../.
+	  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+      -DCMAKE_C_FLAGS="-fpermissive -fPIC" -DCMAKE_CXX_FLAGS="-fpermissive -fPIC" ../.
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
