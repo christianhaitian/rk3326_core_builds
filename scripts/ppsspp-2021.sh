@@ -58,6 +58,8 @@ bitness="$(getconf LONG_BIT)"
 	git submodule update --init
 	cd ffmpeg
 	sed -i '/--disable-everything \\/s//--disable-everything \\\n    --disable-iconv \\/g' linux_arm64.sh
+	sed -i '/-finline-limit\=300/s//-finline-limit\=300 -fPIC /g' linux_arm64.sh
+	sed -i '/make clean/s//sed -i \"s\/^#define HAVE_ARC4RANDOM 1\/#define HAVE_ARC4RANDOM 0\/\" config.h\nmake clean/' linux_arm64.sh
 	./linux_arm64.sh
 	cd ..
          
@@ -81,7 +83,7 @@ bitness="$(getconf LONG_BIT)"
 	  cmake -DUSING_EGL=OFF -DCMAKE_BUILD_TYPE=Release -DUSING_GLES2=ON \
 	  -DUSE_FFMPEG=YES -DUSE_SYSTEM_FFMPEG=NO -DUSING_X11_VULKAN=OFF \
 	  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-      -DCMAKE_C_FLAGS="-fpermissive -fPIC" -DCMAKE_CXX_FLAGS="-fpermissive -fPIC" ../.
+      -DCMAKE_C_FLAGS="-fPIC" -DCMAKE_CXX_FLAGS="-fpermissive -fPIC" ../.
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
