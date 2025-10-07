@@ -1,59 +1,56 @@
 diff --git a/build.xml b/build.xml
-index 4637a0d..13f7c8b 100644
+index 5be40779..1e44c8c4 100644
 --- a/build.xml
 +++ b/build.xml
-@@ -55,7 +55,7 @@
+@@ -63,7 +63,7 @@
  
  	<echo message="Building JAR - Libretro" />
  	<jar
 -		destfile="build/freej2me-lr.jar">
 +		destfile="build/freej2me-plus-lr.jar">
- 		<fileset dir="build/classes" excludes="**/AWTGUI*.class, **/FreeJ2ME*.class, **/Anbu*.class"/> <!-- Exclude AWT and SDL classes (FreeJ2ME.class is part of the AWT standalone) -->
+ 		<fileset dir="build/classes" excludes="**/AWTGUI*.class, **/FreeJ2ME*.class, org/recompile/freej2me/ProgressBar.class, **/ScreenShot*.class"/> <!-- Exclude AWT classes (FreeJ2ME.class is only needed for AWT) -->
  		<fileset dir="resources" />
  		<metainf dir="META-INF" />
 diff --git a/src/libretro/freej2me_libretro.c b/src/libretro/freej2me_libretro.c
-index 5dd5b6c..8d272a0 100755
+index 9188b999..6e7ebc3e 100755
 --- a/src/libretro/freej2me_libretro.c
 +++ b/src/libretro/freej2me_libretro.c
-@@ -551,7 +551,7 @@ void retro_init(void)
- 	params = (char**)malloc(sizeof(char*) * 15);
- 	params[0] = strdup("java");
- 	params[1] = strdup("-jar");
--	params[2] = strdup("freej2me-lr.jar");
-+	params[2] = strdup("freej2me-plus-lr.jar");
- 	params[3] = strdup(resArg[0]);
- 	params[4] = strdup(resArg[1]);
- 	params[5] = strdup(rotateArg);
+@@ -36,9 +36,9 @@ const char *slash = path_default_slash();
+ 
+ // These may change to .so and .dll at some point
+ #ifdef __linux__
+-const char *freej2meapp = "freej2me-lr.jar";
++const char *freej2meapp = "freej2me-plus-lr.jar";
+ #elif _WIN32
+-const char *freej2meapp = "freej2me-lr.jar";
++const char *freej2meapp = "freej2me-plus-lr.jar";
+ #endif
+ 
+ retro_environment_t Environ;
 diff --git a/src/libretro/freej2me_libretro.h b/src/libretro/freej2me_libretro.h
-index e041d5e..a868def 100644
+index 0f40217d..a4e21c94 100644
 --- a/src/libretro/freej2me_libretro.h
 +++ b/src/libretro/freej2me_libretro.h
-@@ -54,7 +54,7 @@ static const struct retro_message_ext messages[] =
-    /* Message string to be displayed/logged */
-    {"Too many frames dropped!!! Please restart the core.", 8000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-    {"Invalid status received!!! Please restart the core.", 8000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
--   {"FreeJ2ME could not start!!! \nMake sure > freej2me-lr.jar < is in the 'system' dir and that you have Java 8 or newer installed.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-+   {"FreeJ2ME could not start!!! \nMake sure > frej2me-plus-lr.jar < is in the 'system' dir and that you have Java 8 or newer installed.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-    {"FreeJ2ME child process loaded successfully!", 4000, 1, RETRO_LOG_INFO, RETRO_MESSAGE_TARGET_OSD, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-    {"", 0, 0, 0, 0, 0, 0}
- };
-@@ -236,8 +236,8 @@ struct retro_core_option_v2_definition core_options[] =
+@@ -71,9 +71,9 @@ static const struct retro_message_ext messages[] =
+     {"Invalid status received! Please restart the core.", 5000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+     {"FreeJ2ME failed to setup pipes for communication!!! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ #ifdef __linux__
+-    {"FreeJ2ME system files not found! \nMake sure > freej2me-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
++    {"FreeJ2ME system files not found! \nMake sure > freej2me-plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ #elif _WIN32
+-    {"FreeJ2ME system files not found! \nMake sure > freej2me-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
++    {"FreeJ2ME system files not found! \nMake sure > freej2me-plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ #endif
+     {"FreeJ2ME could not start! \nMake sure that you have Java 6 or newer installed.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+     {"FreeJ2ME closed unexpectedly!!! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+@@ -312,8 +312,8 @@ struct retro_core_option_v2_definition core_options[] =
          "freej2me_midifont",
          "System > MIDI Soundfont",
          "MIDI Soundfont",
 -        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
 -        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-+        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<frej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-+        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<frej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
++        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
++        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
          "system_settings",
          {
              { "off", "Default" },
-@@ -535,7 +535,7 @@ struct retro_core_option_definition core_options_v1 [] =
-     {
-         "freej2me_midifont",
-         "MIDI Soundfont",
--        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-+        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<frej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-         {
-             { "off", "Default" },
-             { "on",  "Custom" },

@@ -1,33 +1,13 @@
 diff --git a/src/javax/microedition/rms/RecordStore.java b/src/javax/microedition/rms/RecordStore.java
-index 7691576..cf380b6 100644
+index cc43616c..712364df 100644
 --- a/src/javax/microedition/rms/RecordStore.java
 +++ b/src/javax/microedition/rms/RecordStore.java
-@@ -79,8 +79,8 @@ public class RecordStore
- 
- 		appname = Mobile.getPlatform().loader.suitename;
- 
--		rmsPath = Mobile.getPlatform().dataPath + "./rms/"+appname;
--		rmsFile = Mobile.getPlatform().dataPath + "./rms/"+appname+"/"+name;
-+		rmsPath = "/dev/shm/j2me/rms/"+appname;
-+		rmsFile = "/dev/shm/j2me/rms/"+appname+"/"+recordStoreName;
- 
- 		try
+@@ -109,7 +109,7 @@ public class RecordStore
+ 		try 
  		{
-@@ -318,7 +318,7 @@ public class RecordStore
- 		try
- 		{
- 			Mobile.log(Mobile.LOG_DEBUG, RecordStore.class.getPackage().getName() + "." + RecordStore.class.getSimpleName() + ": " + "Deleting RecordStore "+recordStoreName);
--			File fstore = new File(Mobile.getPlatform().dataPath + "./rms/"+Mobile.getPlatform().loader.suitename+"/"+recordStoreName);
-+			File fstore = new File("/dev/shm/j2me/rms/"+Mobile.getPlatform().loader.suitename+"/"+recordStoreName);
- 			fstore.delete();
+ 			// For ISO-8859-1 encodings, we'll use UTF-8 for save paths, helps with chinese and special characters
+-			rmsPath = new String((Mobile.getPlatform().dataPath + "./rms/"+suitename).getBytes(System.getProperty("file.encoding")), System.getProperty("file.encoding").equals(Mobile.supportedEncodings[Mobile.ISO_8859_1]) ? "UTF-8" : Mobile.textEncoding);
++			rmsPath = new String((Mobile.getPlatform().dataPath + "/dev/shm/j2me/rms/"+suitename).getBytes(System.getProperty("file.encoding")), System.getProperty("file.encoding").equals(Mobile.supportedEncodings[Mobile.ISO_8859_1]) ? "UTF-8" : Mobile.textEncoding);
+ 			rmsFile = rmsPath+"/"+basename+".rms";
  		}
- 		catch (Exception e)
-@@ -428,7 +428,7 @@ public class RecordStore
- 		Mobile.log(Mobile.LOG_DEBUG, RecordStore.class.getPackage().getName() + "." + RecordStore.class.getSimpleName() + ": " + "List Record Stores");
- 		if(rmsPath==null)
- 		{
--			rmsPath = Mobile.getPlatform().dataPath + "./rms/"+Mobile.getPlatform().loader.name;
-+			rmsPath = "/dev/shm/j2me/rms/"+Mobile.getPlatform().loader.name;
- 			try
- 			{
- 				Files.createDirectories(Paths.get(rmsPath));
+ 		catch (UnsupportedEncodingException e) { } // Shouldn't really happen
