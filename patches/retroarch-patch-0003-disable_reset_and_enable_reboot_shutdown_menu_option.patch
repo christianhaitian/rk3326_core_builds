@@ -1,8 +1,8 @@
 diff --git a/menu/menu_displaylist.c b/menu/menu_displaylist.c
-index 8f006cad5b..7e18f49e89 100644
+index 7f29cdfaf8..5712c38a5a 100644
 --- a/menu/menu_displaylist.c
 +++ b/menu/menu_displaylist.c
-@@ -10507,12 +10507,12 @@ unsigned menu_displaylist_build_list(
+@@ -10749,12 +10749,12 @@ unsigned menu_displaylist_build_list(
                    MENU_ENUM_LABEL_SAVE_NEW_CONFIG,
                    MENU_SETTING_ACTION, 0, 0, NULL))
              count++;
@@ -17,11 +17,29 @@ index 8f006cad5b..7e18f49e89 100644
           break;
        case DISPLAYLIST_PRIVACY_SETTINGS_LIST:
           {
+@@ -15294,7 +15294,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+                      count++;
+ #endif
+ 
+-#if defined(HAVE_LAKKA)
++//#if defined(HAVE_LAKKA)
+                if (settings->bools.menu_show_reboot)
+                   if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(info->list,
+                            MENU_ENUM_LABEL_REBOOT,
+@@ -15306,7 +15306,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+                            MENU_ENUM_LABEL_SHUTDOWN,
+                            PARSE_ACTION, false) == 0)
+                      count++;
+-#endif
++//#endif
+ 
+                info->flags       |=  MD_FLAG_NEED_PUSH;
+             }
 diff --git a/menu/menu_setting.c b/menu/menu_setting.c
-index 33bd9a7733..8aef0ee94c 100644
+index 4d9a5b857f..70cce42da6 100644
 --- a/menu/menu_setting.c
 +++ b/menu/menu_setting.c
-@@ -10082,7 +10082,7 @@ static bool setting_append_list(
+@@ -10119,7 +10119,7 @@ static bool setting_append_list(
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_SAVE_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
@@ -30,7 +48,7 @@ index 33bd9a7733..8aef0ee94c 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
-@@ -10092,6 +10092,7 @@ static bool setting_append_list(
+@@ -10129,6 +10129,7 @@ static bool setting_append_list(
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_RESET_TO_DEFAULT_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
@@ -38,7 +56,7 @@ index 33bd9a7733..8aef0ee94c 100644
  
           CONFIG_ACTION(
                 list, list_info,
-@@ -10203,7 +10204,7 @@ static bool setting_append_list(
+@@ -10240,7 +10241,7 @@ static bool setting_append_list(
                parent_group);
  #endif
  
@@ -47,7 +65,7 @@ index 33bd9a7733..8aef0ee94c 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_REBOOT,
-@@ -10222,7 +10223,7 @@ static bool setting_append_list(
+@@ -10259,7 +10260,7 @@ static bool setting_append_list(
                 &subgroup_info,
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_SHUTDOWN);
