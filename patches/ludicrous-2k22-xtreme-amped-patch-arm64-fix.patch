@@ -1,0 +1,34 @@
+--- a/mupen64plus-core/src/r4300/new_dynarec/arm64/assem_arm64.c
++++ b/mupen64plus-core/src/r4300/new_dynarec/arm64/assem_arm64.c
+@@ -464,7 +464,7 @@
+         //assert((ptr2[4]&0xfffffc1f)==0xd61f0000); //br
+         add_link(vaddr, ptr2);
+         set_jump_target((intptr_t)ptr, (uintptr_t)head->addr);
+-        cache_flush((void*)ptr_rx, (void*)(ptr_rx+4));
++        cache_flush((void*)ptr, (void*)(ptr+4));
+       }
+       #ifdef NEW_DYNAREC_DEBUG
+       print_debug_info(vaddr);
+@@ -3755,7 +3755,7 @@
+                 emit_storereg64(reg,HOST_TEMPREG);
+               }
+               else
+-                emit_storereg(tr,hr);
++                emit_storereg(reg,hr);
+             } else {
+               emit_storereg(reg,hr);
+             }
+@@ -6729,6 +6729,7 @@
+             }else{
+ #ifndef HAVE_LIBNX
+               cache_flush((char *)start,(char *)end);
++#endif
+               break;
+             }
+           }
+@@ -6754,4 +6755,4 @@
+   #ifdef RAM_OFFSET
+   ram_offset=((intptr_t)g_rdram-(intptr_t)0x80000000)>>2;
+   #endif
+-}
++}
