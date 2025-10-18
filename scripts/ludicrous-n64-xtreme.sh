@@ -33,7 +33,8 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd ludicrous-2k22-xtreme-amped
-	 
+	 #git checkout 3733148e82c2f88e81d9dd902cab96dede962d32 #  Buildd commit before memory leak fix to miniimize stuttering
+
 	 ludicrous_core_patches=$(find *.patch)
 	 
 	 if [[ ! -z "$ludicrous_core_patches" ]]; then
