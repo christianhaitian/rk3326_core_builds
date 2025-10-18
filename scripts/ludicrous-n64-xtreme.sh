@@ -72,7 +72,7 @@ bitness="$(getconf LONG_BIT)"
 	  cp km_ludicrousn64_2k22_xtreme_amped_libretro.so ../cores$bitness/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$bitness/mupen64plus_next_libretro.so.commit
+	  echo $gitcommit > ../cores$bitness/km_ludicrousn64_2k22_xtreme_amped_libretro.so.commit
 	  
 	  echo " "
 	  echo "km_ludicrousn64_2k22_xtreme_amped_libretro.so executable has been created and has been placed in the rk3326_core_builds/cores$bitness subfolder"
