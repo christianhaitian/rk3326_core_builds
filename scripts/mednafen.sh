@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-tarname="mednafen-1.29.0.tar.xz"
+tarname="mednafen-1.32.1.tar.xz"
 
 	# mednafen package
 	if [[ "$var" == "mednafen" ]] && [[ "$bitness" == "64" ]]; then
