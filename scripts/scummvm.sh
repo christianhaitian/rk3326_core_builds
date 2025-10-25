@@ -20,7 +20,7 @@ minfluidsynthverneeded="3"
 
 	  # Now we'll start the clone and build process of scummvm
 	  if [ ! -d "scummvm/" ]; then
-		git clone --recursive https://github.com/scummvm/scummvm.git -b ${TAG}
+		git clone --recursive --depth=1 https://github.com/scummvm/scummvm.git -b ${TAG}
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the scummvm standalone git.  Is Internet active or did the git location change?  Stopping here."
