@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="release-2.0.1"
 
 	# Solarus Standalone build
 	if [[ "$var" == "solarus" ]] && [[ "$bitness" == "64" ]]; then
@@ -18,7 +19,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of solarus
 	  if [ ! -d "solarus/" ]; then
-		git clone --recursive https://gitlab.com/solarus-games/solarus.git -b release-2.0.1
+		git clone --recursive https://gitlab.com/solarus-games/solarus.git -b ${TAG}
 
 		if [[ $? != "0" ]]; then
 		  echo " "
