@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="RELEASE_17_0"
 
 	# openmsx Standalone build
 	if [[ "$var" == "openmsx" ]] && [[ "$bitness" == "64" ]]; then
@@ -54,7 +55,7 @@ bitness="$(getconf LONG_BIT)"
      done
 
 	 cd openMSX
-         git checkout RELEASE_17_0
+         git checkout ${TAG}
 	 
 	 openmsx_patches=$(find *.patch)
 	 
