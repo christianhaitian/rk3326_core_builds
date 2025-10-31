@@ -45,9 +45,11 @@ TAG="v1.0"
 	  done
 	 fi
 
-      update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
-      update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
-      export CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/c++/13/backward:/usr/local/include/c++/13/aarch64-linux-gnu
+      if [[ "$0" != *"builds-alt"* ]]; then
+        update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
+        update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
+        export CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/c++/13/backward:/usr/local/include/c++/13/aarch64-linux-gnu
+      fi
 
 	  cd ..
 	  mkdir flycast-build
@@ -69,17 +71,21 @@ TAG="v1.0"
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
-		update-alternatives --set gcc "/usr/bin/gcc-8"
-		update-alternatives --set g++ "/usr/bin/g++-8"
-		unset CPLUS_INCLUDE_PATH
+	    if [[ "$0" != *"builds-alt"* ]]; then
+		  update-alternatives --set gcc "/usr/bin/gcc-8"
+		  update-alternatives --set g++ "/usr/bin/g++-8"
+		  unset CPLUS_INCLUDE_PATH
+		fi
 		echo " "
 		echo "There was an error while building the newest flycast standalone emulator.  Stopping here."
 		exit 1
 	  fi
 
-	  update-alternatives --set gcc "/usr/bin/gcc-8"
-	  update-alternatives --set g++ "/usr/bin/g++-8"
-	  unset CPLUS_INCLUDE_PATH
+      if [[ "$0" != *"builds-alt"* ]]; then
+	    update-alternatives --set gcc "/usr/bin/gcc-8"
+	    update-alternatives --set g++ "/usr/bin/g++-8"
+	    unset CPLUS_INCLUDE_PATH
+	  fi
 
 	  strip flycast
 
