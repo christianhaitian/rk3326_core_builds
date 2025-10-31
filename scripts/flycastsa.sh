@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="v1.0"
 
 	# flycastsa build
 	if [[ "$var" == "flycastsa" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
@@ -26,7 +27,7 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	 cd flycast/
-	 git checkout v1.0
+	 git checkout ${TAG}
 	 sed -i 's/\-O[23]/-Ofast/' CMakeLists.txt
 	 
 	 flycastsa_patches=$(find *.patch)
