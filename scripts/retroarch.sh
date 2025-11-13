@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-tag="v1.21.0"
+tag="v1.22.0"
 
 	# Libretro Retroarch build
 	if [[ "$var" == "retroarch" ]]; then
