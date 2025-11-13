@@ -1,23 +1,23 @@
 diff --git a/menu/menu_displaylist.c b/menu/menu_displaylist.c
-index 7f29cdfaf8..5712c38a5a 100644
+index 8b3de10cbd..2e2f5ca901 100644
 --- a/menu/menu_displaylist.c
 +++ b/menu/menu_displaylist.c
-@@ -10749,12 +10749,12 @@ unsigned menu_displaylist_build_list(
-                   MENU_ENUM_LABEL_SAVE_NEW_CONFIG,
-                   MENU_SETTING_ACTION, 0, 0, NULL))
-             count++;
--         if (menu_entries_append(list,
-+         /*if (menu_entries_append(list,
-                   msg_hash_to_str(MENU_ENUM_LABEL_VALUE_RESET_TO_DEFAULT_CONFIG),
-                   msg_hash_to_str(MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG),
-                   MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
-                   MENU_SETTING_ACTION, 0, 0, NULL))
--            count++;
-+            count++;*/
-          break;
-       case DISPLAYLIST_PRIVACY_SETTINGS_LIST:
-          {
-@@ -15294,7 +15294,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -10964,12 +10964,12 @@ unsigned menu_displaylist_build_list(
+                      MENU_ENUM_LABEL_SAVE_AS_CONFIG,
+                      MENU_SETTING_ACTION, 0, 0, NULL))
+                count++;
+-            if (menu_entries_append(list,
++            /*if (menu_entries_append(list,
+                      msg_hash_to_str(MENU_ENUM_LABEL_VALUE_RESET_TO_DEFAULT_CONFIG),
+                      msg_hash_to_str(MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG),
+                      MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
+                      MENU_SETTING_ACTION, 0, 0, NULL))
+-               count++;
++               count++;*/
+             if (!settings->bools.global_core_options && !string_is_empty(sys_info->info.library_name)
+                 && menu_entries_append(list,
+                   msg_hash_to_str(MENU_ENUM_LABEL_VALUE_CORE_OPTIONS_RESET),
+@@ -15369,7 +15369,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
                       count++;
  #endif
  
@@ -26,20 +26,20 @@ index 7f29cdfaf8..5712c38a5a 100644
                 if (settings->bools.menu_show_reboot)
                    if (MENU_DISPLAYLIST_PARSE_SETTINGS_ENUM(info->list,
                             MENU_ENUM_LABEL_REBOOT,
-@@ -15306,7 +15306,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
+@@ -15381,7 +15381,7 @@ bool menu_displaylist_ctl(enum menu_displaylist_ctl_state type,
                             MENU_ENUM_LABEL_SHUTDOWN,
                             PARSE_ACTION, false) == 0)
                       count++;
 -#endif
 +//#endif
  
-                info->flags       |=  MD_FLAG_NEED_PUSH;
-             }
+                if (!count)
+                {
 diff --git a/menu/menu_setting.c b/menu/menu_setting.c
-index 4d9a5b857f..70cce42da6 100644
+index 139ae8e454..338d9e5b57 100644
 --- a/menu/menu_setting.c
 +++ b/menu/menu_setting.c
-@@ -10119,7 +10119,7 @@ static bool setting_append_list(
+@@ -10175,7 +10175,7 @@ static bool setting_append_list(
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_SAVE_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
@@ -48,7 +48,7 @@ index 4d9a5b857f..70cce42da6 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_RESET_TO_DEFAULT_CONFIG,
-@@ -10129,6 +10129,7 @@ static bool setting_append_list(
+@@ -10185,6 +10185,7 @@ static bool setting_append_list(
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_MENU_RESET_TO_DEFAULT_CONFIG);
           SETTINGS_DATA_LIST_CURRENT_ADD_FLAGS(list, list_info, SD_FLAG_LAKKA_ADVANCED);
@@ -56,7 +56,7 @@ index 4d9a5b857f..70cce42da6 100644
  
           CONFIG_ACTION(
                 list, list_info,
-@@ -10240,7 +10241,7 @@ static bool setting_append_list(
+@@ -10296,7 +10297,7 @@ static bool setting_append_list(
                parent_group);
  #endif
  
@@ -65,7 +65,7 @@ index 4d9a5b857f..70cce42da6 100644
           CONFIG_ACTION(
                 list, list_info,
                 MENU_ENUM_LABEL_REBOOT,
-@@ -10259,7 +10260,7 @@ static bool setting_append_list(
+@@ -10315,7 +10316,7 @@ static bool setting_append_list(
                 &subgroup_info,
                 parent_group);
           MENU_SETTINGS_LIST_CURRENT_ADD_CMD(list, list_info, CMD_EVENT_SHUTDOWN);
