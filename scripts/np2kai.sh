@@ -25,7 +25,7 @@ bitness="$(getconf LONG_BIT)"
 		cp patches/np2kai-patch* np2kai/.
 	  fi
 
-	 cd np2kai/sdl
+	 cd np2kai
 	 
 	 np2kai_patches=$(find *.patch)
 	 
@@ -42,6 +42,7 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
+	  cd sdl
 	  make clean
 	  make -j$(nproc)
 
