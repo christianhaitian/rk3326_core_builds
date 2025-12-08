@@ -43,6 +43,9 @@ bitness="$(getconf LONG_BIT)"
 	 fi 
 
       ./update-deps.sh
+      mkdir build
+      cd build
+      cmake ..
 	  make -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
@@ -53,14 +56,14 @@ bitness="$(getconf LONG_BIT)"
 
 	  strip onscripter_libretro.so
 
-	  if [ ! -d "../cores64/" ]; then
-		mkdir -v ../cores64
+	  if [ ! -d "../../cores64/" ]; then
+		mkdir -v ../../cores64
 	  fi
 
-	  cp onscripter_libretro.so ../cores64/.
+	  cp onscripter_libretro.so ../../cores64/.
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
-	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
+	  echo $gitcommit > ../../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
 
 	  echo " "
 	  echo "onscripter_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
