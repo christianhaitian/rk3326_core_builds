@@ -57,13 +57,16 @@ if [[ "$var" == "update" ]]; then
     if [[ ! -z "$builtcore_so" ]]; then
       for core in $builtcore_so
       do
-	cp -f $core $folder/.
-	if [[ $? != "0" ]]; then
-	  echo " "
-	  echo "There was an error while copying $core.  Stopping here."
-	  exit 1
-	fi
-	rm $core
+		if [[ "$bitness" == "32" ]]; then
+	      execstack -c $core
+		fi
+		cp -f $core $folder/.
+		if [[ $? != "0" ]]; then
+	  	  echo " "
+	  	  echo "There was an error while copying $core.  Stopping here."
+	  	  exit 1
+		fi
+		rm $core
       done
     else
       echo ""
