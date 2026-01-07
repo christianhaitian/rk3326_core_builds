@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+tag="0.8.1.1"
 
 	# Libretro easyrpg build
 	if [[ "$var" == "easyrpg" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
@@ -54,6 +55,7 @@ bitness="$(getconf LONG_BIT)"
 
 	 cd $cur_wd
 	 cd Player/
+	 git checkout ${tag}
 	 
 	 easyrpg_patches=$(find *.patch)
 	 
