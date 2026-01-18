@@ -1,0 +1,15 @@
+diff --git a/Makefile b/Makefile
+index b39207b..6916615 100644
+--- a/Makefile
++++ b/Makefile
+@@ -97,8 +97,8 @@ else ifeq ($(OS), wasm)
+ 	SRCS := $(filter-out %window.cpp, $(SRCS))
+ else
+ 	OBJS += $(NATIVE_OBJS)
+-	COMPILER_FLAGS = -g `sdl2-config --cflags` $(EXTRA_INCLUDES)
+-	LINKER_FLAGS = `sdl2-config --libs`
++	COMPILER_FLAGS = -g `sdl2-config --cflags` $(EXTRA_INCLUDES) -Ofast -mcpu=cortex-a35 -flto
++	LINKER_FLAGS = `sdl2-config --libs` -Ofast -mcpu=cortex-a35 -flto
+ endif
+ 
+ 

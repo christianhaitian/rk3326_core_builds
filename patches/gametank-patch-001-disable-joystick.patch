@@ -1,0 +1,20 @@
+diff --git a/src/joystick_adapter.cpp b/src/joystick_adapter.cpp
+index ddf90df..f3f744c 100644
+--- a/src/joystick_adapter.cpp
++++ b/src/joystick_adapter.cpp
+@@ -10,7 +10,7 @@ JoystickAdapter::JoystickAdapter() {
+ 	load_joystick_config(this->bindings);
+ 
+ 	if(!EmulatorConfig::noJoystick) {
+-		SDL_InitSubSystem(SDL_INIT_JOYSTICK);
++		//SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+ 		if(SDL_NumJoysticks() > 0) {
+ 			printf("Joystick found\n");
+ 			gGameController = SDL_JoystickOpen(0);
+@@ -219,4 +219,4 @@ void JoystickAdapter::Reset() {
+ 	for(int i = 0; i < (BUTTON_COUNT*2); ++i) {
+ 		button_press_counts[i] = 0;
+ 	}
+-}
+\ No newline at end of file
++}
