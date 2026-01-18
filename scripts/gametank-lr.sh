@@ -22,15 +22,15 @@ bitness="$(getconf LONG_BIT)"
 		  echo "There was an error while cloning the libretro git.  Is Internet active or did the git location change?  Stopping here."
 		  exit 1
 		 fi
-		cp patches/gametank-patch* gametank-sdk/.
+		cp patches/gametanksdk-patch* gametank-sdk/.
 	  fi
 
-	 cd gametank/
+	 cd gametank-sdk/
 	 
 	 gametank_patches=$(find *.patch)
 	 
 	 if [[ ! -z "$gametank_patches" ]]; then
-	  for patching in gametank-patch*
+	  for patching in gametanksdk-patch*
 	  do
 		   patch -Np1 < "$patching"
 		   if [[ $? != "0" ]]; then
