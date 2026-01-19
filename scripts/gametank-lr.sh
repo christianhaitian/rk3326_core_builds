@@ -13,7 +13,7 @@ cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
 
 	# Libretro gametank build
-	if [[ "$var" == "gametank" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
+	if [[ "$var" == "gametank-lr" || "$var" == "all" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
 	  if [ ! -d "libretro-gametank/" ]; then
 		git clone --depth=1 --recursive https://github.com/dwbrite/gametank-sdk.git
