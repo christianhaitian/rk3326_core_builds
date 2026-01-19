@@ -77,7 +77,7 @@ bitness="$(getconf LONG_BIT)"
 	   if [ ! -d "build" ]; then
              mkdir build
              cd build
-             cmake DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SA2=ON ..
+             cmake -DCMAKE_BUILD_TYPE=RELEASE -DBUILD_SA2=ON ..
              if [[ $? != "0" ]]; then
 		       echo " "
 		       echo "There was an error that occured while verifying the necessary dependancies to build the applewin standalone.  Stopping here."
