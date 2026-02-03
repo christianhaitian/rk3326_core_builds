@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of ecwolf
 	  if [ ! -d "ecwolf/" ]; then
-		git clone --recursive https://bitbucket.org/ecwolf/ecwolf.git
+		git clone --recursive https://github.com/ECWolfEngine/ECWolf.git ecwolf
 
 		if [[ $? != "0" ]]; then
 		  echo " "
