@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-TAG="v1.19.2"
+TAG="v1.19.3"
 
 	# PPSSPP Standalone build
 	if [[ "$var" == "ppsspp" ]] && [[ "$bitness" == "64" ]]; then
