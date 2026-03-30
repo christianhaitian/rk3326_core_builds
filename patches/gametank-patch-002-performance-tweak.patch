@@ -1,15 +1,16 @@
 diff --git a/Makefile b/Makefile
-index b39207b..6916615 100644
+index 1f995af..44e9f4a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -97,8 +97,8 @@ else ifeq ($(OS), wasm)
+@@ -102,9 +102,9 @@ else ifeq ($(OS), wasm)
  	SRCS := $(filter-out %window.cpp, $(SRCS))
- else
+ else #BSD/Linux
  	OBJS += $(NATIVE_OBJS)
--	COMPILER_FLAGS = -g `sdl2-config --cflags` $(EXTRA_INCLUDES)
+-	COMPILER_FLAGS = `sdl2-config --cflags` $(EXTRA_INCLUDES)
++	COMPILER_FLAGS = `sdl2-config --cflags` $(EXTRA_INCLUDES) -Ofast -mcpu=cortex-a35 -flto
+ 	OPTIM_FLAGS = -O2
 -	LINKER_FLAGS = `sdl2-config --libs`
-+	COMPILER_FLAGS = -g `sdl2-config --cflags` $(EXTRA_INCLUDES) -Ofast -mcpu=cortex-a35 -flto
 +	LINKER_FLAGS = `sdl2-config --libs` -Ofast -mcpu=cortex-a35 -flto
  endif
  
- 
+ DEFINES += -D CPU_6502_STATIC -D CPU_6502_USE_LOCAL_HEADER -D CMOS_INDIRECT_JMP_FIX
