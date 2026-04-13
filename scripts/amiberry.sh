@@ -11,14 +11,15 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+TAG="v5.6.8"
 
 	# amiberry package
 	if [[ "$var" == "amiberry" ]] && [[ "$bitness" == "64" ]]; then
 	 cd $cur_wd
-     git clone --recursive https://github.com/BlitterStudio/amiberry.git
+         git clone --recursive https://github.com/BlitterStudio/amiberry.git -b ${TAG}
 	 if [[ $? != "0" ]]; then
 	   echo " "
-	   echo "There was an error while cloning the mgba standalone git.  Is Internet active or did the git location change?  Stopping here."
+	   echo "There was an error while cloning the amiberry standalone git.  Is Internet active or did the git location change?  Stopping here."
 	   exit 1
 	 fi
 
