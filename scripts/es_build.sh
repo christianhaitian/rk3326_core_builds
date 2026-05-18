@@ -53,7 +53,7 @@ bitness="$(getconf LONG_BIT)"
 	 fi
 
 	 # Ensure dependencies are installed and available
-     neededlibs=( libmali-rk-dev libboost-system-dev libboost-filesystem-dev libboost-locale-dev libfreeimage-dev libfreetype6-dev libeigen3-dev libcurl4-openssl-dev libboost-date-time-dev libasound2-dev cmake libsdl2-dev rapidjson-dev libvlc-dev libvlccore-dev vlc-bin libsdl2-mixer-dev )
+     neededlibs=( libboost-system-dev libboost-filesystem-dev libboost-locale-dev libfreeimage-dev libfreetype6-dev libeigen3-dev libcurl4-openssl-dev libboost-date-time-dev libasound2-dev cmake libsdl2-dev rapidjson-dev libvlc-dev libvlccore-dev vlc-bin libsdl2-mixer-dev )
      updateapt="N"
      for libs in "${neededlibs[@]}"
      do
@@ -69,14 +69,15 @@ bitness="$(getconf LONG_BIT)"
             updateapt="Y"
            fi
            if [[ "${libs}" == "libmali-rk-dev" ]]; then
-             wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/EmulationStation-fcamod/raw/master/libmali-rk-dev_1.7-1+deb10_arm64.deb \
-             -O /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb || sudo rm -f /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb
+             #wget -t 3 -T 60 --no-check-certificate https://github.com/christianhaitian/EmulationStation-fcamod/raw/master/libmali-rk-dev_1.7-1+deb10_arm64.deb \
+             #-O /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb || sudo rm -f /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb
              if [ -f "/dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb" ]; then
-               sudo dpkg -i --force-all /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb
+               continue
+               #sudo dpkg -i --force-all /dev/shm/libmali-rk-dev_1.7-1+deb10_arm64.deb
              else
                 echo " "
                 echo "Could not download and install needed library ${libs}.  Stopping here so this can be reviewed."
-                exit 1
+                #exit 1
              fi
            else
              apt-get -y install --no-install-recommends "${libs}"
@@ -96,16 +97,16 @@ bitness="$(getconf LONG_BIT)"
          echo "Could not download needed library libmali-rk-dev_1.7-1+deb10_arm64.deb.  Stopping here so this can be reviewed."
          exit 1
        fi
-       wget $(echo $es_git | sed 's/\.git//')/raw/master/libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2%2Bdeb10_arm64.deb
+       #wget $(echo $es_git | sed 's/\.git//')/raw/master/libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2%2Bdeb10_arm64.deb
        if [[ $? != "0" ]]; then
          echo " "
          echo "Could not download needed library libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb.  Stopping here so this can be reviewed."
          exit 1
        fi
-       dpkg -i --force-all libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
-       dpkg -i libmali-rk-dev_1.7-1+deb10_arm64.deb
-       rm libmali-rk-dev_1.7-1+deb10_arm64.deb
-       rm libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
+       #dpkg -i --force-all libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
+       #dpkg -i libmali-rk-dev_1.7-1+deb10_arm64.deb
+       #rm libmali-rk-dev_1.7-1+deb10_arm64.deb
+       #rm libmali-rk-bifrost-g31-rxp0-wayland-gbm_1.7-2+deb10_arm64.deb
      fi
 
 	 case "$branch_build" in
