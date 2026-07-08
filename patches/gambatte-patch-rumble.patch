@@ -1,18 +1,18 @@
 diff --git a/libgambatte/libretro/libretro.cpp b/libgambatte/libretro/libretro.cpp
-index 74b2b1d..6e79882 100644
+index 15b042c..a30bce9 100644
 --- a/libgambatte/libretro/libretro.cpp
 +++ b/libgambatte/libretro/libretro.cpp
-@@ -39,6 +39,9 @@
- #include <cstring>
+@@ -40,6 +40,9 @@
  #include <algorithm>
  #include <cmath>
+ #include <vector>
 +#include <stdio.h>
 +#include <unistd.h>
 +#include <errno.h>
  
  #ifdef _3DS
  extern "C" void* linearMemAlign(size_t size, size_t alignment);
-@@ -1119,6 +1122,17 @@ void cartridge_set_rumble(unsigned active)
+@@ -1267,6 +1270,17 @@ void cartridge_set_rumble(unsigned active)
     else
        rumble_strength_down++;
  
@@ -30,7 +30,7 @@ index 74b2b1d..6e79882 100644
     rumble_active = true;
  }
  
-@@ -1140,8 +1154,53 @@ static void apply_rumble(void)
+@@ -1288,8 +1302,53 @@ static void apply_rumble(void)
     if (strength == rumble_strength_last)
        return;
  
@@ -86,7 +86,7 @@ index 74b2b1d..6e79882 100644
  
     rumble_strength_last = strength;
  }
-@@ -1156,8 +1215,17 @@ static void deactivate_rumble(void)
+@@ -1304,8 +1363,17 @@ static void deactivate_rumble(void)
         (rumble_strength_last == 0))
        return;
  
