@@ -1,15 +1,15 @@
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 657f3fc..0138f2f 100644
+index abb2d21..2e44f91 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -53,15 +53,13 @@ include(GNUInstallDirs)
+@@ -55,15 +55,13 @@ include(GNUInstallDirs)
  include(GetGitRevisionDescription)
  include(InstallRequiredSystemLibraries)
  include(FindPkgConfig)
 -include(ExternalProject)
 -include(BuildLibMPEG2)
  
- use_cxx11( )
+ set (CMAKE_CXX_STANDARD 11)
  
  PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
  PKG_SEARCH_MODULE(SDL2_TTF REQUIRED SDL2_ttf)
@@ -19,7 +19,7 @@ index 657f3fc..0138f2f 100644
  
  message(STATUS "Target: ${CMAKE_SYSTEM_NAME} ${CMAKE_TARGET_ARCHITECTURES}")
  
-@@ -115,7 +113,6 @@ add_subdirectory(timer)
+@@ -117,7 +115,6 @@ add_subdirectory(timer)
  add_subdirectory(video)
  add_subdirectory(vldp)
  
@@ -27,7 +27,7 @@ index 657f3fc..0138f2f 100644
  add_dependencies( ldp-out vldp )
  add_dependencies( game vldp )
  add_dependencies( sound vldp )
-@@ -163,3 +160,5 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VER_MINOR}")
+@@ -165,3 +162,5 @@ set(CPACK_PACKAGE_VERSION_MINOR "${VER_MINOR}")
  set(CPACK_PACKAGE_VERSION_PATCH "${VER_PATCH}")
  
  include(CPack)
@@ -48,7 +48,7 @@ index 7c3e66e..c5a8364 100644
  
  set( LIB_HEADERS
 diff --git a/src/manymouse/manymouse.c b/src/manymouse/manymouse.c
-index 309d53f..fb4c2cb 100644
+index c2889c2..992d184 100644
 --- a/src/manymouse/manymouse.c
 +++ b/src/manymouse/manymouse.c
 @@ -15,7 +15,6 @@ static const char *manymouse_copyright =
@@ -68,7 +68,7 @@ index 309d53f..fb4c2cb 100644
      &ManyMouseDriver_hidmanager,
      &ManyMouseDriver_hidutilities
 diff --git a/src/vldp/vldp.h b/src/vldp/vldp.h
-index 438f1a1..a1498c5 100644
+index 9e61a8a..68f004d 100644
 --- a/src/vldp/vldp.h
 +++ b/src/vldp/vldp.h
 @@ -35,6 +35,8 @@ extern "C" {
