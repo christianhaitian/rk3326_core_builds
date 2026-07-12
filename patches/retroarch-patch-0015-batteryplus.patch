@@ -1,0 +1,81 @@
+diff --git a/frontend/drivers/platform_unix.c b/frontend/drivers/platform_unix.c
+old mode 100644
+new mode 100755
+index e4ffe0f3f7..fb21e1eca2
+--- a/frontend/drivers/platform_unix.c
++++ b/frontend/drivers/platform_unix.c
+@@ -994,6 +994,41 @@ static bool int_string(char *str, int *val)
+    return ((*str != '\0') && (*endptr == '\0'));
+ }
+ 
++/* Path to an optional file that, if present, overrides the
++ * battery percentage that would otherwise be read from
++ * /proc or /sys. Only the percentage is affected; charging
++ * state and seconds-remaining are left to the normal
++ * detection logic. */
++#define BATTERY_PERCENT_OVERRIDE_PATH "/tmp/battery.percent"
++
++/* Reads BATTERY_PERCENT_OVERRIDE_PATH, if it exists, and
++ * writes a clamped 0-100 integer to *percent.
++ * Returns true if the override was applied. */
++static bool check_battery_percent_override(int *percent)
++{
++   char *buf      = NULL;
++   int64_t length = 0;
++   int val;
++
++   if (!filestream_exists(BATTERY_PERCENT_OVERRIDE_PATH))
++      return false;
++
++   if (!filestream_read_file(BATTERY_PERCENT_OVERRIDE_PATH,
++            (void**)&buf, &length) || !buf)
++      return false;
++
++   val = atoi(buf);
++   free(buf);
++
++   if (val < 0)
++      val = 0;
++   if (val > 100)
++      val = 100;
++
++   *percent = val;
++   return true;
++}
++
+ static bool frontend_unix_powerstate_check_apm(
+       enum frontend_powerstate *state,
+       int *seconds, int *percent)
+@@ -1252,17 +1287,32 @@ static enum frontend_powerstate frontend_unix_get_powerstate(
+    *seconds = -1;
+ #else
+    if (frontend_unix_powerstate_check_acpi_sysfs(&ret, seconds, percent))
++   {
++      check_battery_percent_override(percent);
+       return ret;
++   }
+ 
+    ret = FRONTEND_POWERSTATE_NONE;
+ 
+    if (frontend_unix_powerstate_check_acpi(&ret, seconds, percent))
++   {
++      check_battery_percent_override(percent);
+       return ret;
++   }
+ 
+    if (frontend_unix_powerstate_check_apm(&ret, seconds, percent))
++   {
++      check_battery_percent_override(percent);
+       return ret;
++   }
+ #endif
+ 
++   /* Allow overriding the reported battery percentage via
++    * /tmp/battery.percent, if present. This only affects
++    * *percent - the charging state (ret) and *seconds are
++    * left untouched. */
++   check_battery_percent_override(percent);
++
+    return ret;
+ }
+ 
