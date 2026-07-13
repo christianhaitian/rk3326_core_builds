@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-TAG="v2026.2.0"
+TAG="v2026.3.0"
 minfluidsynthverneeded="3"
 
 	# Scummvm Standalone Build
