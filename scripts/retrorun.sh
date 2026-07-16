@@ -11,6 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
+commit="bcdb7afa316fae735b40f06d61072e2f9590ea8c" # Release 3.0.0
 
 	# Retrorun build
 	if [[ "$var" == "retrorun" ]]; then
@@ -27,6 +28,7 @@ bitness="$(getconf LONG_BIT)"
 	fi
 
 	 cd retrorun/
+	 git checkout $commit
 
 	 retrorun_patches=$(find *.patch)
 	 
