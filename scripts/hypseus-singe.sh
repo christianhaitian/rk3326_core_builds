@@ -18,7 +18,7 @@ bitness="$(getconf LONG_BIT)"
 
 	  # Now we'll start the clone and build of hypseus-singe
 	  if [ ! -d "hypseus-singe/" ]; then
-		git clone --recursive https://github.com/DirtBagXon/hypseus-singe.git
+		git clone --recursive https://github.com/DirtBagXon/hypseus-singe.git -b sdl2
 
 		if [[ $? != "0" ]]; then
 		  echo " "
