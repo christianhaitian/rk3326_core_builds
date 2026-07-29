@@ -19,7 +19,7 @@ TAG="pi4-1-9-0"
 
 	  # Now we'll start the clone and build of yabasanshiro
 	  if [ ! -d "yabasanshiro/" ]; then
-		git clone --recursive https://github.com/devmiyax/yabause -b ${TAG} yabasanshiro
+		git clone --recursive https://github.com/christianhaitian/yabasanshiro-standalone.git -b ${TAG} yabasanshiro
 
 		if [[ $? != "0" ]]; then
 		  echo " "
