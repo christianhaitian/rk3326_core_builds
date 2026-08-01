@@ -17,7 +17,7 @@ bitness="$(getconf LONG_BIT)"
 	 flycast_rumblepatch="no"
 	 cd $cur_wd
 	  if [ ! -d "flycast/" ]; then
-		git clone https://github.com/libretro/flycast.git
+		git clone https://github.com/metallic77/flycast.git
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the flycast libretro git.  Is Internet active or did the git location change?  Stopping here."
