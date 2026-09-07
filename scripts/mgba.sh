@@ -48,10 +48,26 @@ bitness="$(getconf LONG_BIT)"
 		 fi
 	  done
 	 fi
-	  sed -i '/-mcpu=cortex-a35/s//-mtune=cortex-a35/g' Makefile.libretro
-	  cmake .
-	  make clean
-	  make -f Makefile.libretro platform=goadvance -j$(nproc)
+	  #sed -i '/-mcpu=cortex-a35/s//-mtune=cortex-a35/g' Makefile.libretro
+          cmake -DCMAKE_BUILD_TYPE=Release \
+                       -DBUILD_LIBRETRO=ON \
+                       -DSKIP_LIBRARY=ON \
+                       -DBUILD_QT=OFF \
+                       -DBUILD_SDL=OFF \
+                       -DUSE_DISCORD_RPC=OFF \
+                       -DUSE_EDITLINE=OFF \
+                       -DUSE_EPOXY=OFF \
+                       -DBUILD_GLES3=OFF \
+                       -DBUILD_GLES2=ON \
+                       -DUSE_MINIZIP=OFF \
+                       -DUSE_LIBZIP=OFF \
+                       -DUSE_ELF=OFF \
+                       -DUSE_LUA=OFF \
+                       -DENABLE_DEBUGGERS=OFF \
+                       -DENABLE_GDB_STUB=OFF \
+                       -DCMAKE_C_FLAGS="-Ofast -fno-tree-slp-vectorize -D_NDEBUG -march=armv8-a+crc -mtune=cortex-a55 -ftree-vectorize -funsafe-math-optimizations" \
+                       -DCMAKE_CXX_FLAGS="-Ofast -fno-tree-slp-vectorize -D_NDEBUG -march=armv8-a+crc -mtune=cortex-a55 -ftree-vectorize -funsafe-math-optimizations -fpermissive"
+          cmake --build . -- -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
 		echo " "
@@ -66,39 +82,14 @@ bitness="$(getconf LONG_BIT)"
 	  fi
 
 	  cp mgba_libretro.so ../cores64/.
+	  cp mgba_libretro.so ../cores64/mgba_rumble_libretro.so
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$(getconf LONG_BIT)/$(basename $PWD)_libretro.so.commit
-
-	  if [[ $gba_rumblepatch == "yes" ]]; then
-		for patching in mgba-patch*
-		do
-		  patch -Np1 < "$patching"
-		  if [[ $? != "0" ]]; then
-			echo " "
-			echo "There was an error while patching in the rumble feature from $patching.  Stopping here."
-			exit 1
-		  fi
-		  rm "$patching"
-		  make -f Makefile.libretro platform=goadvance -j$(nproc)
-
-		  if [[ $? != "0" ]]; then
-			echo " "
-			echo "There was an error while building the newest lr-mgba core with the patched in rumble feature.  Stopping here."
-			exit 1
-		  fi
-
-		  strip mgba_libretro.so
-		  mv mgba_libretro.so mgba_rumble_libretro.so
-		  cp mgba_rumble_libretro.so ../cores64/.
-		  echo " "
-		  echo "mgba_libretro.so and mgba_rumble_libretro.so have been created and have been placed in the rk3326_core_builds/cores64 subfolder"
-		done
-	  fi
 
 	  gitcommit=$(git log | grep -m 1 commit | cut -c -14 | cut -c 8-)
 	  echo $gitcommit > ../cores$bitness/mgba_rumble_libretro.so.commit
 
 	  echo " "
-	  echo "mgba_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
+	  echo "mgba_libretro.so and mgba_rumble_libretro.so has been created and has been placed in the rk3326_core_builds/cores64 subfolder"
 	fi
