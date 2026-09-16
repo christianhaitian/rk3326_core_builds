@@ -61,7 +61,7 @@ bitness="$(getconf LONG_BIT)"
                  -DDSPERATE_HEADLESS=OFF \
                  -DDSPERATE_WAYLAND=OFF \
                  -DDSPERATE_PGO=use --preset host
-           cmake --build --preset host
+           cmake --build --preset host -j$(nproc)
 
            if [[ $? != "0" ]]; then
 		     echo " "
