@@ -50,13 +50,6 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
-           #DS_ROMS=... DS_BIOS=... tools/pgo_refresh.sh
-           cmake -DDSPERATE_TESTS=OFF \
-                 -DDSPERATE_HEADLESS=OFF \
-                 -DDSPERATE_WAYLAND=OFF \
-                 -DDSPERATE_PGO=use --preset host
-           sed -i '/fingerprint/d' pgo/aarch64/MANIFEST
-           sed -i "1i fingerprint $(cat build/host/pgo-fingerprint)" pgo/aarch64/MANIFEST
            cmake -DDSPERATE_TESTS=OFF \
                  -DDSPERATE_HEADLESS=OFF \
                  -DDSPERATE_WAYLAND=OFF \
