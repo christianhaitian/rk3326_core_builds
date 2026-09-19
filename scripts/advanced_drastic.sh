@@ -68,7 +68,7 @@ bitness="$(getconf LONG_BIT)"
 
            cd ..
 	   cp -rf advanced_drastic/ advanced_drastic-$bitness/.
-	   rm -rf advanced_drastic/
+	   #rm -rf advanced_drastic/
 
 	   echo " "
 	   echo "The advanced_drastic executable has been created and has been placed in the rk3326_core_builds/advanced_drastic-$bitness subfolder"
