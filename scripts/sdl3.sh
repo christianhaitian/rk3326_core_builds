@@ -3,7 +3,7 @@
 ##################################################################
 # Created by Christian Haitian for use to easily update          #
 # various standalone emulators, libretro cores, and other        #
-# various programs for the RK3566 platform for various Linux     #
+# various programs for the RK3326 platform for various Linux     #
 # based distributions.                                           #
 # See the LICENSE.md file at the top-level directory of this     #
 # repository.                                                    #
@@ -121,5 +121,5 @@ fi
 	  #fi
 
 	  echo " "
-	  echo "sdl $(git describe --tags | cut -c 9-) has been created and has been placed in the rk3566_core_builds/sdl3-$bitness subfolder"
+	  echo "sdl $(git describe --tags | cut -c 9-) has been created and has been placed in the rk3326_core_builds/sdl3-$bitness subfolder"
 	fi
