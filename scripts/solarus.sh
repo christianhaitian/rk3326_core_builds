@@ -83,7 +83,7 @@ TAG="release-2.1.4"
 	  fi
 
 	  strip cli/solarus-run
-	  strip libsolarus.so.1.*
+	  strip libsolarus.so.2.*
 
 	  if [ ! -d "../../solarus$bitness/" ]; then
 		mkdir -v ../../solarus$bitness
