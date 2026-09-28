@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-TAG="release-2.0.1"
+TAG="release-2.1.4"
 
 	# Solarus Standalone build
 	if [[ "$var" == "solarus" ]] && [[ "$bitness" == "64" ]]; then
