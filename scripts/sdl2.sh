@@ -209,7 +209,31 @@ extension="3200.10"
 	     strip libSDL2-2.0.so.0.$extension
 	     cp libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.$extension.rotated
       fi
+      echo " "
+      echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
 
+      if [[ $bitness == "64" ]]; then
+         cd ..
+      fi
+      patch -Np1 < ../patches/a10miniv4/sdl2-patch-0007-rotate180.patch
+      if [[ $bitness == "64" ]]; then
+         cd build
+      fi
+          make -j$(nproc)
+
+          if [[ $? != "0" ]]; then
+                echo " "
+                echo "There was an error while building sdl2 at commit $commit with the a10 mini v4 rotation patch applied."
+                exit 1
+          fi
+
+      if [[ $bitness == "32" ]]; then
+             strip build/.libs/libSDL2-2.0.so.0.$extension
+             cp build/.libs/libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.$extension.a10miniv4
+          else
+             strip libSDL2-2.0.so.0.$extension
+             cp libSDL2-2.0.so.0.$extension $cur_wd/sdl2-$bitness/libSDL2-2.0.so.0.$extension.a10miniv4
+      fi
 	  echo " "
-	  echo "sdl $(git describe --tags | cut -c 9-) with rotation has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
+	  echo "sdl $(git describe --tags | cut -c 9-) with rotation for the a10 mini v4 has been created and has been placed in the rk3326_core_builds/sdl2-$bitness subfolder"
 
