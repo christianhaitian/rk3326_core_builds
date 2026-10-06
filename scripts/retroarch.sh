@@ -195,6 +195,29 @@ tag="v1.22.2"
 	      fi
       fi
 
+	  patch -Np1 < ../patches/a10miniv4/retroarch-patch-0010-a10miniv4-rga.patch
+          make -j$(nproc)
+
+          if [[ $? != "0" ]]; then
+                echo " "
+                echo "There was an error while building the newest retroarch with the a10 mini v4 rotation patch."
+                exit 1
+          fi
+
+          strip retroarch
+          cp retroarch ../retroarch$bitness/retroarch.rk3326.a10miniv4
+
+          if [[ "$bitness" == "32" ]]; then
+                mv ../retroarch$bitness/retroarch.rk3326.a10miniv4 ../retroarch$bitness/retroarch32.rk3326.a10miniv4
+          fi
+
+          echo " "
+          if [[ "$bitness" == "32" ]]; then
+                echo "retroarch32.rk3326.a10miniv4 has been created and has been placed in the rk3326_core_builds folder."
+          else
+                echo "retroarch.rk3326.a10miniv4 has been created and has been placed in the rk3326_core_builds folder"
+          fi
+
 	  cd gfx/video_filters
 	  ./configure
 	  make -j$(nproc)
