@@ -1,0 +1,13 @@
+diff --git a/yabause/src/libretro/libretro.c b/yabause/src/libretro/libretro.c
+index 2bed6c242..b9c034476 100644
+--- a/yabause/src/libretro/libretro.c
++++ b/yabause/src/libretro/libretro.c
+@@ -1515,7 +1515,7 @@ static void crash_hex(int fd, const char *label, uintptr_t v)
+ static void crash_dump(int sig, siginfo_t *si, void *ctx)
+ {
+    const ucontext_t *uc = (const ucontext_t *)ctx;
+-   const struct sigcontext *mc = &uc->uc_mcontext;
++   const mcontext_t *mc = &uc->uc_mcontext;
+    int i, fd = open(crash_log_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+ 
+    if (fd >= 0)

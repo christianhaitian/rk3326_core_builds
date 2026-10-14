@@ -1,0 +1,41 @@
+diff --git a/yabause/src/libretro/Makefile b/yabause/src/libretro/Makefile
+index 7752e8278..cf770e215 100644
+--- a/yabause/src/libretro/Makefile
++++ b/yabause/src/libretro/Makefile
+@@ -280,7 +280,35 @@ else ifeq ($(platform), miyoomini)
+ 	HAVE_SSE = 0
+ 	DYNAREC = 3
+ 	ARCH_IS_LINUX = 1
+-	
++
++
++
++# dArkOS RK3566 - 32-bit ARM Cortex-A35
++else ifeq ($(platform), rk3326_armhf)
++    TARGET := $(TARGET_NAME)_libretro.so
++
++    fpic := -fPIC
++    SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
++
++    CC = arm-linux-gnueabihf-gcc
++    CXX = arm-linux-gnueabihf-g++
++    CC_AS = arm-linux-gnueabihf-gcc
++    AR = arm-linux-gnueabihf-ar
++
++    FLAGS += -pthread -fomit-frame-pointer
++    FLAGS += -ffast-math
++    FLAGS += -marm -mcpu=cortex-a35
++    FLAGS += -mfpu=neon-fp-armv8
++    FLAGS += -mfloat-abi=hard
++
++    FLAGS += -DHAVE_ARMv6=1 -DHAVE_ARMv7=1
++
++    LDFLAGS += -pthread
++
++    HAVE_SSE = 0
++    DYNAREC = 3
++    ARCH_IS_LINUX = 1
++
+ # (armv8 a35, hard point, neon based) ###
+ # Playstation Classic
+ else ifeq ($(platform), classic_armv8_a35)
