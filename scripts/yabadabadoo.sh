@@ -44,9 +44,9 @@ bitness="$(getconf LONG_BIT)"
 
 	  make -C yabause/src/libretro clean
 	  if [[ "$bitness" == "32" ]]; then
-	    make -C yabause/src/libretro HAVE_SSE=0 platform=armvneonhardfloat -j$(nproc)
+	    make -C yabause/src/libretro platform=rk3326_armhf -j$(nproc)
 	  else
-	    make -C yabause/src/libretro HAVE_SSE=0 -j$(nproc)
+	    make -C yabause/src/libretro -j$(nproc)
 	  fi
 
 	  if [[ $? != "0" ]]; then

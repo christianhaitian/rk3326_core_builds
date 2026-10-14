@@ -1,0 +1,20 @@
+diff --git a/yabause/src/sh2_dynarec/assem_arm.c b/yabause/src/sh2_dynarec/assem_arm.c
+index d127dc19a..c58da6d8a 100644
+--- a/yabause/src/sh2_dynarec/assem_arm.c
++++ b/yabause/src/sh2_dynarec/assem_arm.c
+@@ -162,12 +162,12 @@ void set_jump_target_fillslot(int addr,u32 target,int copy)
+ }
+ 
+ /* Literal pool */
+-add_literal(int addr,int val)
++void add_literal(int addr,int val)
+ {
+   literals[literalcount][0]=addr;
+   literals[literalcount][1]=val;
+-  literalcount++; 
+-} 
++  literalcount++;
++}
+ 
+ void *kill_pointer(void *stub)
+ {
