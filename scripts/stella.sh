@@ -42,26 +42,25 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	 fi
 
-      update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
-      update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
-      export CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/c++/13/backward:/usr/local/include/c++/13/aarch64-linux-gnu
+      update-alternatives --set gcc "/usr/bin/gcc-14"
+      update-alternatives --set g++ "/usr/bin/g++-14"
 
       cd src/os/libretro
 	  make clean
 	  make platform=aarch64 -j$(nproc)
 
 	  if [[ $? != "0" ]]; then
-		update-alternatives --set gcc "/usr/bin/gcc-8"
-		update-alternatives --set g++ "/usr/bin/g++-8"
+		update-alternatives --set gcc "/usr/bin/gcc-12"
+		update-alternatives --set g++ "/usr/bin/g++-12"
 		unset CPLUS_INCLUDE_PATH
 		echo " "
 		echo "There was an error while building the newest lr-stella core.  Stopping here."
 		exit 1
 	  fi
 
-	  update-alternatives --set gcc "/usr/bin/gcc-8"
-	  update-alternatives --set g++ "/usr/bin/g++-8"
-	  unset CPLUS_INCLUDE_PATH
+	  update-alternatives --set gcc "/usr/bin/gcc-12"
+	  update-alternatives --set g++ "/usr/bin/g++-12"
+	  #unset CPLUS_INCLUDE_PATH
 
 	  strip stella_libretro.so
 

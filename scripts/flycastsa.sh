@@ -47,9 +47,8 @@ TAG="v2.6"
 	 fi
 
       if [[ "$0" != *"builds-alt"* ]]; then
-        update-alternatives --set gcc "/usr/local/bin/aarch64-linux-gnu-gcc-13"
-        update-alternatives --set g++ "/usr/local/bin/aarch64-linux-gnu-g++-13"
-        export CPLUS_INCLUDE_PATH=/usr/include/c++/13:/usr/include/c++/13/backward:/usr/local/include/c++/13/aarch64-linux-gnu
+        update-alternatives --set gcc "/usr/bin/gcc-14"
+        update-alternatives --set g++ "/usr/bin/g++-14"
       fi
 
 	  cd ..
@@ -73,8 +72,8 @@ TAG="v2.6"
 
 	  if [[ $? != "0" ]]; then
 	    if [[ "$0" != *"builds-alt"* ]]; then
-		  update-alternatives --set gcc "/usr/bin/gcc-8"
-		  update-alternatives --set g++ "/usr/bin/g++-8"
+		  update-alternatives --set gcc "/usr/bin/gcc-12"
+		  update-alternatives --set g++ "/usr/bin/g++-12"
 		  unset CPLUS_INCLUDE_PATH
 		fi
 		echo " "
@@ -83,8 +82,8 @@ TAG="v2.6"
 	  fi
 
       if [[ "$0" != *"builds-alt"* ]]; then
-	    update-alternatives --set gcc "/usr/bin/gcc-8"
-	    update-alternatives --set g++ "/usr/bin/g++-8"
+	    update-alternatives --set gcc "/usr/bin/gcc-12"
+	    update-alternatives --set g++ "/usr/bin/g++-12"
 	    unset CPLUS_INCLUDE_PATH
 	  fi
 

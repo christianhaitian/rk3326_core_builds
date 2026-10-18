@@ -70,8 +70,8 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
-           update-alternatives --set gcc "/usr/local/bin/gcc"
-           update-alternatives --set g++ "/usr/local/bin/g++"
+           update-alternatives --set gcc "/usr/bin/gcc-14"
+           update-alternatives --set g++ "/usr/bin/g++-14"
            if [ ! -d "build" ]; then
              mkdir build
              cd build
@@ -87,13 +87,13 @@ bitness="$(getconf LONG_BIT)"
 
            if [[ $? != "0" ]]; then
 		     echo " "
-             update-alternatives --set gcc "/usr/bin/gcc-8"
-             update-alternatives --set g++ "/usr/bin/g++-8"
+             update-alternatives --set gcc "/usr/bin/gcc-12"
+             update-alternatives --set g++ "/usr/bin/g++-12"
 		     echo "There was an error that occured while making the applewin standalone.  Stopping here."
              exit 1
            fi
-           update-alternatives --set gcc "/usr/bin/gcc-8"
-           update-alternatives --set g++ "/usr/bin/g++-8"
+           update-alternatives --set gcc "/usr/bin/gcc-12"
+           update-alternatives --set g++ "/usr/bin/g++-12"
            strip source/frontends/libretro/applewin_libretro.so
 
 	  if [ ! -d "../../cores64/" ]; then
