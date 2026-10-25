@@ -80,6 +80,8 @@ fi
                -DSDL_KMSDRM=OFF \
                -DSDL_PIPEWIRE=OFF \
                -DSDL_PULSEAUDIO=OFF \
+               -DSDL_TESTS=OFF \
+               -DSDL_EXAMPLES=OFF \
                -DSDL_ALSA=OFF \
                -DSDL_SNDIO=OFF \
                -DSDL_OSS=OFF \
