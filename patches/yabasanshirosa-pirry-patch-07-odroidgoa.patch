@@ -1,0 +1,217 @@
+diff --git a/yabause/src/retro_arena/MenuScreen.cpp b/yabause/src/retro_arena/MenuScreen.cpp
+index 144e302..bda42ff 100644
+--- a/yabause/src/retro_arena/MenuScreen.cpp
++++ b/yabause/src/retro_arena/MenuScreen.cpp
+@@ -111,7 +111,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         tools = new Widget(window);
+         pushActiveMenu(tools, nullptr );
+         tools->setLayout(new BoxLayout(Orientation::Vertical,Alignment::Middle, 0, 2));
+-        tools->setFixedWidth(256);
++        tools->setFixedWidth(186);
+ 
+         PlayerConfig tmp;
+         tmp.player = new PopupButton(tools, "Player1", ENTYPO_ICON_EXPORT);      
+@@ -123,7 +123,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+ 
+        
+         PopupButton * ps_config = new PopupButton(tools, "Config");
+-        ps_config->setFixedWidth(248);
++        ps_config->setFixedWidth(180);
+         showConfigDialog(ps_config);
+         ps_config->setCallback([this,ps_config]() {      
+           pushActiveMenu(ps_config->popup(),ps_config); 
+@@ -131,7 +131,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+ 
+         /* Save and Load State share one submenu, so the main menu fits the screen. */
+         PopupButton * ps_save = new PopupButton(tools, "Save");
+-        ps_save->setFixedWidth(248);
++        ps_save->setFixedWidth(180);
+         Popup * save_popup = ps_save->popup();
+         save_popup->setLayout(new GroupLayout(4,2,2,2));
+         ps_save->setCallback([this,ps_save]() {
+@@ -155,7 +155,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         });
+ 
+         Button *b0 = new Button(tools, "Exit");
+-        b0->setFixedWidth(248);
++        b0->setFixedWidth(180);
+         b0->setCallback([this]() { 
+           MENU_LOG("Exit\n"); 
+       		SDL_Event* quit = new SDL_Event();
+@@ -164,7 +164,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         });
+ 
+         Button *b1 = new Button(tools, "Reset");
+-        b1->setFixedWidth(248);
++        b1->setFixedWidth(180);
+         b1->setCallback([this]() { 
+           MENU_LOG("Reset\n");  
+           SDL_Event event = {};
+@@ -177,14 +177,14 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+ 
+         /* Separate submenu for the volume sliders. */
+         PopupButton * ps_sound = new PopupButton(tools, "Sound Settings");
+-        ps_sound->setFixedWidth(248);
++        ps_sound->setFixedWidth(180);
+         showSoundDialog(ps_sound);
+         ps_sound->setCallback([this,ps_sound]() {
+           pushActiveMenu(ps_sound->popup(), ps_sound);
+         });
+ 
+         PopupButton * ps_cheat = new PopupButton(tools, "Cheats");
+-        ps_cheat->setFixedWidth(248);
++        ps_cheat->setFixedWidth(180);
+         ps_cheat->setCallback([this,ps_cheat]() {
+           showCheatDialog(ps_cheat);
+           /* Hand over the inner container: pushActiveMenu looks for the first button only among
+@@ -194,7 +194,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+ 
+         /* RetroAchievements login */
+         PopupButton * ps_ra = new PopupButton(tools, "RetroAchievements");
+-        ps_ra->setFixedWidth(248);
++        ps_ra->setFixedWidth(180);
+         showRetroAchievementsDialog(ps_ra);
+         ps_ra->setCallback([this,ps_ra]() {
+           raStatusUpdate(true);
+@@ -202,7 +202,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         });
+ 
+         bCdTray = new Button(tools, "Open CD Tray");
+-        bCdTray->setFixedWidth(248);
++        bCdTray->setFixedWidth(180);
+         bCdTray->setCallback([this]() { 
+           if( this->is_cdtray_open_ ){
+             MENU_LOG("Close CD Tray\n"); 
+@@ -244,7 +244,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         // (YabauseReset in Cs2ForceCloseTray). With a real BIOS (-b) the system currently
+         // drops to the BIOS menu; Start there boots the new disc (known issue).
+         bNextDisc = new Button(tools, "Next Disc");
+-        bNextDisc->setFixedWidth(248);
++        bNextDisc->setFixedWidth(180);
+         bNextDisc->setCallback([this]() {
+           size_t pos = current_game_path_.find_last_of("/");
+           if( pos == std::string::npos ) return;
+@@ -291,7 +291,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+ 
+ 
+         Button *b2 = new Button(tools, "Show/Hide FPS");
+-        b2->setFixedWidth(248);
++        b2->setFixedWidth(180);
+         b2->setCallback([this]() { 
+           MENU_LOG("Show/Hide FPS\n");  
+           SDL_Event event = {};
+@@ -303,7 +303,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+         });
+ 
+         Button *b3 = new Button(tools, "Enable/Disable Frame Skip");
+-        b3->setFixedWidth(248);
++        b3->setFixedWidth(180);
+         b3->setCallback([this]() { 
+           MENU_LOG("Reset\n");  
+           SDL_Event event = {};
+@@ -314,7 +314,7 @@ MenuScreen::MenuScreen( SDL_Window* pwindow, int rwidth, int rheight, const std:
+           SDL_PushEvent(&event);          
+         });        
+         Button *b4 = new Button(tools, "About");
+-        b4->setFixedWidth(248);
++        b4->setFixedWidth(180);
+         b4->setCallback([this,b4]() {
+           imageWindow = new Window(this, "About");
+           imageWindow->setLayout(new GroupLayout(10, 4, 6, 0));
+@@ -575,7 +575,7 @@ void MenuScreen::showRetroAchievementsDialog( PopupButton *parent ){
+   popup->setLayout(new GroupLayout(4,2,2,2));
+ 
+   ra_status_lbl_ = new Label(popup, " ");
+-  ra_status_lbl_->setFixedWidth(340);   /* the menu window ends at ~270 px, the popup starts 15 px right of it */
++  ra_status_lbl_->setFixedWidth(240);   /* the menu window ends at ~270 px, the popup starts 15 px right of it */
+   ra_login_btn_ = new Button(popup, "Login");
+   ra_login_btn_->setCallback([this](){ raKbOpen(); });
+   ra_logout_btn_ = new Button(popup, "Logout");
+@@ -589,7 +589,7 @@ void MenuScreen::showRetroAchievementsDialog( PopupButton *parent ){
+   Widget * mode_row = new Widget(popup);
+   mode_row->setLayout(new BoxLayout(Orientation::Horizontal, Alignment::Middle, 0, 6));
+   ra_mode_btn_ = new Button(mode_row, "Mode: Softcore");
+-  ra_mode_btn_->setFixedWidth(340);   /* 240 while the red Reset button is shown beside it */
++  ra_mode_btn_->setFixedWidth(240);   /* 240 while the red Reset button is shown beside it */
+   ra_hcreset_btn_ = new Button(mode_row, "Reset");
+   ra_hcreset_btn_->setFixedWidth(94);
+   ra_hcreset_btn_->setTextColor(Color(255, 255, 255, 255));
+@@ -602,7 +602,7 @@ void MenuScreen::showRetroAchievementsDialog( PopupButton *parent ){
+     SDL_PushEvent(&event);   /* same as the Reset entry of the main menu: the game restarts in hardcore */
+   });
+   ra_hc_lbl_ = new Label(popup, "Hardcore starts with a reset of the game: press the red Reset button.", "sans", 18);
+-  ra_hc_lbl_->setFixedWidth(340);
++  ra_hc_lbl_->setFixedWidth(240);
+   ra_hc_lbl_->setColor(Color(255, 80, 80, 255));
+   ra_hc_lbl_->setVisible(false);
+   ra_mode_btn_->setCallback([this](){
+@@ -619,7 +619,7 @@ void MenuScreen::showRetroAchievementsDialog( PopupButton *parent ){
+     raStatusUpdate(true);
+   });
+   Label * hint = new Label(popup, "Hardcore: no Load State. Switching to Hardcore needs a reset of the game (red Reset button), switching back works at once. Or create ~/.yabasanshiro/retroachievements.cfg with username= and password=", "sans", 18);
+-  hint->setFixedWidth(340);
++  hint->setFixedWidth(240);
+   ra_status_lbl_->setCaption("Not logged in");   /* refreshed when the dialog opens */
+ }
+ 
+@@ -1360,7 +1360,7 @@ void MenuScreen::getSelectedGUID( int user_index, std::string & selguid ){
+ 
+ 
+ void MenuScreen::setupPlayerPsuhButton( int user_index, PopupButton *player, const std::string & label, ComboBox **cbo ){
+-  player->setFixedWidth(248);
++  player->setFixedWidth(180);
+   Popup *popup = player->popup();
+ 
+   // 19 widgets do not fit on a 640x480 screen: as in showFileSelectDialog(),
+diff --git a/yabause/src/retro_arena/nanogui-sdl/src/theme.cpp b/yabause/src/retro_arena/nanogui-sdl/src/theme.cpp
+index 3d126ad..e0f5330 100644
+--- a/yabause/src/retro_arena/nanogui-sdl/src/theme.cpp
++++ b/yabause/src/retro_arena/nanogui-sdl/src/theme.cpp
+@@ -18,20 +18,20 @@
+ NAMESPACE_BEGIN(nanogui)
+ 
+ Theme::Theme(NVGcontext *ctx) {
+-    mStandardFontSize                 = 16;
+-    mButtonFontSize                   = 20;
+-    mTextBoxFontSize                  = 20;
+-    mWindowCornerRadius               = 2;
+-    mWindowHeaderHeight               = 30;
+-    mWindowDropShadowSize             = 10;
+-    mButtonCornerRadius               = 2;
+-    mTabBorderWidth                   = 0.75f;
+-    mTabInnerMargin                   = 5;
+-    mTabMinButtonWidth                = 20;
+-    mTabMaxButtonWidth                = 160;
+-    mTabControlWidth                  = 20;
+-    mTabButtonHorizontalPadding       = 10;
+-    mTabButtonVerticalPadding         = 2;
++    mStandardFontSize                 = 11;
++    mButtonFontSize                   = 11;
++    mTextBoxFontSize                  = 11;
++    mWindowCornerRadius               = 0;
++    mWindowHeaderHeight               = 14;
++    mWindowDropShadowSize             = 0;
++    mButtonCornerRadius               = 0;
++    mTabBorderWidth                   = 0.15f;
++    mTabInnerMargin                   = 0;
++    mTabMinButtonWidth                = 14;
++    mTabMaxButtonWidth                = 120;
++    mTabControlWidth                  = 12;
++    mTabButtonHorizontalPadding       = 0;
++    mTabButtonVerticalPadding         = 0;
+ 
+     mDropShadow                       = Color(0, 128);
+     mTransparent                      = Color(0, 0);
+diff --git a/yabause/src/retro_arena/nanogui-sdl/src/window.cpp b/yabause/src/retro_arena/nanogui-sdl/src/window.cpp
+index cf3998c..59de7b4 100644
+--- a/yabause/src/retro_arena/nanogui-sdl/src/window.cpp
++++ b/yabause/src/retro_arena/nanogui-sdl/src/window.cpp
+@@ -119,7 +119,7 @@ void Window::draw(NVGcontext *ctx) {
+         nvgStrokeColor(ctx, mTheme->mWindowHeaderSepBot);
+         nvgStroke(ctx);
+ 
+-        nvgFontSize(ctx, 18.0f);
++        nvgFontSize(ctx, 12.0f);
+         nvgFontFace(ctx, "sans-bold");
+         nvgTextAlign(ctx, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+ 
