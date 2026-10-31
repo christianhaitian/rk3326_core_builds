@@ -25,7 +25,7 @@ fi
 
 	  # Now we'll start the clone and build process of sdl3
 	  if [ ! -d "SDL3/" ]; then
-		git clone --recursive https://github.com/bmdhacks/SDL.git -b "$branch" SDL3
+		git clone --recursive https://github.com/christianhaitian/SDL3withSDL2-Backend.git -b "$branch" SDL3
 		if [[ $? != "0" ]]; then
 		  echo " "
 		  echo "There was an error while cloning the sdl3 standalone git.  Is Internet active or did the git location change?  Stopping here."
