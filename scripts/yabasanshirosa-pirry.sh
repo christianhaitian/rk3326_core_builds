@@ -11,7 +11,7 @@
 
 cur_wd="$PWD"
 bitness="$(getconf LONG_BIT)"
-TAG="1.6.1"
+TAG="1.6.2"
 
 	# yabasanshiro Standalone build
 	if [[ "$var" == "yabasanshirosa-pirry" ]]; then
@@ -78,6 +78,11 @@ TAG="1.6.1"
 	  done
 	 fi
 
+             # Default dsp to on.  Let the user disable dsp instead
+             sed -i 's/getInt("sound dsp", 0)/getInt("sound dsp", 1)/g' \
+              yabause/src/retro_arena/MenuScreen.cpp \
+              yabause/src/retro_arena/main.cpp
+             sed -i 's/pre.getInt("sound dsp", 0)/pre.getInt("sound dsp", 1)/' yabause/src/retro_arena/main.cpp
              mkdir build
              cd build
              cmake ../yabause \
@@ -93,13 +98,13 @@ TAG="1.6.1"
                    -DCMAKE_AR=/usr/bin/gcc-ar -DCMAKE_RANLIB=/usr/bin/gcc-ranlib
              if [[ $? != "0" ]]; then
 	       echo " "
-	       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro standalone.  Stopping here."
+	       echo "There was an error that occured while verifying the necessary dependancies to build the newest yabasanshiro-pirry standalone.  Stopping here."
                exit 1
              fi
              make -j$(nproc)
              if [[ $? != "0" ]]; then
 	       echo " "
-	       echo "There was an error that occured while making the yabasanshiro standalone.  Stopping here."
+	       echo "There was an error that occured while making the yabasanshiro-pirry standalone.  Stopping here."
                exit 1
              fi
              strip -o yabasanshiro-pirry src/retro_arena/yabasanshiro
@@ -112,4 +117,36 @@ TAG="1.6.1"
 
 	     echo " "
 	     echo "The yabasanshiro-pirry executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
+
+            if [[ $yaba_menusizepatch == "yes" ]]; then
+              cd ..
+        	  for patching in yabasanshirosa-pirry-patch*
+        	  do
+        	    patch -Np1 < "$patching"
+        		if [[ $? != "0" ]]; then
+        		  echo " "
+        		  echo "There was an error while applying $patching.  Stopping here."
+        		  exit 1
+        		fi
+        		rm "$patching"
+        	  done
+        	fi
+
+           cd build
+           make -j$(nproc)
+           if [[ $? != "0" ]]; then
+		     echo " "
+		     echo "There was an error that occured while making the yabasanshiro-pirry standalone.  Stopping here."
+             exit 1
+           fi
+           strip -o yabasanshiro-pirry src/retro_arena/yabasanshiro
+
+           if [ ! -d "../../yabasanshirosa-pirry$bitness/" ]; then
+		     mkdir -v ../../yabasanshirosa-pirry$bitness
+	       fi
+
+	       cp yabasanshiro-pirry ../../yabasanshirosa-pirry$bitness/yabasanshiro-pirry.oga
+
+	       echo " "
+	       echo "The yabasanshiro-pirry oga executable has been created and has been placed in the rk3326_core_builds/yabasanshirosa$bitness subfolder"
 	  fi
