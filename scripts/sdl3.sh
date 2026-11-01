@@ -72,7 +72,7 @@ fi
          cd build
          cmake .. \
                -DCMAKE_BUILD_TYPE=Release \
-               -DCMAKE_C_FLAGS="-mcpu=cortex-a55" \
+               -DCMAKE_C_FLAGS="-mcpu=cortex-a35" \
                -DSDL_SDL2_BACKEND=ON \
                -DSDL_SPIRV_CROSS_DIR=../SPIRV-Cross \
                -DSDL_X11=OFF \
