@@ -33,26 +33,6 @@ bitness="$(getconf LONG_BIT)"
 		exit 1
 	  fi
 
-	 # Ensure dependencies are installed and available
-     neededlibs=( libzip-dev libsdl1.2-dev libsdl-image1.2-dev libcurl4-openssl-dev zlib1g-dev imagemagick libglx-dev )
-     updateapt="N"
-     for libs in "${neededlibs[@]}"
-     do
-          dpkg -s "${libs}" &>/dev/null
-          if [[ $? != "0" ]]; then
-           if [[ "$updateapt" == "N" ]]; then
-            apt-get -y update
-            updateapt="Y"
-           fi
-           apt-get -y install "${libs}"
-           if [[ $? != "0" ]]; then
-            echo " "
-            echo "Could not install needed library ${libs}.  Stopping here so this can be reviewed."
-            exit 1
-           fi
-          fi
-     done
-
 	 cd linapple
 	 
 	 linapplesa_patches=$(find *.patch)
@@ -70,7 +50,8 @@ bitness="$(getconf LONG_BIT)"
 	  done
 	  fi
 
-           make -j$(nproc)
+           make SDL2=1 clean
+           make SDL2=1
 
            if [[ $? != "0" ]]; then
 		     echo " "
@@ -80,23 +61,11 @@ bitness="$(getconf LONG_BIT)"
 
            strip build/bin/linapple
 
-	       #Get and build sdl12-compat to get the libSDL-1.2 libs needed for this emulator
-	       git clone https://github.com/libsdl-org/sdl12-compat
-	       cd sdl12-compat
-	       mkdir build
-	       cd build
-	       cmake .. -DCMAKE_BUILD_TYPE=Release
-	       make -j$(nproc)
-	       cd ../../
-
            if [ ! -d "../linapplesa-$bitness/" ]; then
-		     mkdir -v ../linapplesa-$bitness
-	       fi
+	     mkdir -v ../linapplesa-$bitness
+	   fi
 
-	       mkdir ../linapplesa-$bitness/libs
-	       cp sdl12-compat/build/libSDL-1.2.so.* ../linapplesa-$bitness/libs/.
-	       cp build/bin/linapple ../linapplesa-$bitness/.
-           tar -zchvf ../linapplesa-$bitness/linapplesa_pkg_$(git rev-parse HEAD | cut -c -7).tar.gz ../linapplesa-$bitness/linapple ../linapplesa-$bitness/libs/
+	   cp build/bin/linapple ../linapplesa-$bitness/.
 
 	       echo " "
 	       echo "The linapple standalone executable has been created and has been placed in the rk3326_core_builds/linapplesa-$bitness subfolder"
