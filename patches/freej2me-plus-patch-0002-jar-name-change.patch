@@ -1,56 +1,44 @@
 diff --git a/build.xml b/build.xml
-index 5be40779..1e44c8c4 100644
+index 38c678de..9f12cd33 100644
 --- a/build.xml
 +++ b/build.xml
-@@ -63,7 +63,7 @@
+@@ -85,7 +85,7 @@
  
- 	<echo message="Building JAR - Libretro" />
- 	<jar
--		destfile="build/freej2me-lr.jar">
-+		destfile="build/freej2me-plus-lr.jar">
- 		<fileset dir="build/classes" excludes="**/AWTGUI*.class, **/FreeJ2ME*.class, org/recompile/freej2me/ProgressBar.class, **/ScreenShot*.class"/> <!-- Exclude AWT classes (FreeJ2ME.class is only needed for AWT) -->
- 		<fileset dir="resources" />
- 		<metainf dir="META-INF" />
+ 	<target name="jar-libretro" depends="compile" description="Builds the Libretro JAR">
+ 		<echo message="Building JAR - Libretro" />
+-		<jar destfile="build/freej2me_plus-lr.jar">
++		<jar destfile="build/freej2me-plus-lr.jar">
+ 			<!-- Exclude GUI classes (FreeJ2ME.class is only needed for GUI) -->
+ 			<fileset dir="build/classes" excludes="**/FJGUI*.class, **/FreeJ2ME*.class, org/recompile/freej2me/gamepad/**, **/ScreenShot*.class"/>
+ 			<fileset dir="resources" />
 diff --git a/src/libretro/freej2me_libretro.c b/src/libretro/freej2me_libretro.c
-index 9188b999..6e7ebc3e 100755
+index ca2c45d1..f75b627a 100755
 --- a/src/libretro/freej2me_libretro.c
 +++ b/src/libretro/freej2me_libretro.c
-@@ -36,9 +36,9 @@ const char *slash = path_default_slash();
+@@ -38,11 +38,11 @@ const char *slash = path_default_slash();
  
- // These may change to .so and .dll at some point
- #ifdef __linux__
--const char *freej2meapp = "freej2me-lr.jar";
+ // These may change to .so, .dll or .dylib at some point
+ #if defined(__linux__)
+-const char *freej2meapp = "freej2me_plus-lr.jar";
 +const char *freej2meapp = "freej2me-plus-lr.jar";
+ #elif __APPLE__
+ const char *freej2meapp = "freej2me_plus-lr.jar";
  #elif _WIN32
--const char *freej2meapp = "freej2me-lr.jar";
+-const char *freej2meapp = "freej2me_plus-lr.jar";
 +const char *freej2meapp = "freej2me-plus-lr.jar";
  #endif
  
  retro_environment_t Environ;
 diff --git a/src/libretro/freej2me_libretro.h b/src/libretro/freej2me_libretro.h
-index 0f40217d..a4e21c94 100644
+index 54017a90..bc8b972f 100644
 --- a/src/libretro/freej2me_libretro.h
 +++ b/src/libretro/freej2me_libretro.h
-@@ -71,9 +71,9 @@ static const struct retro_message_ext messages[] =
-     {"Invalid status received! Please restart the core.", 5000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-     {"FreeJ2ME failed to setup pipes for communication!!! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
- #ifdef __linux__
--    {"FreeJ2ME system files not found! \nMake sure > freej2me-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-+    {"FreeJ2ME system files not found! \nMake sure > freej2me-plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
- #elif _WIN32
--    {"FreeJ2ME system files not found! \nMake sure > freej2me-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-+    {"FreeJ2ME system files not found! \nMake sure > freej2me-plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
- #endif
-     {"FreeJ2ME could not start! \nMake sure that you have Java 6 or newer installed.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-     {"FreeJ2ME closed unexpectedly!!! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
-@@ -312,8 +312,8 @@ struct retro_core_option_v2_definition core_options[] =
-         "freej2me_midifont",
-         "System > MIDI Soundfont",
-         "MIDI Soundfont",
--        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
--        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-+        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-+        "Selects which kind of MIDI soundfont to use. 'Default' uses the soundfont bundled with the system or Java VM, while 'Custom' allows you to place a custom soundfont on '<freej2me-plus-lr.jar folder>/freej2me_system/customMIDI' and use it on J2ME apps to simulate a specific phone or improve MIDI sound quality. WARNING: Big soundfonts greatly increase the emulator's RAM footprint and processing requirements, while smaller ones can actually help it perform better.",
-         "system_settings",
-         {
-             { "off", "Default" },
+@@ -160,7 +160,7 @@ static const struct retro_message_ext messages[] =
+ 	{"Invalid status received! Please restart the core.", 5000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ 	{"FreeJ2ME-Plus failed to setup IPC pipes! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ 	{"FreeJ2ME-Plus runtime not found. Looking for cross-platform system jar...", 5000, 3, RETRO_LOG_WARN, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+-	{"FreeJ2ME-Plus system jar not found! \nMake sure > freej2me_plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
++	{"FreeJ2ME-Plus system jar not found! \nMake sure > freej2me-plus-lr.jar < is in the 'system' dir.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ 	{"FreeJ2ME-Plus could not start! \nEnable logging and send it as a bug report.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ 	{"FreeJ2ME-Plus closed unexpectedly!!! \nPlease restart the core.", 15000, 3, RETRO_LOG_ERROR, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
+ 	{"Pipe Write failed! Might be trivial, if you notice issues, please restart.", 5000, 3, RETRO_LOG_WARN, RETRO_MESSAGE_TARGET_ALL, RETRO_MESSAGE_TYPE_NOTIFICATION, 0},
