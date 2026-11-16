@@ -41,8 +41,8 @@ bitness="$(getconf LONG_BIT)"
 		   rm "$patching" 
 	  done
 	 fi 
-
-      ant #This creates the needed freej2me-plus-lr.jar for this emulator.  It will need to be copied to the bios folder.
+	  sed -i '/1.5/s//1.8/g' build.xml #Needed in order to be able to build the .jar file with openjdk-21
+	  ant #This creates the needed freej2me-plus-lr.jar for this emulator.  It will need to be copied to the bios folder.
 	  make -j$(nproc) -C ./src/libretro
 
 	  if [[ $? != "0" ]]; then
