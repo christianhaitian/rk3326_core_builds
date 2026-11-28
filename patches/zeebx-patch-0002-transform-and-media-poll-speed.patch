@@ -1,0 +1,153 @@
+zeebx: faster transforms and media polling on the A53 (dArkOS RG52 Mini)
+
+IBitmap transforms copy the source row by row and write the target directly (a fifth of
+the core's time in Action Hero 3D went to per-pixel get_pixel/set_pixel_native), and
+poll_media looks at the live IMedia list at most every half millisecond of the game's
+clock (8%). Ported on 2026-11-21 to v0.6.0, where the code was translated to English; the
+logic is unchanged.
+
+diff --git a/src/machine/bitmap.rs b/src/machine/bitmap.rs
+index e85408c..ec234f5 100644
+--- a/src/machine/bitmap.rs
++++ b/src/machine/bitmap.rs
+@@ -536,10 +536,29 @@ impl<C: CpuBackend> Machine<C> {
+         let (half_w, half_h) = (t.width as f32 / 2.0, t.height as f32 / 2.0);
+         // Copying the source rectangle first allows reading and writing when both are the same
+         // surface map — and when source and destination are the same bitmap.
+-        let mut pixels = Vec::with_capacity((t.width * t.height) as usize);
+-        for line in 0..t.height {
+-            for column in 0..t.width {
+-                pixels.push(source.get_pixel(t.source_x + column, t.source_y + line));
++        //
++        // **Row by row, not pixel by pixel.** On the RG52 Mini's A53 this method was a fifth of
++        // the core's time in Action Hero 3D (perf, 2026-11-08): a `get_pixel` with its bounds
++        // checked per pixel in the copy and a `set_pixel_native` per pixel in the drawing. What
++        // lies outside the source stays zero, as `get_pixel` returned, and the drawing writes the
++        // same pixels: the per-pixel arithmetic is the same, only the write is direct.
++        let (width, height) = (t.width as usize, t.height as usize);
++        let mut pixels = vec![0u16; width * height];
++        let (fw, fh) = (i64::from(source.width()), i64::from(source.height()));
++        let xo = i64::from(t.source_x);
++        let c0 = (-xo).clamp(0, width as i64);
++        let c1 = (fw - xo).clamp(0, width as i64);
++        if c0 < c1 {
++            let src = source.pixels();
++            let n = (c1 - c0) as usize;
++            for line in 0..height {
++                let sy = i64::from(t.source_y) + line as i64;
++                if sy < 0 || sy >= fh {
++                    continue;
++                }
++                let from = (sy * fw + xo + c0) as usize;
++                let to = line * width + c0 as usize;
++                pixels[to..to + n].copy_from_slice(&src[from..from + n]);
+             }
+         }
+         let Some(target) = self.bitmaps.get_mut(&t.dest) else {
+@@ -558,17 +577,33 @@ impl<C: CpuBackend> Machine<C> {
+         }
+         let limit_x = target.width() as i32;
+         let limit_y = target.height() as i32;
+-        for py in (y0.floor() as i32).max(0)..(y1.ceil() as i32).min(limit_y) {
+-            for px in (x0.floor() as i32).max(0)..(x1.ceil() as i32).min(limit_x) {
+-                let (u, v) = (px as f32 + 0.5 - center_x, py as f32 + 0.5 - center_y);
+-                let sx = (inverse[0] * u + inverse[1] * v + half_w).floor() as i32;
+-                let sy = (inverse[2] * u + inverse[3] * v + half_h).floor() as i32;
+-                if sx < 0 || sy < 0 || sx >= t.width || sy >= t.height {
+-                    continue;
++        let target_width = target.width() as usize;
++        // What `set_pixel_native` counted per pixel: how many, and their box.
++        let mut written = 0u64;
++        let (mut cx0, mut cy0, mut cx1, mut cy1) = (u32::MAX, u32::MAX, 0u32, 0u32);
++        {
++            let dest = target.pixels_mut();
++            for py in (y0.floor() as i32).max(0)..(y1.ceil() as i32).min(limit_y) {
++                let base = py as usize * target_width;
++                for px in (x0.floor() as i32).max(0)..(x1.ceil() as i32).min(limit_x) {
++                    let (u, v) = (px as f32 + 0.5 - center_x, py as f32 + 0.5 - center_y);
++                    let sx = (inverse[0] * u + inverse[1] * v + half_w).floor() as i32;
++                    let sy = (inverse[2] * u + inverse[3] * v + half_h).floor() as i32;
++                    if sx < 0 || sy < 0 || sx >= t.width || sy >= t.height {
++                        continue;
++                    }
++                    dest[base + px as usize] = pixels[(sy * t.width + sx) as usize];
++                    written += 1;
++                    cx0 = cx0.min(px as u32);
++                    cx1 = cx1.max(px as u32 + 1);
++                    cy0 = cy0.min(py as u32);
++                    cy1 = cy1.max(py as u32 + 1);
+                 }
+-                target.set_pixel_native(px, py, pixels[(sy * t.width + sx) as usize]);
+             }
+         }
++        if written > 0 {
++            target.mark_written(written, cx0, cy0, cx1, cy1);
++        }
+         SUCCESS
+     }
+ 
+diff --git a/src/machine/media.rs b/src/machine/media.rs
+index 7195c92..8e0cdf8 100644
+--- a/src/machine/media.rs
++++ b/src/machine/media.rs
+@@ -1274,6 +1274,15 @@ impl<C: CpuBackend> Machine<C> {
+     /// Queues the end notification for the sounds that have already finished.
+     pub(super) fn poll_media(&mut self) -> Result<(), CpuError> {
+         let now = self.now_us();
++        // **Not at every API boundary.** This method runs on every turn and every callback, and
++        // going through all live `IMedia`s each time was 8% of the core's time in Action Hero 3D
++        // (dozens of sounds, the RG52 Mini's A53, perf 2026-11-08). The list is looked at when the
++        // game's clock has moved half a millisecond since the last look: the end of a sound comes
++        // at most that much later. A clock that went back (a save state) looks at once.
++        if now >= self.media_checked_us && now < self.media_checked_us.saturating_add(500) {
++            return Ok(());
++        }
++        self.media_checked_us = now;
+         // A track the mixer was looping for the game, and the game did not play again.
+         let dropped: Vec<u32> = self
+             .media
+diff --git a/src/machine/mod.rs b/src/machine/mod.rs
+index 60eb900..3d6aeea 100644
+--- a/src/machine/mod.rs
++++ b/src/machine/mod.rs
+@@ -2818,6 +2818,8 @@ pub struct Machine<C: CpuBackend> {
+     egl_context: u32,
+     /// Playback state of each live `IMedia`.
+     media: HashMap<u32, MediaState>,
++    /// The clock (us) of the last time [`Machine::poll_media`] went through `media`.
++    media_checked_us: u64,
+     /// The sounds handed to the `IMedia`s, already read, by content key. See
+     /// [`MediaPayload`].
+     media_payloads: HashMap<u64, MediaPayload>,
+@@ -3410,6 +3412,7 @@ impl<C: CpuBackend> Machine<C> {
+             egl_surface: 0,
+             egl_context: 0,
+             media: HashMap::new(),
++            media_checked_us: 0,
+             media_payloads: HashMap::new(),
+             audio: None,
+             gl_last_frame_words: Vec::new(),
+diff --git a/src/video/display.rs b/src/video/display.rs
+index 1e0db70..e89e0da 100644
+--- a/src/video/display.rs
++++ b/src/video/display.rs
+@@ -127,6 +127,19 @@ impl Framebuffer {
+         &self.pixels
+     }
+ 
++    /// The pixels for direct writing, by whoever has checked the bounds already. Whoever writes
++    /// through here counts what it wrote with [`Framebuffer::mark_written`].
++    pub fn pixels_mut(&mut self) -> &mut [u16] {
++        &mut self.pixels
++    }
++
++    /// What [`Framebuffer::set_pixel_native`] does for each pixel, done once for `written`
++    /// pixels, all inside `[x0, y0, x1, y1)`.
++    pub fn mark_written(&mut self, written: u64, x0: u32, y0: u32, x1: u32, y1: u32) {
++        self.touched += written;
++        self.mark_watches(x0, y0, x1, y1);
++    }
++
+     /// Restores the pixels and the surface's history.
+     ///
+     /// This is the way back from a save state: the pixels come from the file, and `touched` and

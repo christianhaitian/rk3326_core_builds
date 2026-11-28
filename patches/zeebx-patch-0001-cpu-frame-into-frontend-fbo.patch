@@ -1,0 +1,216 @@
+zeebx: the CPU's frame into the frontend's framebuffer on the GPU path (dArkOS RG52 Mini)
+
+RetroArch's gl driver on GLES presents the hardware FBO and ignores pixels: a frame the
+GPU did not draw (2D, as Action Hero 3D's opening) came out black. The frame goes up into
+an RGB565 texture and is blitted into the frontend's framebuffer. Ported on 2026-11-21 to
+v0.6.0, where the libretro frontend was translated to English; the logic is unchanged.
+
+diff --git a/frontends/libretro/src/lib.rs b/frontends/libretro/src/lib.rs
+index 1e5f91b..cb013d2 100644
+--- a/frontends/libretro/src/lib.rs
++++ b/frontends/libretro/src/lib.rs
+@@ -704,6 +704,9 @@ struct Core {
+     bitmasks: bool,
+     /// Whether the frontend accepts a null frame when the screen did not change.
+     accepts_dupe: bool,
++    /// The texture and framebuffer through which the CPU's frame reaches the frontend's
++    /// framebuffer on the GPU path. See [`present_through_bridge`].
++    screen_bridge: Option<ScreenBridge>,
+     /// How many GPU frames the game had drawn on the previous frame. The engine's counter is
+     /// cumulative, and the GPU may have drawn once at startup and never again: what decides is the
+     /// difference between this frame and the previous one. See the comment in the block that builds
+@@ -944,6 +947,149 @@ fn request_frontend_buffer(requested_width: u32, requested_height: u32) -> Optio
+     Some((request.data.cast::<u8>(), request.pitch))
+ }
+ 
++/// The CPU's frame inside the GPU: an RGB565 texture the size of the screen, attached to a read
++/// framebuffer, from which a blit takes it to the frontend's framebuffer.
++struct ScreenBridge {
++    /// The GPU the objects were made on ([`zeebx::video::gpu::gpu_address`]). On a new GPU they
++    /// are not valid and are not deleted: `libretro.h` says only to make them again.
++    gpu: usize,
++    texture: glow::Texture,
++    fbo: glow::Framebuffer,
++    size: (i32, i32),
++}
++
++/// The framebuffer the frontend wants this frame in.
++fn frontend_framebuffer() -> Option<u32> {
++    let get = GPU_OFFER
++        .lock()
++        .ok()
++        .and_then(|offer| offer.as_ref().and_then(|o| o.get_current_framebuffer))?;
++    Some(unsafe { get() })
++}
++
++/// Puts the CPU's frame into the frontend's framebuffer, so that it goes out as a GPU frame.
++///
++/// **With hardware rendering, RetroArch's `gl` driver does not read the CPU's pixels.** `gl2_frame`
++/// only copies the delivered frame when there is *no* hardware framebuffer
++/// (`GL2_FLAG_HW_RENDER_FBO_INIT`); with one, it presents the FBO and ignores the pointer, and
++/// `libretro.h` too only foresees, with hardware rendering, the sentinel or the null frame. A frame
++/// the GPU did not draw (2D through `IDisplay`/`IBitmap`, as Action Hero 3D's opening) came out
++/// black, with the sound right, in RetroArch on GLES (RG52 Mini, Mali-G52). Here the frame goes up
++/// into an RGB565 texture and a blit puts it into the frontend's framebuffer; the caller delivers
++/// the sentinel.
++///
++/// The origin is the top, as in the GPU's drawing (`bottom_left_origin` false): the frame's line 0
++/// goes to the framebuffer's line 0. Returns whether the frame was put there; with no frontend
++/// framebuffer or too few pixels nothing changes, and the caller delivers the pixels as before.
++fn present_through_bridge(
++    gl: &glow::Context,
++    bridge: &mut Option<ScreenBridge>,
++    width: u32,
++    height: u32,
++    rgb565: &[u8],
++) -> bool {
++    let (w, h) = (width as i32, height as i32);
++    if w <= 0 || h <= 0 || rgb565.len() < width as usize * height as usize * 2 {
++        return false;
++    }
++    let Some(fbo) = frontend_framebuffer() else {
++        return false;
++    };
++    let target = std::num::NonZeroU32::new(fbo).map(glow::NativeFramebuffer);
++    let address = zeebx::video::gpu::gpu_address(gl);
++    unsafe {
++        if bridge.as_ref().is_some_and(|b| b.gpu != address) {
++            *bridge = None;
++        }
++        if let Some(old) = bridge.take_if(|b| b.size != (w, h)) {
++            gl.delete_framebuffer(old.fbo);
++            gl.delete_texture(old.texture);
++        }
++        // The pixel unpack state is whoever came before: the frontend or the engine.
++        gl.bind_buffer(glow::PIXEL_UNPACK_BUFFER, None);
++        gl.pixel_store_i32(glow::UNPACK_ALIGNMENT, 2);
++        gl.pixel_store_i32(glow::UNPACK_ROW_LENGTH, 0);
++        gl.pixel_store_i32(glow::UNPACK_SKIP_ROWS, 0);
++        gl.pixel_store_i32(glow::UNPACK_SKIP_PIXELS, 0);
++        gl.active_texture(glow::TEXTURE0);
++        let pixels = glow::PixelUnpackData::Slice(Some(&rgb565[..width as usize * height as usize * 2]));
++        match bridge.as_ref() {
++            Some(b) => {
++                gl.bind_texture(glow::TEXTURE_2D, Some(b.texture));
++                gl.tex_sub_image_2d(
++                    glow::TEXTURE_2D,
++                    0,
++                    0,
++                    0,
++                    w,
++                    h,
++                    glow::RGB,
++                    glow::UNSIGNED_SHORT_5_6_5,
++                    pixels,
++                );
++            }
++            None => {
++                let Ok(texture) = gl.create_texture() else {
++                    return false;
++                };
++                gl.bind_texture(glow::TEXTURE_2D, Some(texture));
++                gl.tex_image_2d(
++                    glow::TEXTURE_2D,
++                    0,
++                    glow::RGB565 as i32,
++                    w,
++                    h,
++                    0,
++                    glow::RGB,
++                    glow::UNSIGNED_SHORT_5_6_5,
++                    pixels,
++                );
++                for (name, value) in [
++                    (glow::TEXTURE_MIN_FILTER, glow::NEAREST as i32),
++                    (glow::TEXTURE_MAG_FILTER, glow::NEAREST as i32),
++                    (glow::TEXTURE_WRAP_S, glow::CLAMP_TO_EDGE as i32),
++                    (glow::TEXTURE_WRAP_T, glow::CLAMP_TO_EDGE as i32),
++                    (glow::TEXTURE_MAX_LEVEL, 0),
++                ] {
++                    gl.tex_parameter_i32(glow::TEXTURE_2D, name, value);
++                }
++                let Ok(read) = gl.create_framebuffer() else {
++                    gl.bind_texture(glow::TEXTURE_2D, None);
++                    gl.delete_texture(texture);
++                    return false;
++                };
++                gl.bind_framebuffer(glow::READ_FRAMEBUFFER, Some(read));
++                gl.framebuffer_texture_2d(
++                    glow::READ_FRAMEBUFFER,
++                    glow::COLOR_ATTACHMENT0,
++                    glow::TEXTURE_2D,
++                    Some(texture),
++                    0,
++                );
++                *bridge = Some(ScreenBridge {
++                    gpu: address,
++                    texture,
++                    fbo: read,
++                    size: (w, h),
++                });
++            }
++        }
++        gl.bind_texture(glow::TEXTURE_2D, None);
++        gl.pixel_store_i32(glow::UNPACK_ALIGNMENT, 4);
++        let Some(b) = bridge.as_ref() else {
++            return false;
++        };
++        // The blit goes through the scissor and nothing else of the fragment stage; the engine
++        // turns the scissor on in 3D.
++        gl.disable(glow::SCISSOR_TEST);
++        gl.bind_framebuffer(glow::READ_FRAMEBUFFER, Some(b.fbo));
++        gl.bind_framebuffer(glow::DRAW_FRAMEBUFFER, target);
++        gl.blit_framebuffer(0, 0, w, h, 0, 0, w, h, glow::COLOR_BUFFER_BIT, glow::NEAREST);
++        gl.bind_framebuffer(glow::FRAMEBUFFER, target);
++    }
++    true
++}
++
+ /// Writes the frame into the buffer the frontend lent, respecting its line pitch.
+ ///
+ /// # Safety
+@@ -2690,6 +2836,7 @@ unsafe fn load(
+         opened_via_z_wheel: false,
+         bitmasks: false,
+         accepts_dupe: false,
++        screen_bridge: None,
+         gl_frames_before: 0,
+         last_signature: None,
+         last_clock_ms: 0,
+@@ -3058,7 +3205,11 @@ pub extern "C" fn retro_run() {
+         // On the GPU path the frontend presents the FBO it got in the callback and ignores the
+         // pixel pointer. Do not copy 600 KiB or compute a CPU signature in that case: besides being
+         // useless, it competed with the Mali for the same weak CPU we want to leave to the guest.
+-        let on_gpu = gpu().is_some() && drew_on_gpu;
++        let gpu_now = gpu();
++        let on_gpu = gpu_now.is_some() && drew_on_gpu;
++        // **With the GPU on, the CPU's frame goes out through the GPU too.** RetroArch's `gl`
++        // driver ignores pixels when there is hardware rendering; see [`present_through_bridge`].
++        let through_bridge = gpu_now.is_some() && !on_gpu;
+         // The console is 640×480, and that is the frame the shader expects to receive. A different
+         // size is warned about once, instead of showing up as a skewed image with no explanation.
+         if !state.warned_size && (width != 640 || height != 480) {
+@@ -3073,7 +3224,7 @@ pub extern "C" fn retro_run() {
+         // not, we deliver the same bytes again; in both cases the image really is 30.
+         // **The borrowed buffer, when the frontend offers it.** Only on the software path: with
+         // drawing on the GPU the FBO is what presents, and there is no CPU frame to write.
+-        let borrowed = match on_gpu {
++        let borrowed = match on_gpu || through_bridge {
+             true => None,
+             false => request_frontend_buffer(width, height),
+         };
+@@ -3098,6 +3249,14 @@ pub extern "C" fn retro_run() {
+             state.last_signature = Some(signature);
+             same
+         };
++        // A new frame of the CPU goes to the frontend's framebuffer, and then what is delivered is
++        // the sentinel; a repeated one stays null, and the frontend shows again what is there.
++        let on_gpu = on_gpu
++            || (through_bridge
++                && !duplicate
++                && gpu_now.as_deref().is_some_and(|gl| {
++                    present_through_bridge(gl, &mut state.screen_bridge, width, height, &frame_buf)
++                }));
+         // Audio: **the time comes from the virtual clock**, not from a fixed number. A game that
+         // goes through two virtual frames between two calls needs to deliver twice the samples,
+         // otherwise the sound lags behind the image and the frontend stutters trying to keep up.
